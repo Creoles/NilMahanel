@@ -1,0 +1,40 @@
+[
+  {
+    "lang": "zh-CN",
+    "login": {
+      "email": "邮箱地址",
+      "password": "密码",
+      "button": "登陆",
+      "toSign": "没有账号？前往注册！"
+    },
+    "sign": {
+      "username": "姓名",
+      "email": "邮箱地址",
+      "phone": "联系电话",
+      "category": "账号类型",
+      "password": "密码",
+      "confirm": "再次输入密码",
+      "button": "注册",
+      "toLogin":"已有账号？前往登陆！"
+    }
+  },
+  {
+    "lang": "en-US",
+    "login": {
+      "email": "EMAIL ADDRESS",
+      "password": "PASSWORD",
+      "button": "LOGIN",
+      "toSign": "I'm new"
+    },
+    "sign": {
+      "username": "FULLNAME",
+      "email": "EMAIL ADDRESS",
+      "phone": "PHONE NUMBER",
+      "category": "ACCOUNT TYPE",
+      "password": "PASSWORD",
+      "confirm": "CONFIRM PASSWORD",
+      "button": "SIGN IN",
+      "toLogin":"I have an account"
+    }
+  }
+]

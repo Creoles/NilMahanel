@@ -1,13 +1,30 @@
 /**
  * Created by rancongjie@126.com 17/1/18.
  */
-import VueRoute from "vue-router"
 import Vue from 'vue'
-import ex from "../views/components/ex.vue"
+import VueRoute from "vue-router"
+import User from '../views/account/index.vue'
 Vue.use(VueRoute);
+
+function generateRoutes() {
+
+}
 export default new VueRoute({
-  routes:[
-    {path:'/admin',component:ex}
+  //todo mode:"history"
+
+  routes: [
+    {
+      name: 'user',
+      path: '/login',
+      component: User
+    }
+    // ...generateRoutes(),
+    // {
+    //   path: '*',
+    //   redirect: '/'
+    // }
   ]
 });
+
+
 

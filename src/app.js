@@ -5,18 +5,19 @@ import Vue from 'vue'
 import Resource from 'vue-resource'
 import App from './App.vue'
 import router from './router'
+import VeeValidate from 'vee-validate';
 import store from './store'
 import * as filters from './filters'
 
 Vue.use(Resource);
+Vue.use(VeeValidate);
 
-Object.keys(filters).forEach(key => {
-  Vue.filter(key, filters[key])
-});
-const { state } = store;
-const app = new Vue({
+// Object.keys(filters).forEach(key => {
+//   Vue.filter(key, filters[key])
+// });
+// const { state } = store;
+new Vue({
+  el: '#app',
   router,
-  store,
-  ...App
+  render: h => h(App)
 });
-export { app, router, store }

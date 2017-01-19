@@ -3,7 +3,7 @@ var cooking = require('cooking');
 
 cooking.set({
   entry: {
-    app: ['babel-polyfill', './src/index.js']
+    app: ['babel-polyfill', './src/app.js']
   },
   dist: './dist',
   template: './index.tpl',
