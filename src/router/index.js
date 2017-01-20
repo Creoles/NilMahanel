@@ -3,7 +3,7 @@
  */
 import Vue from 'vue'
 import VueRoute from "vue-router"
-import User from '../views/account/index.vue'
+import Sign from '../views/account/sign.vue'
 import Home from '../views/admin/Home.vue'
 Vue.use(VueRoute);
 
@@ -15,9 +15,9 @@ export default new VueRoute({
 
   routes: [
     {
-      name: 'user',
-      path: '/login',
-      component: User
+      name: 'sign',
+      path: '/sign',
+      component: Sign
     },
     {
       name:'home',
@@ -25,10 +25,6 @@ export default new VueRoute({
       component:Home
     },
     // ...generateRoutes(),
-    {
-      path: '*',
-      redirect: '/admin'
-    }
   ]
 });
 

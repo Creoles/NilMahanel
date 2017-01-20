@@ -2,9 +2,7 @@
   {
     "lang": "zh-CN",
     "login": {
-      "email": "邮箱地址",
-      "password": "密码",
-      "button": "登陆",
+      "login":"登陆",
       "toSign": "没有账号？前往注册！"
     },
     "sign": {
@@ -21,10 +19,8 @@
   {
     "lang": "en-US",
     "login": {
-      "email": "EMAIL ADDRESS",
-      "password": "PASSWORD",
-      "button": "LOGIN",
-      "toSign": "I'm new"
+      "login":"Login",
+      "toSign": "I'm new!"
     },
     "sign": {
       "username": "FULLNAME",
