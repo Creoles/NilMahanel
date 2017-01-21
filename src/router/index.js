@@ -11,8 +11,7 @@ function generateRoutes() {
 
 }
 export default new VueRoute({
-  //todo mode:"history"
-
+  // mode:"history",//todo
   routes: [
     {
       name: 'sign',

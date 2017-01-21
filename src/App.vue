@@ -20,9 +20,7 @@
       ToolBar
     },
     created(){
-      remote_ip_info&&remote_ip_info.country == "中国"?
-        localStorage.setItem('LANGUAGE',"zh-CN"):
-        localStorage.setItem('LANGUAGE',"en-US")
+       this.$store.dispatch('initLang')
     }
 
   }

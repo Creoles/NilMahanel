@@ -32,32 +32,31 @@
     @import "sign";
 </style>
 <script>
-    import UserLang from '../../assets/lang/account.json'
+    import UserLang from '../../assets/lang/account.json';
+    import { mapGetters, mapActions } from 'vuex';
     export default{
         data(){
             return{
                 msg:'hello vue'
             }
         },
-        computed: {
-            lang() {
-                return localStorage.getItem('LANGUAGE') || 'zh-CN'
-            },
+        computed:{
+            ...mapGetters({
+               lang:"getLang"
+            }),
             langConfig(){
                 return UserLang.filter(config => config.lang === this.lang)[0]
             }
         },
         methods:{
-            switchLang(targetLang){
-                if(this.lang === targetLang) return;
-                localStorage.setItem('LANGUAGE',targetLang);
-                this.$router.push(this.$route.path.replace(this.lang, targetLang));
-            }
+
         },
         components:{
 
         }
     }
+
+
 
 
 </script>

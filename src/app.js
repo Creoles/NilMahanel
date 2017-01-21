@@ -19,5 +19,6 @@ Vue.use(VeeValidate);
 new Vue({
   el: '#app',
   router,
+  store,
   render: h => h(App)
 });
