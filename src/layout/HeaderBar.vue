@@ -7,12 +7,15 @@
             </div>
             <div class="col-lg-4 offset-lg-6 col-md-6 offset-md-4 col-5 offset-2 col-sm-4 offset-sm-3 top-bar">
                 <div class="notification">
-                    <i class="fa fa-bell"></i>
-                    <span class="badge badge-danger">4</span>
+                    <i class="fa fa-bell-o"></i>
+                    <span class="notification-num">4</span>
                     <div class="notification-ring"></div>
                 </div>
-
-                <i class="fa fa-envelope"></i><span class="badge badge-danger">4</span>
+                <div class="message">
+                    <i class="fa fa-envelope-o"></i>
+                    <span class="notification-num">4</span>
+                    <div class="notification-ring"></div>
+                </div>
 
             </div>
         </div>
@@ -38,17 +41,46 @@
         .notification {
             position: relative;
             display: inline-block;
+            cursor: pointer;
+        }
+        .notification-ring {
+            border: 1px solid #dc143c;
+            border-radius: 100px;
+            height: 40px;
+            width: 40px;
+            position: absolute;
+            top: -18px;
+            right: -27px;
+            animation: pulsate 4s ease-out;
+            animation-iteration-count: infinite;
+            opacity: 0.0
+        }
+        .notification-num {
+            display: inline-block;
+            min-width: 10px;
+            padding: 2px 4px;
+            color: #fff;
+            vertical-align: baseline;
+            white-space: nowrap;
+            text-align: center;
+            border-radius: 13px;
+            line-height: 11px;
+            background-color: #dc143c;
+            position: absolute;
+            top:-5px;
+            right: -14px;
+            font-size: 11px;
+        }
+        .message {
+            position: relative;
+            display: inline-block;
+            margin-left: 1rem;
+            cursor: pointer;
+            .notification-num {
+                background-color: #20b2aa;
+            }
             .notification-ring {
-                border: 1px solid red;
-                border-radius: 100px;
-                height: 40px;
-                width: 40px;
-                position: absolute;
-                top: -18px;
-                right: -27px;
-                animation: pulsate 4s ease-out;
-                animation-iteration-count: infinite;
-                opacity: 0.0
+                border-color: #20b2aa;
             }
         }
 
