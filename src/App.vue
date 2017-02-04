@@ -9,6 +9,7 @@
     overflow:auto;
     font-family:"Lucida Grande",Lucida Sans Unicode,Hiragino Sans GB,WenQuanYi MicroHei,Verdana,Aril,sans-serif!important;
   }
+
 </style>
 <script>
   import MainView from "./layout/MainView.vue"
@@ -20,9 +21,16 @@
       ToolBar
     },
     created(){
-       this.$store.dispatch('initLang')
+       var lang = localStorage.getItem("LANG");
+       if(lang == undefined){
+          this.$store.dispatch('initLang')
+       }else {
+          this.$store.dispatch('changeLang',lang)
+       }
+
     }
 
   }
+
 
 </script>

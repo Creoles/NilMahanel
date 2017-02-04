@@ -13,8 +13,8 @@ const getters = {
 };
 
 const actions = {
-  changeLang({commit}){
-    commit(types.CHANGE_LANG,{lang})
+  changeLang({commit},lang){
+    commit(types.CHANGE_LANG,lang)
 
   },
   initLang({commit}){
@@ -25,9 +25,12 @@ const actions = {
 const mutations = {
   [types.INIT_LANG](state){
     remote_ip_info && remote_ip_info.country == "中国" ? state.lang = "zh-CN" : state.lang = "en-US";
+    localStorage.setItem("LANG", state.lang);
+
   },
-  [types.CHANGE_LANG](state, {lang}){
-    state.lang = lang
+  [types.CHANGE_LANG](state, lang){
+    state.lang = lang;
+    localStorage.setItem("LANG", lang);
   }
 };
 
