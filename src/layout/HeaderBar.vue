@@ -1,24 +1,19 @@
 <template>
     <div class="header">
-        <div class="row">
-            <div class="col-lg-2 col-md-2 col-5 logo">
+        <el-row>
+            <el-col :span="6" class="logo">
                 <div class="hidden-sm-down">
                     <i class="fa fa-plane"></i>
                     <h1>YouLanka</h1>
                 </div>
-                <div class="hidden-md-up">
-                    <i class="fa fa-align-left"></i>
-                </div>
-            </div>
-            <div class="col-lg-4 offset-lg-6 col-md-6 offset-md-4 col-6 offset-1 col-sm-4 offset-sm-3 top-bar">
+            </el-col>
+            <el-col :span="18" class="top-bar">
                 <div class="language">
-                    <span class="current-lang">
-                        {{{'en-US':'中文','zh-CN':'English'}[lang]}}
-                    </span>
-                    <ul class="lang-list">
-                        <li @click="changeLang('zh-CN')"><i v-if="lang==='zh-CN'" class="fa fa-check"></i>中文</li>
-                        <li @click="changeLang('en-US')"><i v-if="lang==='en-US'" class="fa fa-check"></i>English</li>
-                    </ul>
+                    <div class="current-lang">
+                        <span class="lang" :class="lang ==='zh-CN'?'lang-active':''">中文</span>
+                        <span>/</span>
+                        <span class="lang" :class="lang ==='en-US'?'lang-active':''">EN</span>
+                    </div>
                 </div>
                 <div class="notification">
                     <i class="fa fa-bell-o"></i>
@@ -33,9 +28,44 @@
                 <div class="avatar hidden-sm-down">
                     <i class="fa fa-user-circle-o"></i>
                 </div>
+            </el-col>
+        </el-row>
+        <!--<div class="row">-->
+            <!--<div class="col-lg-2 col-md-2 col-5 logo">-->
+                <!--<div class="hidden-sm-down">-->
+                    <!--<i class="fa fa-plane"></i>-->
+                    <!--<h1>YouLanka</h1>-->
+                <!--</div>-->
+                <!--<div class="hidden-md-up">-->
+                    <!--<i class="fa fa-align-left"></i>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="col-lg-4 offset-lg-6 col-md-6 offset-md-4 col-6 offset-1 col-sm-4 offset-sm-3 top-bar">-->
+                <!--<div class="language">-->
+                    <!--<span class="current-lang">-->
+                        <!--{{{'en-US':'中文','zh-CN':'English'}[lang]}}-->
+                    <!--</span>-->
+                    <!--<ul class="lang-list">-->
+                        <!--<li @click="changeLang('zh-CN')"><i v-if="lang==='zh-CN'" class="fa fa-check"></i>中文</li>-->
+                        <!--<li @click="changeLang('en-US')"><i v-if="lang==='en-US'" class="fa fa-check"></i>English</li>-->
+                    <!--</ul>-->
+                <!--</div>-->
+                <!--<div class="notification">-->
+                    <!--<i class="fa fa-bell-o"></i>-->
+                    <!--<span class="notification-num">4</span>-->
+                    <!--<div class="notification-ring"></div>-->
+                <!--</div>-->
+                <!--<div class="message">-->
+                    <!--<i class="fa fa-envelope-o"></i>-->
+                    <!--<span class="notification-num">4</span>-->
+                    <!--<div class="notification-ring"></div>-->
+                <!--</div>-->
+                <!--<div class="avatar hidden-sm-down">-->
+                    <!--<i class="fa fa-user-circle-o"></i>-->
+                <!--</div>-->
 
-            </div>
-        </div>
+            <!--</div>-->
+        <!--</div>-->
     </div>
 </template>
 <style lang="scss">
@@ -132,9 +162,17 @@
         .language {
             display: inline-block;
             position: relative;
-            margin-right: 0.5rem;
+            margin-right: 1rem;
             .current-lang {
-                cursor: pointer;
+                display: inline-block;
+                color: #c6c6c6;
+
+                .lang {
+                    cursor: pointer;
+                }
+                .lang-active {
+                    color: #fff;
+                }
             }
             .lang-list {
                 width: 100px;

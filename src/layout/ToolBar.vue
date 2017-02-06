@@ -1,9 +1,9 @@
 <template>
-    <div class="toolbar col-lg-2 col-md-2 col-4">
-        <ul>
-            <items  :model='model' v-for='model in menuConfig'></items>
-        </ul>
-    </div>
+        <el-col :span="4" class="toolbar">
+            <ul>
+                <items  :model='model' v-for='model in menuConfig'></items>
+            </ul>
+        </el-col>
 </template>
 <style lang="scss" scoped>
     @import "../assets/var/var.scss";

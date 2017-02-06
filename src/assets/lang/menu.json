@@ -5,27 +5,27 @@
       {
         "id": "1",
         "data": {
-          "menuName": "项目管理",
+          "menuName": "AAAAAA",
           "menuCode": ""
         },
         "childTreeNode": [
           {
             "data": {
-              "menuName": "项目",
+              "menuName": "BBBBBB",
               "menuCode": "BusProject"
             },
             "childTreeNode": []
           },
           {
             "data": {
-              "menuName": "我的任务",
+              "menuName": "CCCCCC",
               "menuCode": "BusProject"
             },
             "childTreeNode": []
           },
           {
             "data": {
-              "menuName": "人员周报",
+              "menuName": "DDDDDD",
               "menuCode": "BusProject"
             },
             "childTreeNode": []
@@ -35,7 +35,7 @@
       {
         "id": "2",
         "data": {
-          "menuName": "数据统计",
+          "menuName": "EEEEEEE",
           "menuCode": "BusClock"
         },
         "childTreeNode": []
@@ -43,7 +43,7 @@
       {
         "id": "3",
         "data": {
-          "menuName": "人事管理",
+          "menuName": "FFFFFFF",
           "menuCode": ""
         },
         "childTreeNode": []
@@ -51,7 +51,7 @@
       {
         "id": "4",
         "data": {
-          "menuName": "基础管理",
+          "menuName": "GGGGGG",
           "menuCode": ""
         },
         "childTreeNode": []

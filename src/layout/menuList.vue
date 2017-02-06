@@ -14,8 +14,6 @@
     .menu-item {
         padding: 1rem 1rem;
         cursor:pointer;
-        margin-left: -15px;
-        margin-right: -15px;
         &:hover {
             background-color: $primaryColor;
         }
