@@ -1,7 +1,7 @@
 <template>
     <div v-if="isAdminPath">
         <header-bar></header-bar>
-        <tool-bar class="col-lg-2 col-md-2">asdas</tool-bar>
+        <tool-bar class="col-lg-2 col-md-2 col-4">asdas</tool-bar>
         <transition mode="out-in" appear>
             <router-view class="col-lg-10 col-md-10"></router-view>
         </transition>

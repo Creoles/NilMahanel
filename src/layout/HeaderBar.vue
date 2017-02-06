@@ -8,10 +8,19 @@
                 </div>
                 <div class="hidden-md-up">
                     <i class="fa fa-align-left"></i>
-                    Menu
                 </div>
             </div>
-            <div class="col-lg-4 offset-lg-6 col-md-6 offset-md-4 col-5 offset-2 col-sm-4 offset-sm-3 top-bar">
+            <div class="col-lg-4 offset-lg-6 col-md-6 offset-md-4 col-6 offset-1 col-sm-4 offset-sm-3 top-bar">
+                <div class="language">
+                    <span class="current-lang">
+                        {{{'en-US':'中文','zh-CN':'English'}[lang]}}
+                        <i class="fa fa-angle-down"></i>
+                    </span>
+                    <ul class="lang-list">
+                        <li @click="changeLang('zh-CN')"><i v-if="lang==='zh-CN'" class="fa fa-check"></i>中文</li>
+                        <li @click="changeLang('en-US')"><i v-if="lang==='en-US'" class="fa fa-check"></i>English</li>
+                    </ul>
+                </div>
                 <div class="notification">
                     <i class="fa fa-bell-o"></i>
                     <span class="notification-num">4</span>
@@ -22,7 +31,7 @@
                     <span class="notification-num">4</span>
                     <div class="notification-ring"></div>
                 </div>
-                <div class="avatar">
+                <div class="avatar hidden-sm-down">
                     <i class="fa fa-user-circle-o"></i>
                 </div>
 
@@ -33,10 +42,10 @@
 <style lang="scss">
     .header {
         padding: 1rem;
-        background-color: rgba(28,43,54,0.9);
+        background-color: rgba(28, 43, 54, 0.9);
         color: #fff;
         .logo {
-            line-height:2rem;
+            line-height: 2rem;
             h1 {
                 display: inline-block;
             }
@@ -47,6 +56,7 @@
         }
         .top-bar {
             text-align: right;
+            line-height: 2rem;
             .badge {
                 vertical-align: bottom;
                 font-size: 0.1rem;
@@ -119,6 +129,27 @@
                 vertical-align: sub;
             }
         }
+        .language {
+            display: inline-block;
+            position: relative;
+            .current-lang {
+                cursor: pointer;
+            }
+            .lang-list {
+                width: 100px;
+                position: absolute;
+                top: 45px;
+                border-radius: 5%;
+                background-color: #2C3E50;
+                li {
+                    padding: 0.4rem;
+                    cursor: pointer;
+                    &:hover {
+                        background-color: #1C2B36;
+                    }
+                }
+            }
+        }
 
     }
 
@@ -137,16 +168,23 @@
     }
 </style>
 <script>
+    import { mapGetters, mapActions } from 'vuex'
     export default{
         data(){
             return{
-                msg:'hello vue'
+
             }
+        },
+        computed:{
+            ...mapGetters({
+               lang:"getLang"
+            }),
         },
         components:{
 
         }
     }
+
 
 
 </script>
