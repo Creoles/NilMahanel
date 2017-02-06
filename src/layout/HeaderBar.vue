@@ -14,7 +14,6 @@
                 <div class="language">
                     <span class="current-lang">
                         {{{'en-US':'中文','zh-CN':'English'}[lang]}}
-                        <i class="fa fa-angle-down"></i>
                     </span>
                     <ul class="lang-list">
                         <li @click="changeLang('zh-CN')"><i v-if="lang==='zh-CN'" class="fa fa-check"></i>中文</li>
@@ -44,6 +43,7 @@
         padding: 1rem;
         background-color: rgba(28, 43, 54, 0.9);
         color: #fff;
+        box-shadow:0 1px 2px #333;
         .logo {
             line-height: 2rem;
             h1 {
@@ -132,13 +132,16 @@
         .language {
             display: inline-block;
             position: relative;
+            margin-right: 0.5rem;
             .current-lang {
                 cursor: pointer;
             }
             .lang-list {
                 width: 100px;
                 position: absolute;
-                top: 45px;
+                top: 47px;
+                left: -40px;
+                z-index: 9999;
                 border-radius: 5%;
                 background-color: #2C3E50;
                 li {

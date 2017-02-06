@@ -3,9 +3,9 @@
         <main-view></main-view>
     </div>
 </template>
-<style>
-  .none-padding{padding:0!important;}
+<style lang="scss">
   body {
+    background-color: #f5f5f5;
     overflow:auto;
     font-family:"Lucida Grande",Lucida Sans Unicode,Hiragino Sans GB,WenQuanYi MicroHei,Verdana,Aril,sans-serif!important;
   }

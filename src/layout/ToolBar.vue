@@ -1,5 +1,5 @@
 <template>
-    <div class="toolbar">
+    <div class="toolbar col-lg-2 col-md-2 col-4">
         <ul>
             <items  :model='model' v-for='model in menuConfig'></items>
         </ul>
@@ -7,7 +7,6 @@
 </template>
 <style lang="scss" scoped>
     @import "../assets/var/var.scss";
-
     .toolbar {
         position: fixed;
         height: 100%;
