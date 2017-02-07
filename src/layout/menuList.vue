@@ -1,8 +1,9 @@
 <template>
     <li>
         <div class="menu-item" @click='toggle'>
-            <i v-if='isList' class="fa " :class="[open?'fa-folder-open':'fa-folder']"></i>
-            <i v-if='!isList' class="fa fa-file-text"></i> {{model.data.menuName}}
+            <i class="menu-icon fa" :class="[model.data.icon]"></i>
+            {{model.data.menuName}}
+            <i v-if='isList' class="down-icon fa fa-chevron-down"></i>
         </div>
         <ul class="child-item" v-show="open" v-if='isList'>
             <items v-for='cel in model.childTreeNode' :model='cel'></items>
@@ -17,6 +18,12 @@
         &:hover {
             background-color: $primaryColor;
         }
+        .menu-icon {
+            margin-right: 10px;
+        }
+        .down-icon {
+            margin-left: 10px;
+        }
     }
     .child-item {
         padding-left:1rem;
@@ -30,8 +37,7 @@
         components: {},
         data() {
             return {
-                open: false,
-                isFolder: true
+                open: false
             }
         },
         computed: {
@@ -41,7 +47,7 @@
         },
         methods: {
             toggle: function() {
-                if(this.isFolder) {
+                if(this.isList) {
                     this.open = !this.open
                 }
             }

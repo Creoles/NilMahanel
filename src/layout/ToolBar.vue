@@ -12,6 +12,7 @@
         height: 100%;
         background-color: $secondaryColor;
         ul {
+            font-size: 0.8rem;
             margin-right: 0;
             color: #fff;
         }

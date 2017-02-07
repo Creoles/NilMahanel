@@ -4,55 +4,40 @@
     "menu": [
       {
         "id": "1",
+        "role":"hotel",
         "data": {
-          "menuName": "AAAAAA",
-          "menuCode": ""
+          "menuName": "订单查询",
+          "icon":"fa-th-list",
+          "menuCode": "hotel-order"
         },
-        "childTreeNode": [
-          {
-            "data": {
-              "menuName": "BBBBBB",
-              "menuCode": "BusProject"
-            },
-            "childTreeNode": []
-          },
-          {
-            "data": {
-              "menuName": "CCCCCC",
-              "menuCode": "BusProject"
-            },
-            "childTreeNode": []
-          },
-          {
-            "data": {
-              "menuName": "DDDDDD",
-              "menuCode": "BusProject"
-            },
-            "childTreeNode": []
-          }
-        ]
+        "childTreeNode": []
       },
       {
         "id": "2",
+        "role":"hotel",
         "data": {
-          "menuName": "EEEEEEE",
-          "menuCode": "BusClock"
+          "menuName": "用房统计",
+          "icon":"fa-pie-chart",
+          "menuCode": "hotel-statistics"
         },
         "childTreeNode": []
       },
       {
         "id": "3",
+        "role":"hotel",
         "data": {
-          "menuName": "FFFFFFF",
-          "menuCode": ""
+          "menuName": "动态房量",
+          "icon":"fa-hourglass-2",
+          "menuCode": "hotel-dynamic"
         },
         "childTreeNode": []
       },
       {
         "id": "4",
         "data": {
-          "menuName": "GGGGGG",
-          "menuCode": ""
+          "menuName": "财务中心",
+          "icon":"fa-dollar",
+          "menuCode": "hotel-finance"
         },
         "childTreeNode": []
       }
