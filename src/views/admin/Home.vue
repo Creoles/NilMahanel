@@ -1,6 +1,5 @@
 <template>
     <div>
-        <copyright></copyright>
 
     </div>
 </template>

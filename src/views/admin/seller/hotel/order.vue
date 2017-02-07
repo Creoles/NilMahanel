@@ -1,10 +1,11 @@
 <template>
     <div>
+        <content-top></content-top>
         <div class="status-change">
-            <span>请选择订单状态:</span>
-            <el-select  size="small" v-model="statusValue">
+            <span>{{orderConfig.choose}}</span>
+            <el-select size="small" v-model="statusValue">
                 <el-option
-                        v-for="item in status"
+                        v-for="item in orderConfig.status"
                         :label="item.label"
                         :value="item.value">
                 </el-option>
@@ -16,68 +17,68 @@
         >
             <el-table-column
                     prop="orderId"
-                    label="订单号"
-                    width="120">
+                    :label="orderConfig.thead.orderId"
+                    width="95">
             </el-table-column>
             <el-table-column
                     prop="groupId"
-                    label="团号"
-                    width="120">
+                    :label="orderConfig.thead.groupId"
+                    width="97">
             </el-table-column>
             <el-table-column
                     prop="date"
-                    label="到达日期"
-                    width="180">
+                    :label="orderConfig.thead.date"
+                    width="130">
             </el-table-column>
             <el-table-column
                     prop="hotelName"
-                    label="酒店名称"
+                    :label="orderConfig.thead.hotelName"
                     width="200">
             </el-table-column>
             <el-table-column
                     prop="singleRoom"
-                    label="单"
-                    width="50">
+                    :label="orderConfig.thead.single"
+                    width="80">
             </el-table-column>
             <el-table-column
                     prop="doubleRoom"
-                    label="双"
-                    width="50">
+                    :label="orderConfig.thead.double"
+                    width="85">
             </el-table-column>
             <el-table-column
                     prop="tripleRoom"
-                    label="三"
-                    width="50">
+                    :label="orderConfig.thead.triple"
+                    width="80">
             </el-table-column>
             <el-table-column
-                    label="状态">
+                    :label="orderConfig.thead.status">
                 <template scope="scope">
-                    <el-tag :type="{'0':'primary','1':'success'}[scope.row.status]" v-text="{'0':'unconfirmed','1':'confirmed'}[scope.row.status]"></el-tag>
+                    <el-tag :type="{'0':'primary','1':'success'}[scope.row.status]"
+                            v-text="{'0':'unconfirmed','1':'confirmed'}[scope.row.status]"></el-tag>
                 </template>
             </el-table-column>
             <el-table-column
-                    label="操作">
+                    :label="orderConfig.thead.options">
                 <template scope="scope">
-                    <el-button size="mini" type="primary">确认</el-button>
+                    <el-button  v-if="scope.row.status === 0" size="mini" type="primary">{{orderConfig.option.confirm}}</el-button>
                     <el-popover
                             ref="popover5"
                             placement="bottom"
                             width="160"
                             v-model="visible2">
-                        <p>请简要说明您拒绝的原因？</p>
+                        <p>{{orderConfig.reason}}</p>
                         <div style="text-align: right; margin: 0">
                             <el-input
                                     type="textarea"
                                     :rows="2"
-                                    placeholder="请输入内容"
                                     v-model="textarea">
                             </el-input>
-                            <el-button size="mini" type="text" @click="visible2 = false">取消</el-button>
-                            <el-button type="primary" size="mini" @click="visible2 = false">确定</el-button>
+                            <el-button size="mini" type="text" @click="visible2 = false">{{orderConfig.option.chancel}}</el-button>
+                            <el-button type="primary" size="mini" @click="visible2 = false">{{orderConfig.option.confirm}}</el-button>
                         </div>
                     </el-popover>
 
-                    <el-button size="mini" type="danger" v-popover:popover5>拒绝</el-button>
+                    <el-button  v-if="scope.row.status === 0" size="mini" type="danger" v-popover:popover5>{{orderConfig.option.reject}}</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -102,16 +103,22 @@
     .el-table .positive-row {
         background: #e2f0e4;
     }
+
     .block {
         text-align: right;
         margin-top: 20px;
     }
+
     .status-change {
         float: right;
         margin-bottom: 10px;
     }
 </style>
 <script>
+    import ContentTop from "../../../components/contentTop.vue"
+    import { mapGetters, mapActions } from "vuex"
+    import OrderLang from "../../../../assets/lang/hotel-seller.json"
+
     export default{
         data(){
             return {
@@ -145,6 +152,14 @@
                 }]
             }
         },
+        computed:{
+            ...mapGetters({
+                lang:"getLang"
+            }),
+            orderConfig(){
+                return OrderLang.filter(config => config.lang === this.lang)[0]['order']
+            }
+        },
         methods:{
             handleSizeChange(val){
                 console.log(`每页 ${val} 条`);
@@ -155,9 +170,10 @@
             }
         },
         components:{
-
+            ContentTop
         }
     }
+
 
 
 </script>

@@ -21,6 +21,7 @@
 <style lang="scss">
     .main {
         padding: 1rem;
+        min-height: 100%;
     }
 </style>
 <script>

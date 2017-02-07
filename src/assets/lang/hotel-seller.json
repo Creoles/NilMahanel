@@ -1,0 +1,65 @@
+[
+  {
+    "lang": "zh-CN",
+    "order": {
+      "choose":"请选择订单状态:",
+      "reason":"请简要说明您拒绝的原因?",
+      "status":[
+        {"label":"全部","value":-1},
+        {"label":"未确认","value":0},
+        {"label":"已确认","value":1},
+        {"label":"拒绝","value":2},
+        {"label":"已完成","value":3},
+        {"label":"已取消","value":4}
+      ],
+      "thead":{
+        "orderId":"订单号",
+        "groupId":"团号",
+        "date":"到达日期",
+        "hotelName":"酒店名称",
+        "single":"单人",
+        "double":"双人",
+        "triple":"三人",
+        "status":"状态",
+        "option":"操作"
+      },
+      "option":{
+        "confirm":"确认",
+        "reject":"拒绝",
+        "chancel":"取消"
+      }
+    }
+  },
+  {
+    "lang": "en-US",
+    "order": {
+      "choose":"Please select order status:",
+      "reason":"Please describe the reasons for your refusal?",
+      "status":[
+        {"label":"All","value":-1},
+        {"label":"Unconfirmed","value":0},
+        {"label":"Confirmed","value":1},
+        {"label":"Reject","value":2},
+        {"label":"Done","value":4},
+        {"label":"Canceled","value":3}
+      ],
+      "thead":{
+        "orderId":"Order ID",
+        "groupId":"Group ID",
+        "date":"Arrival Date",
+        "hotelName":"Hotel Name",
+        "single":"single",
+        "double":"double",
+        "triple":"triple",
+        "status":"status",
+        "option":"options"
+      },
+      "option":{
+        "confirm":"confirm",
+        "reject":"reject",
+        "chancel":"chancel"
+      }
+    }
+
+  }
+]

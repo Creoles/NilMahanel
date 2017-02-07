@@ -10,9 +10,9 @@
             <el-col :span="18" class="top-bar">
                 <div class="language">
                     <div class="current-lang">
-                        <span class="lang" :class="lang ==='zh-CN'?'lang-active':''">中文</span>
+                        <span class="lang" @click="changeLang('zh-CN')" :class="lang ==='zh-CN'?'lang-active':''">中文</span>
                         <span>/</span>
-                        <span class="lang" :class="lang ==='en-US'?'lang-active':''">EN</span>
+                        <span class="lang" @click="changeLang('en-US')" :class="lang ==='en-US'?'lang-active':''">EN</span>
                     </div>
                 </div>
                 <div class="notification">
@@ -185,7 +185,12 @@
         computed:{
             ...mapGetters({
                lang:"getLang"
-            }),
+            })
+        },
+        methods:{
+            changeLang(lang){
+                this.$store.dispatch('changeLang',lang)
+            }
         },
         components:{
 

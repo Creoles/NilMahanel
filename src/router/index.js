@@ -25,7 +25,7 @@ export default new VueRoute({
       component:Home
     },
     {
-      name:'hotel-order',
+      name:'ORDER SYSTEM',
       path:'/admin/hotel/order',
       component:HotelOrder
     }

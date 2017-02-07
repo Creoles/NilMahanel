@@ -7,6 +7,7 @@
         "role":"hotel",
         "data": {
           "menuName": "订单查询",
+          "menuPath":"/admin/hotel/order",
           "icon":"fa-th-list",
           "menuCode": "hotel-order"
         },
@@ -17,6 +18,7 @@
         "role":"hotel",
         "data": {
           "menuName": "用房统计",
+          "menuPath":"/admin/hotel/",
           "icon":"fa-pie-chart",
           "menuCode": "hotel-statistics"
         },
@@ -27,6 +29,7 @@
         "role":"hotel",
         "data": {
           "menuName": "动态房量",
+          "menuPath":"/admin/hotel/",
           "icon":"fa-hourglass-2",
           "menuCode": "hotel-dynamic"
         },
@@ -36,6 +39,7 @@
         "id": "4",
         "data": {
           "menuName": "财务中心",
+          "menuPath":"/admin/hotel/",
           "icon":"fa-dollar",
           "menuCode": "hotel-finance"
         },
@@ -48,55 +52,40 @@
     "menu": [
       {
         "id": "1",
+        "role":"hotel",
         "data": {
-          "menuName": "项目管理",
-          "menuCode": ""
+          "menuName": "Order System",
+          "icon":"fa-th-list",
+          "menuCode": "hotel-order"
         },
-        "childTreeNode": [
-          {
-            "data": {
-              "menuName": "项目",
-              "menuCode": "BusProject"
-            },
-            "childTreeNode": []
-          },
-          {
-            "data": {
-              "menuName": "我的任务",
-              "menuCode": "BusProject"
-            },
-            "childTreeNode": []
-          },
-          {
-            "data": {
-              "menuName": "人员周报",
-              "menuCode": "BusProject"
-            },
-            "childTreeNode": []
-          }
-        ]
+        "childTreeNode": []
       },
       {
         "id": "2",
+        "role":"hotel",
         "data": {
-          "menuName": "数据统计",
-          "menuCode": "BusClock"
+          "menuName": "Room statistics",
+          "icon":"fa-pie-chart",
+          "menuCode": "hotel-statistics"
         },
         "childTreeNode": []
       },
       {
         "id": "3",
+        "role":"hotel",
         "data": {
-          "menuName": "人事管理",
-          "menuCode": ""
+          "menuName": "Dynamic room",
+          "icon":"fa-hourglass-2",
+          "menuCode": "hotel-dynamic"
         },
         "childTreeNode": []
       },
       {
         "id": "4",
         "data": {
-          "menuName": "基础管理",
-          "menuCode": ""
+          "menuName": "Financial Statements",
+          "icon":"fa-dollar",
+          "menuCode": "hotel-finance"
         },
         "childTreeNode": []
       }

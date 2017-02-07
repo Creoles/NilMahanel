@@ -6,14 +6,17 @@ import Resource from 'vue-resource'
 import App from './App.vue'
 import router from './router'
 import VeeValidate from 'vee-validate';
+import VueI18n from 'vue-i18n'
 import store from './store'
 import * as filters from './filters'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-default/index.css'
 
+
 Vue.use(ElementUI);
 Vue.use(Resource);
 Vue.use(VeeValidate);
+
 
 // Object.keys(filters).forEach(key => {
 //   Vue.filter(key, filters[key])
