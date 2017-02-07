@@ -5,6 +5,7 @@ import Vue from 'vue'
 import VueRoute from "vue-router"
 import Sign from '../views/account/sign.vue'
 import Home from '../views/admin/Home.vue'
+import HotelOrder from '../views/admin/seller/hotel/order.vue'
 Vue.use(VueRoute);
 
 function generateRoutes() {
@@ -23,6 +24,11 @@ export default new VueRoute({
       path:'/admin',
       component:Home
     },
+    {
+      name:'hotel-order',
+      path:'/admin/hotel/order',
+      component:HotelOrder
+    }
     // ...generateRoutes(),
   ]
 });
