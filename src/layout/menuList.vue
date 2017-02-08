@@ -1,17 +1,27 @@
 <template>
 
-
-    <!--<router-link to="/admin/hotel/order"></router-link>-->
-    <router-link tag="li" :to="{path:model.data.menuPath}" exact>
+    <li>
+        <router-link tag="div" :to="{path:model.data.menuPath}" exact v-if="model.data.menuPath">
             <div class="menu-item" @click='toggle'>
                 <i class="menu-icon fa" :class="[model.data.icon]"></i>
                 {{model.data.menuName}}
                 <i v-if='isList' class="down-icon fa fa-chevron-down"></i>
             </div>
-            <ul class="child-item" v-show="open" v-if='isList'>
+            <ul class="child-item" v-show="open"  v-if='isList'>
                 <items v-for='cel in model.childTreeNode' :model='cel'></items>
             </ul>
-    </router-link>
+        </router-link>
+        <div class="menu-item" @click='toggle' v-else>
+            <i class="menu-icon fa" :class="[model.data.icon]"></i>
+            {{model.data.menuName}}
+            <i v-if='isList' class="down-icon fa fa-chevron-down"></i>
+        </div>
+        <ul class="child-item" v-show="open" v-if='isList'>
+            <items v-for='cel in model.childTreeNode' :model='cel'></items>
+        </ul>
+    </li>
+    <!--<router-link to="/admin/hotel/order"></router-link>-->
+
 
 
 </template>

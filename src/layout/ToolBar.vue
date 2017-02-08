@@ -9,8 +9,11 @@
     @import "../assets/var/var.scss";
     .toolbar {
         position: fixed;
-        height: 100%;
+        bottom: 0;
+        top: 67px;
         background-color: $secondaryColor;
+        overflow-y: scroll;
+        z-index: 9999;
         ul {
             font-size: 0.8rem;
             margin-right: 0;
