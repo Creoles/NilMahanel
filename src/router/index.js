@@ -6,6 +6,7 @@ import VueRoute from "vue-router"
 import Sign from '../views/account/sign.vue'
 import Home from '../views/admin/Home.vue'
 import HotelOrder from '../views/admin/seller/hotel/order.vue'
+import Customer from "../views/admin/manager/Customer.vue"
 Vue.use(VueRoute);
 
 function generateRoutes() {
@@ -28,6 +29,11 @@ export default new VueRoute({
       name:'ORDER SYSTEM',
       path:'/admin/hotel/order',
       component:HotelOrder
+    },
+    {
+      name:'CUSTOMER MANAGE',
+      path:'/admin/manager/customer',
+      component:Customer
     }
     // ...generateRoutes(),
   ]
