@@ -11,12 +11,20 @@ import store from './store'
 import * as filters from './filters'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-default/index.css'
+import enLocale from 'element-ui/lib/locale/lang/en'
+import zhLocale from 'element-ui/lib/locale/lang/zh-CN'
 
-
+Vue.use(VueI18n);
 Vue.use(ElementUI);
 Vue.use(Resource);
-Vue.use(VeeValidate);
-
+Vue.config.lang = 'en';
+Vue.locale('zh-cn', zhLocale);
+Vue.locale('en', enLocale);
+Vue.prototype.$locale =  {
+  change(lang){
+    Vue.config.lang = lang;
+  }
+};
 
 // Object.keys(filters).forEach(key => {
 //   Vue.filter(key, filters[key])

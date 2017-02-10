@@ -115,7 +115,7 @@
     }
 </style>
 <script>
-    import ContentTop from "../../../components/contentTop.vue"
+    import ContentTop from "../../../components/ContentTop.vue"
     import { mapGetters, mapActions } from "vuex"
     import OrderLang from "../../../../assets/lang/hotel-seller.json"
 

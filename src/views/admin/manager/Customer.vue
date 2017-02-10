@@ -53,7 +53,7 @@
 
 </style>
 <script>
-    import ContentTop from "../../components/contentTop.vue"
+    import ContentTop from "../../components/ContentTop.vue"
     export default{
         data(){
             return{

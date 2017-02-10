@@ -189,6 +189,11 @@
         },
         methods:{
             changeLang(lang){
+                if (lang === 'zh-CN'){
+                     this.$locale.change('zh-cn')
+                }else {
+                     this.$locale.change('en')
+                }
                 this.$store.dispatch('changeLang',lang)
             }
         },

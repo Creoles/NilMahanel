@@ -45,6 +45,11 @@
        }else {
           this.$store.dispatch('changeLang',lang)
        }
+       if (lang === 'zh-CN'){
+          this.$locale.change('zh-cn')
+       }else {
+          this.$locale.change('en')
+       }
 
     },
     computed:{

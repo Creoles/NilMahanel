@@ -150,9 +150,9 @@
         "id":"15",
         "data": {
           "menuName":"房务监控",
-          "menuPath":"/admin/manager/room－monitoring",
+          "menuPath":"/admin/manager/room-monitor",
           "icon":"fa-paper-plane",
-          "menuCode":"manager-room－monitoring"
+          "menuCode":"manager-room－monitor"
         },
         "childTreeNode": []
       },

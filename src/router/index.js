@@ -7,6 +7,7 @@ import Sign from '../views/account/sign.vue'
 import Home from '../views/admin/Home.vue'
 import HotelOrder from '../views/admin/seller/hotel/order.vue'
 import Customer from "../views/admin/manager/Customer.vue"
+import RoomMonitor from "../views/admin/manager/RoomMonitor.vue"
 Vue.use(VueRoute);
 
 function generateRoutes() {
@@ -34,6 +35,11 @@ export default new VueRoute({
       name:'CUSTOMER MANAGE',
       path:'/admin/manager/customer',
       component:Customer
+    },
+    {
+      name:"ROOM MONITOR",
+      path:'/admin/manager/room-monitor',
+      component:RoomMonitor
     }
     // ...generateRoutes(),
   ]

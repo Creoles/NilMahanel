@@ -5,7 +5,7 @@ import * as types from '../mutation-types'
 import enLocale from 'element-ui/lib/locale/lang/en'
 import zhLocale from 'element-ui/lib/locale/lang/zh-CN'
 import locale from 'element-ui/lib/locale'
-
+import Vue from 'vue'
 const state = {
   lang: ""
 };
@@ -35,7 +35,7 @@ const mutations = {
     if(lang == "en-US"){
       locale.use(enLocale);
     }else if (lang == "zh-CN") {
-      locale.use(zhLocale)
+      locale.use(zhLocale);
     }
     localStorage.setItem("LANG", lang);
   }
