@@ -50,8 +50,12 @@
                     prop="used">
             </el-table-column>
             <el-table-column
-                    label="剩余房量"
-                    prop="surplus">
+                label="剩余房量"
+                prop="surplus">
+        </el-table-column>
+            <el-table-column
+                    label="倒计时"
+                    prop="time">
             </el-table-column>
         </el-table>
     </div>
