@@ -140,7 +140,7 @@
         "id":"14",
         "data": {
           "menuName":"团务监控",
-          "menuPath":"/admin/manager/group－service－monitoring",
+          "menuPath":"/admin/manager/group-service-monitoring",
           "icon":"fa-pencil",
           "menuCode":"manager-group－service－monitoring"
         },

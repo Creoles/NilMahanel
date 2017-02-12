@@ -1,27 +1,95 @@
 <template>
     <div>
-        <header-component/>
-        <div>this is template body</div>
-        <other-component/>
+        <el-table
+                :data="list"
+                border
+                style="width: 100%">
+            <el-table-column
+                    fixed
+                    prop="date"
+                    label="出发日期"
+                    width="110">
+            </el-table-column>
+            <el-table-column
+                    fixed
+                    prop="groupId"
+                    label="团号"
+                    width="100">
+            </el-table-column>
+            <el-table-column
+                    fixed
+                    prop="city"
+                    label="城市"
+                    width="100">
+            </el-table-column>
+            <el-table-column
+                    fixed
+                    prop="flight"
+                    label="航班"
+                    width="100">
+            </el-table-column>
+            <el-table-column
+                    prop="hotel"
+                    label="酒店"
+                    width="20">
+            </el-table-column>
+            <el-table-column
+                    prop="car"
+                    label="车辆"
+                    width="100">
+            </el-table-column>
+            <el-table-column
+                    prop="cater"
+                    label="餐饮"
+                    width="20">
+            </el-table-column>
+            <el-table-column
+                    prop="shop"
+                    label="购物"
+                    width="20">
+            </el-table-column>
+            <el-table-column
+                    prop="guide"
+                    label="导游"
+                    width="100">
+            </el-table-column>
+            <el-table-column
+                    prop="translator"
+                    label="翻译"
+                    width="100">
+            </el-table-column>
+            <el-table-column
+                    prop="lead"
+                    label="领队"
+                    width="100">
+            </el-table-column>
+        </el-table>
     </div>
+
 </template>
 <style>
-    body{
-        background-color:#ff0000;
-    }
+
 </style>
 <script>
-    import HeaderComponent from './components/header.vue'
-    import OtherComponent from './components/other.vue'
     export default{
         data(){
             return{
-                msg:'hello vue'
+                list:[
+                    {
+                        date:"2017-10-10",
+                        groupId:"xxxxxx",
+                        city:"shanghai",
+                        flight:"cz0080",
+                        hotel:[
+
+                        ],
+                        car:{}
+                    }
+                ]
             }
         },
         components:{
-            'other-component':OtherComponent,
-            HeaderComponent,
+
         }
     }
 </script>

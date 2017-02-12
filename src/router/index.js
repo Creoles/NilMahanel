@@ -8,6 +8,7 @@ import Home from '../views/admin/Home.vue'
 import HotelOrder from '../views/admin/seller/hotel/order.vue'
 import Customer from "../views/admin/manager/Customer.vue"
 import RoomMonitor from "../views/admin/manager/RoomMonitor.vue"
+import GroupMonitor from "../views/admin/manager/GroupMonitor.vue"
 Vue.use(VueRoute);
 
 function generateRoutes() {
@@ -40,6 +41,11 @@ export default new VueRoute({
       name:"ROOM MONITOR",
       path:'/admin/manager/room-monitor',
       component:RoomMonitor
+    },
+    {
+      name:"Group Monitor",
+      path:"/admin/manager/group-service-monitoring",
+      component:GroupMonitor
     }
     // ...generateRoutes(),
   ]

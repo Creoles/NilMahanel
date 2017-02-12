@@ -1,5 +1,5 @@
-# hathaway
-> A vue project.
+# NilMahanel (蓝色睡莲)
+> A vue project
 
 ## Development
 
