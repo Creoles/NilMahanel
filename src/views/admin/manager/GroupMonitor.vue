@@ -3,12 +3,13 @@
         <el-table
                 :data="list"
                 border
-                style="width: 100%">
+                style="width: 100%"
+                class="list-table">
             <el-table-column
                     fixed
                     prop="date"
                     label="出发日期"
-                    width="110">
+                    width="100">
             </el-table-column>
             <el-table-column
                     fixed
@@ -31,7 +32,24 @@
             <el-table-column
                     prop="hotel"
                     label="酒店"
-                    width="20">
+                    width="50">
+                <template scope="props">
+                    <el-popover
+                            ref="popover4"
+                            placement="bottom"
+                            width="400"
+                            trigger="click">
+                        <el-table :data="props.row.hotel">
+                            <el-table-column width="80" property="night" label="晚"></el-table-column>
+                            <el-table-column width="240" property="name" label="酒店名称"></el-table-column>
+                            <el-table-column width="80" property="status" label="状态"></el-table-column>
+                        </el-table>
+                    </el-popover>
+
+
+                    <i v-popover:popover4 class="fa fa-search-plus"></i>
+                </template>
+
             </el-table-column>
             <el-table-column
                     prop="car"
@@ -67,8 +85,11 @@
     </div>
 
 </template>
-<style>
-
+<style lang="scss">
+    .list-table.el-table .cell {
+        padding: 0;
+        text-align: center;
+    }
 </style>
 <script>
     export default{
@@ -81,12 +102,16 @@
                         city:"shanghai",
                         flight:"cz0080",
                         hotel:[
+                            {name:"123213",night:"D1",status:1}
 
                         ],
                         car:{}
                     }
                 ]
             }
+        },
+        computed:{
+
         },
         components:{
 
