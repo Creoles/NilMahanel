@@ -1,7 +1,7 @@
 <template>
 
     <li>
-        <router-link tag="div" :to="{path:model.data.menuPath}" exact v-if="model.data.menuPath">
+        <router-link tag="div" :to="{path:model.data.menuPath}" v-if="model.data.menuPath">
             <div class="menu-item" @click='toggle'>
                 <i class="menu-icon fa" :class="[model.data.icon]"></i>
                 {{model.data.menuName}}

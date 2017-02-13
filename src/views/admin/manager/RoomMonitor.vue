@@ -4,8 +4,7 @@
         <div class="month-block">
             <el-date-picker
                     v-model="month"
-                    type="month"
-                    placeholder="选择月">
+                    type="month">
             </el-date-picker>
         </div>
         <el-table

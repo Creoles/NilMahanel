@@ -15,7 +15,7 @@ import enLocale from 'element-ui/lib/locale/lang/en'
 import zhLocale from 'element-ui/lib/locale/lang/zh-CN'
 
 Vue.use(VueI18n);
-Vue.use(ElementUI);
+Vue.use(ElementUI,{enLocale,zhLocale});
 Vue.use(Resource);
 Vue.config.lang = 'en';
 Vue.locale('zh-cn', zhLocale);
