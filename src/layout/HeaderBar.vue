@@ -35,6 +35,10 @@
 <style lang="scss">
     .header {
         padding: 1rem;
+        position: fixed;
+        left: 0;
+        right: 0;
+        z-index: 9999;
         background-color: rgba(28, 43, 54, 0.9);
         color: #fff;
         box-shadow:0 1px 2px #333;
@@ -186,6 +190,16 @@
             ...mapGetters({
                lang:"getLang"
             })
+        },
+        created(){
+            daovoice('init', {
+                app_id: "6947d5af",
+                user_id: "NO_89757", // 必填: 该用户在您系统上的唯一ID
+                email: "daovoice@example.com", // 选填:  该用户在您系统上的主邮箱
+                name: "道客船长", // 选填: 用户名
+                signed_up: 1449821660 // 选填: 用户的注册时间，用Unix时间戳表示
+            });
+            daovoice('update');
         },
         methods:{
             changeLang(lang){

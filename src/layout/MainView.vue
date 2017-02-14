@@ -22,6 +22,7 @@
     .main {
         padding: 1rem;
         min-height: 100%;
+        margin-top: 67px;
     }
 </style>
 <script>

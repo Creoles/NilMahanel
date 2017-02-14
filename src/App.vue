@@ -1,8 +1,5 @@
 <template>
-    <div class="wrap">
-        <main-view></main-view>
-        <copyright class="copyright-box" v-if="isAdminPath"></copyright>
-    </div>
+    <main-view></main-view>
 </template>
 <style lang="scss">
     html {
@@ -12,16 +9,6 @@
             background-color: #f5f5f5;
             overflow: auto;
             font-family: "Lucida Grande", Lucida Sans Unicode, Hiragino Sans GB, WenQuanYi MicroHei, Verdana, Aril, sans-serif !important;
-        }
-        .wrap {
-            position: relative;
-            height: 100%;
-            .copyright-box {
-                position: absolute;
-                bottom: 0;
-                width: 100%;
-            }
-
         }
     }
 
