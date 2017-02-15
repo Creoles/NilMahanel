@@ -1,5 +1,6 @@
 <template>
     <div>
+        <content-top></content-top>
         <el-form :model="params" label-position="top" label-width="100px" class="hotel-form">
             <el-form-item label="酒店名称">
                 <el-input v-model="params.name"></el-input>
@@ -95,7 +96,12 @@
                 <el-form-item label="三人间报价(USD)" class="inline hotel-triple">
                     <el-input v-model="params.doubleOffer"></el-input>
                 </el-form-item>
+
             </div>
+            <el-form-item>
+                <el-button type="primary" v-if="!submitting">提 交</el-button>
+                <el-button type="primary" v-if="submitting" :loading="submitting">正在提交...</el-button>
+            </el-form-item>
 
 
 
@@ -144,6 +150,7 @@
     .room {
         border: 3px solid #fff;
         padding: 5px;
+        margin-bottom: 10px;
     }
     .inline {
         display: inline-block;
@@ -151,13 +158,15 @@
 
 </style>
 <script>
+    import ContentTop from "../../../components/ContentTop.vue"
     export default{
         data(){
             return{
                 params:{
                     quhao:"0094"
 
-                }
+                },
+                submitting:false
             }
         },
 
@@ -170,7 +179,7 @@
             }
         },
         components:{
-
+            ContentTop
         }
     }
 </script>
