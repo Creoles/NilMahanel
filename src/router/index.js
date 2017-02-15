@@ -9,7 +9,11 @@ import HotelOrder from '../views/admin/seller/hotel/order.vue'
 import Customer from "../views/admin/manager/Customer.vue"
 import RoomMonitor from "../views/admin/manager/RoomMonitor.vue"
 import GroupMonitor from "../views/admin/manager/GroupMonitor.vue"
-import HotelMangaer from "../views/admin/manager/resource/hotel.vue"
+import HotelMangaer from "../views/admin/manager/resource/hotel/Hotel.vue"
+import EditHotel from "../views/admin/manager/resource/hotel/EditHotel.vue"
+import HotelList from "../views/admin/manager/resource/hotel/HotelList.vue"
+
+
 Vue.use(VueRoute);
 
 function generateRoutes() {
@@ -49,9 +53,26 @@ export default new VueRoute({
       component:GroupMonitor
     },
     {
-      name:"HOTEL RESOURCE",
+      name:"HOTEL Manager",
       path:"/admin/manager/hotel",
-      component:HotelMangaer
+      component:HotelMangaer,
+      children:[
+        {
+          name:"HOTEL LIST",
+          path:"",
+          component:HotelList
+        },
+        {
+          name:"ADD HOTEL",
+          path:"add",
+          component:EditHotel
+        },
+        {
+          name:"EDIT HOTEL",
+          path:"edit/:id",
+          component:EditHotel
+        }
+      ]
     }
     // ...generateRoutes(),
   ]

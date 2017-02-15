@@ -18,7 +18,7 @@ cooking.set({
   hash: true,
   // sourceMap: true,
   minimize: true,
-  chunk: true, // see https://cookingjs.github.io/zh-cn/configuration.html#chunk
+  chunk: true,  // see https://cookingjs.github.io/zh-cn/configuration.html#chunk
   publicPath: '/',
   assetsPath: 'static',
   urlLoaderLimit: 10000,

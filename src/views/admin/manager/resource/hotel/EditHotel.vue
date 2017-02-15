@@ -70,8 +70,8 @@
             </el-form-item>
             <div class="room">
                 <el-form-item label="单人间数量" class="inline hotel-single">
-                <el-input v-model="params.single"></el-input>
-            </el-form-item>
+                    <el-input v-model="params.single"></el-input>
+                </el-form-item>
                 <el-form-item label="单人间成本(USD)" class="inline hotel-single">
                     <el-input v-model="params.singleCost"></el-input>
                 </el-form-item>
@@ -158,7 +158,7 @@
 
 </style>
 <script>
-    import ContentTop from "../../../components/ContentTop.vue"
+    import ContentTop from "../../../../components/ContentTop.vue"
     export default{
         data(){
             return{

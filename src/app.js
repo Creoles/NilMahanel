@@ -5,7 +5,6 @@ import Vue from 'vue'
 import Resource from 'vue-resource'
 import App from './App.vue'
 import router from './router'
-import VeeValidate from 'vee-validate';
 import VueI18n from 'vue-i18n'
 import store from './store'
 import * as filters from './filters'
