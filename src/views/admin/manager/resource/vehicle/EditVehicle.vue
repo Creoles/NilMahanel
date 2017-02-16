@@ -1,27 +1,21 @@
 <template>
     <div>
-        <header-component/>
-        <div>this is template body</div>
-        <other-component/>
+        <content-top></content-top>
     </div>
 </template>
-<style>
-    body{
-        background-color:#ff0000;
-    }
+<style lang="scss">
+
 </style>
 <script>
-    import HeaderComponent from './components/header.vue'
-    import OtherComponent from './components/other.vue'
+    import ContentTop from "../../../../components/ContentTop.vue"
     export default{
         data(){
             return{
-                msg:'hello vue'
+
             }
         },
         components:{
-            'other-component':OtherComponent,
-            HeaderComponent,
+            ContentTop
         }
     }
 </script>

@@ -78,7 +78,7 @@
             "id":"8",
             "data": {
               "menuName":"车辆管理",
-              "menuPath":"/admin/manager/car",
+              "menuPath":"/admin/manager/vehicle",
               "icon":"fa-bus",
               "menuCode":"manager-car"
             },

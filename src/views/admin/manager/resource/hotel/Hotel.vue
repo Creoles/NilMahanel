@@ -7,23 +7,5 @@
 
 </style>
 <script>
-    import ContentTop from "../../../../components/ContentTop.vue"
-    export default{
-        data(){
-            return{
-                params:{
-                    quhao:"0094"
-
-                },
-                submitting:false
-            }
-        },
-
-        methods: {
-
-        },
-        components:{
-            ContentTop
-        }
-    }
+    export default{}
 </script>

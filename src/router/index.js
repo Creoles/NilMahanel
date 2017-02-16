@@ -12,7 +12,9 @@ import GroupMonitor from "../views/admin/manager/GroupMonitor.vue"
 import HotelMangaer from "../views/admin/manager/resource/hotel/Hotel.vue"
 import EditHotel from "../views/admin/manager/resource/hotel/EditHotel.vue"
 import HotelList from "../views/admin/manager/resource/hotel/HotelList.vue"
-
+import VehicleMangaer from "../views/admin/manager/resource/vehicle/Vehicle.vue"
+import VehicleList from "../views/admin/manager/resource/vehicle/VehicleList.vue"
+import EditVehicle from "../views/admin/manager/resource/vehicle/EditVehicle.vue"
 
 Vue.use(VueRoute);
 
@@ -53,7 +55,6 @@ export default new VueRoute({
       component:GroupMonitor
     },
     {
-      name:"HOTEL Manager",
       path:"/admin/manager/hotel",
       component:HotelMangaer,
       children:[
@@ -71,6 +72,27 @@ export default new VueRoute({
           name:"EDIT HOTEL",
           path:"edit/:id",
           component:EditHotel
+        }
+      ]
+    },
+    {
+      path:"/admin/manager/vehicle",
+      component:VehicleMangaer,
+      children:[
+        {
+          name:"VEHICLE LIST",
+          path:"",
+          component:VehicleList
+        },
+        {
+          name:"ADD VEHICLE",
+          path:"add",
+          component:EditVehicle
+        },
+        {
+          name:"EDIT VEHICLE",
+          path:"edit/:id",
+          component:EditVehicle
         }
       ]
     }
