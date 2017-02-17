@@ -15,7 +15,7 @@ import HotelList from "../views/admin/manager/resource/hotel/HotelList.vue"
 import VehicleMangaer from "../views/admin/manager/resource/vehicle/Vehicle.vue"
 import VehicleList from "../views/admin/manager/resource/vehicle/VehicleList.vue"
 import EditVehicle from "../views/admin/manager/resource/vehicle/EditVehicle.vue"
-
+import Account from  "../views/admin/manager/Account.vue"
 Vue.use(VueRoute);
 
 function generateRoutes() {
@@ -95,6 +95,11 @@ export default new VueRoute({
           component:EditVehicle
         }
       ]
+    },
+    {
+      name:"ACCOUNT MANAGE",
+      path:"/admin/manager/account",
+      component:Account
     }
     // ...generateRoutes(),
   ]

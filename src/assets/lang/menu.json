@@ -225,7 +225,18 @@
           "menuCode":"manager-interpreter－tour"
         },
         "childTreeNode": []
+      },
+      {
+        "id":"23",
+        "data":{
+          "menuName":"账号管理",
+          "menuPath":"/admin/manager/account",
+          "icon":"fa-role",
+          "menuCode":"account-management"
+        },
+        "childTreeNode": []
       }
+
     ]
   },
   {
