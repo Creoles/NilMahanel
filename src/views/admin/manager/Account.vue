@@ -1,17 +1,31 @@
 <template>
     <div>
-        <content-top></content-top>
-        <el-button type="text" @click="dialogFormVisible = true">添加账号</el-button>
-
+        <content-top> <el-button class="addBtn" type="primary" @click="dialogFormVisible = true">添加账号</el-button></content-top>
         <el-dialog title="添加账号" v-model="dialogFormVisible">
             <el-form :model="addAccount">
-                <el-form-item label="用户名" label-width="120px">
+                <el-form-item label="用户邮箱" label-width="120px">
+                    <el-input v-model="addAccount.username" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="负责人姓名" label-width="120px">
                     <el-input v-model="addAccount.name" auto-complete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="活动区域" label-width="120px">
-                    <el-select v-model="addAccount.region" placeholder="请选择活动区域">
-                        <el-option label="区域一" value="shanghai"></el-option>
-                        <el-option label="区域二" value="beijing"></el-option>
+                <el-form-item label="服务地区" label-width="120px">
+                    <el-select v-model="addAccount.region" placeholder="请选择服务区地区">
+                        <el-option label="中国" value="china"></el-option>
+                        <el-option label="斯里兰卡" value="srilanka"></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="所属角色" label-width="120px">
+                    <el-select v-model="addAccount.region" placeholder="请选择账号角色">
+                        <el-option label="批发商" value="0"></el-option>
+                        <el-option label="酒店" value="1"></el-option>
+                        <el-option label="餐饮" value="2"></el-option>
+                        <el-option label="购物" value="3"></el-option>
+                        <el-option label="翻译" value="4"></el-option>
+                        <el-option label="导游" value="5"></el-option>
+                        <el-option label="领队" value="6"></el-option>
+                        <el-option label="车辆" value="7"></el-option>
+                        <el-option label="未分配" value="8"></el-option>
                     </el-select>
                 </el-form-item>
             </el-form>
@@ -53,8 +67,10 @@
         </el-table>
     </div>
 </template>
-<style>
-
+<style lang="scss">
+    .addBtn {
+        float:right;
+    }
 </style>
 <script>
     import ContentTop from "../../components/ContentTop.vue"
