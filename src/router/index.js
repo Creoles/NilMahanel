@@ -15,6 +15,9 @@ import HotelList from "../views/admin/manager/resource/hotel/HotelList.vue"
 import VehicleMangaer from "../views/admin/manager/resource/vehicle/Vehicle.vue"
 import VehicleList from "../views/admin/manager/resource/vehicle/VehicleList.vue"
 import EditVehicle from "../views/admin/manager/resource/vehicle/EditVehicle.vue"
+import RestaurantMangaer from "../views/admin/manager/resource/restaurant/Restaurant.vue"
+import RestaurantList from "../views/admin/manager/resource/restaurant/RestaurantList.vue"
+import EditRestaurant from "../views/admin/manager/resource/restaurant/EditRestaurant.vue"
 import Account from  "../views/admin/manager/Account.vue"
 Vue.use(VueRoute);
 
@@ -93,6 +96,27 @@ export default new VueRoute({
           name:"EDIT VEHICLE",
           path:"edit/:id",
           component:EditVehicle
+        }
+      ]
+    },
+    {
+      path:"/admin/manager/restaurant",
+      component:RestaurantMangaer,
+      children:[
+        {
+          name:"RESTAURANT LIST",
+          path:"",
+          component:RestaurantList
+        },
+        {
+          name:"ADD RESTAURANT",
+          path:"add",
+          component:EditRestaurant
+        },
+        {
+          name:"EDIT RESTAURANT",
+          path:"edit/:id",
+          component:EditRestaurant
         }
       ]
     },
