@@ -193,11 +193,7 @@
         },
         created(){
             daovoice('init', {
-                app_id: "6947d5af",
-                user_id: "NO_89757", // 必填: 该用户在您系统上的唯一ID
-                email: "daovoice@example.com", // 选填:  该用户在您系统上的主邮箱
-                name: "道客船长", // 选填: 用户名
-                signed_up: 1449821660 // 选填: 用户的注册时间，用Unix时间戳表示
+                app_id: "6947d5af"
             });
             daovoice('update');
         },
