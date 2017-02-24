@@ -1,26 +1,17 @@
 <template>
     <div>
         <content-top>
-            <el-button class="add-btn el-icon-plus" type="primary"  @click="addRestaurant">
-                添加餐厅
+            <el-button class="add-btn el-icon-plus" type="primary"  @click="addShop">
+                添加商店
             </el-button>
         </content-top>
         <el-table
-                :data="restaurantList"
+                :data="shopList"
                 style="width: 100%">
-            <el-table-column
-                    prop="country"
-                    label="国家"
-                    width="130">
-            </el-table-column>
             <el-table-column
                     prop="city"
                     label="城市"
                     width="130">
-            </el-table-column>
-            <el-table-column
-                    prop="type"
-                    label="类型">
             </el-table-column>
             <el-table-column
                     prop="name"
@@ -28,18 +19,30 @@
                     width="130">
             </el-table-column>
             <el-table-column
-                    prop="address"
-                    label="地址"
-                    width="200">
+                    prop="category"
+                    label="类型">
             </el-table-column>
             <el-table-column
-                    prop="head"
-                    label="人头费">
+                    prop="price"
+                    label="价格与成本">
+                <template scope="props">
+                    <div  v-if="props.gridData">
+                        <el-popover
+                                ref="popover"
+                                placement="bottom"
+                                width="400"
+                                trigger="click">
+                            <el-table :data="props.gridData">
+                                <el-table-column width="150" property="date" label="日期"></el-table-column>
+                                <el-table-column width="100" property="name" label="姓名"></el-table-column>
+                                <el-table-column width="300" property="address" label="地址"></el-table-column>
+                            </el-table>
+                        </el-popover>
+                        <i v-popover:popover class="el-icon-view"></i>
+                    </div>
+                </template>
             </el-table-column>
-            <el-table-column
-                    prop="commission"
-                    label="返佣比例">
-            </el-table-column>
+
             <el-table-column
                     prop="people"
                     label="联系人">
@@ -62,14 +65,14 @@
     export default{
         data(){
             return{
-                restaurantList:[
+                shopList:[
 
                 ]
             }
         },
          methods:{
             addRestaurant(){
-                this.$router.push({name:"ADD SHOP"})
+                this.$router.push({name:"ADD RESTAURANT"})
             }
         },
         components:{
