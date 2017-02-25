@@ -9,15 +9,18 @@ import HotelOrder from '../views/admin/seller/hotel/order.vue'
 import Customer from "../views/admin/manager/Customer.vue"
 import RoomMonitor from "../views/admin/manager/RoomMonitor.vue"
 import GroupMonitor from "../views/admin/manager/GroupMonitor.vue"
-import HotelMangaer from "../views/admin/manager/resource/hotel/Hotel.vue"
+import HotelManager from "../views/admin/manager/resource/hotel/Hotel.vue"
 import EditHotel from "../views/admin/manager/resource/hotel/EditHotel.vue"
 import HotelList from "../views/admin/manager/resource/hotel/HotelList.vue"
-import VehicleMangaer from "../views/admin/manager/resource/vehicle/Vehicle.vue"
+import VehicleManager from "../views/admin/manager/resource/vehicle/Vehicle.vue"
 import VehicleList from "../views/admin/manager/resource/vehicle/VehicleList.vue"
 import EditVehicle from "../views/admin/manager/resource/vehicle/EditVehicle.vue"
-import RestaurantMangaer from "../views/admin/manager/resource/restaurant/Restaurant.vue"
+import RestaurantManager from "../views/admin/manager/resource/restaurant/Restaurant.vue"
 import RestaurantList from "../views/admin/manager/resource/restaurant/RestaurantList.vue"
 import EditRestaurant from "../views/admin/manager/resource/restaurant/EditRestaurant.vue"
+import ShopManager from "../views/admin/manager/resource/shop/Shop.vue"
+import ShopList from "../views/admin/manager/resource/shop/ShopList.vue"
+import EditShop from "../views/admin/manager/resource/shop/EditShop.vue"
 import Account from  "../views/admin/manager/Account.vue"
 Vue.use(VueRoute);
 
@@ -59,7 +62,7 @@ export default new VueRoute({
     },
     {
       path:"/admin/manager/hotel",
-      component:HotelMangaer,
+      component:HotelManager,
       children:[
         {
           name:"HOTEL LIST",
@@ -80,7 +83,7 @@ export default new VueRoute({
     },
     {
       path:"/admin/manager/vehicle",
-      component:VehicleMangaer,
+      component:VehicleManager,
       children:[
         {
           name:"VEHICLE LIST",
@@ -101,7 +104,7 @@ export default new VueRoute({
     },
     {
       path:"/admin/manager/restaurant",
-      component:RestaurantMangaer,
+      component:RestaurantManager,
       children:[
         {
           name:"RESTAURANT LIST",
@@ -117,6 +120,27 @@ export default new VueRoute({
           name:"EDIT RESTAURANT",
           path:"edit/:id",
           component:EditRestaurant
+        }
+      ]
+    },
+    {
+      path:"/admin/manager/shop",
+      component:ShopManager,
+      children:[
+        {
+          name:"SHOP LIST",
+          path:"",
+          component:ShopList
+        },
+        {
+          name:"ADD SHOP",
+          path:"add",
+          component:EditShop
+        },
+        {
+          name:"EDIT SHOP",
+          path:"edit/:id",
+          component:EditShop
         }
       ]
     },

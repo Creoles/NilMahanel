@@ -71,8 +71,8 @@
             }
         },
          methods:{
-            addRestaurant(){
-                this.$router.push({name:"ADD RESTAURANT"})
+            addShop(){
+                this.$router.push({name:"ADD SHOP"})
             }
         },
         components:{
