@@ -80,6 +80,16 @@
         },
         components:{
             ContentTop
+        },
+        created(){
+            this.test();
+        },
+        methods:{
+            test(){
+                this.$http.get('http://baidu.com').then(res=>{
+                    console.log(res);
+                })
+            }
         }
     }
 </script>

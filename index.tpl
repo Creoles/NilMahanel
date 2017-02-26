@@ -12,6 +12,7 @@
     <div id="app"></div>
     <!-- built files will be auto injected -->
     <script src="https://cdn.jsdelivr.net/jquery/2.2.1/jquery.min.js"></script>
+    <script src="//cdn.bootcss.com/axios/0.15.3/axios.min.js"></script>
     <script src="http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js"></script>
   </body>
 </html>

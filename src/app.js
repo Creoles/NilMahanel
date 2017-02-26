@@ -2,7 +2,6 @@
  * Created by rancongjie@126.com 17/1/18.
  */
 import Vue from 'vue'
-import Resource from 'vue-resource'
 import App from './App.vue'
 import router from './router'
 import VueI18n from 'vue-i18n'
@@ -15,7 +14,6 @@ import zhLocale from 'element-ui/lib/locale/lang/zh-CN'
 
 Vue.use(VueI18n);
 Vue.use(ElementUI,{enLocale,zhLocale});
-Vue.use(Resource);
 Vue.config.lang = 'en';
 Vue.locale('zh-cn', zhLocale);
 Vue.locale('en', enLocale);
@@ -24,6 +22,7 @@ Vue.prototype.$locale =  {
     Vue.config.lang = lang;
   }
 };
+Vue.prototype.$http = axios;
 
 // Object.keys(filters).forEach(key => {
 //   Vue.filter(key, filters[key])
