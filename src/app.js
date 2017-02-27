@@ -24,13 +24,25 @@ Vue.prototype.$locale =  {
 };
 Vue.prototype.$http = axios;
 
-// Object.keys(filters).forEach(key => {
-//   Vue.filter(key, filters[key])
-// });
-// const { state } = store;
+Object.keys(filters).forEach(key => {
+  Vue.filter(key, filters[key])
+});
+
+Vue.filter('room',function(arr,option) {
+  let sum = 0;
+  arr.forEach(item=>{
+    sum += item.used;
+  });
+  if (option){
+    return Math.floor(sum/option*100);
+  }else {
+    return sum
+  }
+});
+
 new Vue({
   el: '#app',
   router,
   store,
-  render: h => h(App)
+  ...App
 });
