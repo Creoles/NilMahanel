@@ -12,7 +12,6 @@ cooking.set({
     port: 8080,
     publicPath: '/'
   },
-
   // production
   clean: true,
   hash: true,

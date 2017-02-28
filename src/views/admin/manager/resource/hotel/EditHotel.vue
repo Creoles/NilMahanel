@@ -96,15 +96,21 @@
                 <el-form-item label="三人间报价(USD)" class="inline hotel-triple">
                     <el-input v-model="params.doubleOffer"></el-input>
                 </el-form-item>
-
             </div>
+            <el-form-item label="是否有儿童优惠">
+                <el-switch class="inline"
+                        v-model="params.child"
+                        on-text="Yes"
+                        off-text="No">
+                </el-switch>
+                <el-form-item class="inline" v-if="params.child">
+                    <el-input v-model="params.doubleOffer" placeholder="优惠比例"></el-input>
+                </el-form-item>
+            </el-form-item>
             <el-form-item>
                 <el-button type="primary" v-if="!submitting">提 交</el-button>
                 <el-button type="primary" v-if="submitting" :loading="submitting">正在提交...</el-button>
             </el-form-item>
-
-
-
         </el-form>
     </div>
 </template>
@@ -163,7 +169,9 @@
         data(){
             return{
                 params:{
-                    quhao:"0094"
+                    quhao:"0094",
+                    child:false,
+                    cent:''
 
                 },
                 submitting:false

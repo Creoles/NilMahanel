@@ -38,19 +38,19 @@
                         v-model="params.textarea">
                 </el-input>
             </el-form-item>
-            <el-form-item class="inline" label="餐厅图片">
-                <el-upload class="restaurant-upload"
-                           action="//jsonplaceholder.typicode.com/posts/"
-                           type="select"
-                           :on-preview="handlePreview"
-                           :on-remove="handleRemove"
-                           :on-success="handleSuccess"
-                           :on-error="handleError"
-                >
-                    <i class="el-icon-upload"></i>
-                    <div class="el-dragger__text"><em>点击上传</em></div>
-                </el-upload>
-            </el-form-item>
+            <!--<el-form-item class="inline" label="餐厅图片">-->
+                <!--<el-upload class="restaurant-upload"-->
+                           <!--action="//jsonplaceholder.typicode.com/posts/"-->
+                           <!--type="select"-->
+                           <!--:on-preview="handlePreview"-->
+                           <!--:on-remove="handleRemove"-->
+                           <!--:on-success="handleSuccess"-->
+                           <!--:on-error="handleError"-->
+                <!--&gt;-->
+                    <!--<i class="el-icon-upload"></i>-->
+                    <!--<div class="el-dragger__text"><em>点击上传</em></div>-->
+                <!--</el-upload>-->
+            <!--</el-form-item>-->
             <el-form-item label="就餐等级">
                 <el-button :disabled="!(params.price.length<3)" @click.prevent="addType()">增加一种</el-button>
                 <div  v-for="item in params.price" style="width:590px">
