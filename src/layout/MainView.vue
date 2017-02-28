@@ -28,24 +28,20 @@
 <script>
     import HeaderBar from './HeaderBar.vue'
     import ToolBar from './ToolBar.vue'
-    export default{
-        data(){
-            return{
-                msg:'hello vue'
+    export default {
+        data() {
+            return {
+                msg: 'hello vue'
             }
         },
-        computed:{
-            isAdminPath(){
+        computed: {
+            isAdminPath() {
                 return /admin/.test(this.$route.path)
             }
         },
-        components:{
-           HeaderBar,
-           ToolBar
+        components: {
+            HeaderBar,
+            ToolBar
         }
     }
-
-
-
-
 </script>

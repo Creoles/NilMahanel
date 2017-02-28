@@ -1,0 +1,77 @@
+{
+  "name": [
+    {
+      "required": true,
+      "message": "请输入商店名称",
+      "trigger": "blur"
+    },
+    {
+      "min": 3,
+      "max": 20,
+      "message": "长度在 3 到 5 个字符",
+      "trigger": "blur"
+    }
+  ],
+  "country":[
+    {
+      "required":true,
+      "message":"请选择商店所在选择国家",
+      "trigger":"change"
+    }
+  ],
+  "city":[
+    {
+      "required":true,
+      "message":"请选择商店所在地区",
+      "trigger":"change"
+    }
+  ],
+  "address":[
+    {
+      "required":true,
+      "message":"请输入商店具体地址",
+      "trigger":"blur"
+    },
+    {
+      "min": 10,
+      "max": 25,
+      "message": "长度在 10 到 25 个字符",
+      "trigger": "blur"
+    }
+  ],
+  "type":[
+    {
+      "required":true,
+      "message":"请选择商店类型",
+      "trigger":"change"
+    }
+  ],
+  "people":[
+    {
+      "required":true,
+      "message":"请输入联系人姓名",
+      "trigger":"blur"
+    }
+  ],
+  "phone":[
+    {
+      "required":true,
+      "message":"请输入联系人电话",
+      "trigger":"blur"
+    }
+  ],
+  "rentou":[
+    {
+      "required":true,
+      "message":"请输入人头费",
+      "trigger":"blur"
+    }
+  ],
+  "bili":[
+    {
+      "required":true,
+      "message":"请输入返佣比例",
+      "trigger":"blur"
+    }
+  ]
+}
