@@ -1,0 +1,64 @@
+{
+    "name": [{
+            "required": true,
+            "message": "请输入车辆所属公司名称",
+            "trigger": "blur"
+        },
+        {
+            "min": 3,
+            "max": 20,
+            "message": "长度在 3 到 20 个字符",
+            "trigger": "blur"
+        }
+    ],
+    "country": [{
+        "required": true,
+        "message": "请选择车辆所在选择国家",
+        "trigger": "change"
+    }],
+    "model": [{
+        "required": true,
+        "message": "请输入车辆型号",
+        "trigger": "blur"
+    }],
+    "ID": [{
+        "required": true,
+        "message": "请输入车牌号",
+        "trigger": "blur"
+    }],
+    "set": [{
+        "required": true,
+        "message": "请输入座位数",
+        "trigger": "blur"
+    }],
+    "year": [{
+        "required": true,
+        "message": "请输入车辆年代",
+        "trigger": "blur"
+    }],
+    "baoxian": [{
+        "required": true,
+        "message": "请输入保险号",
+        "trigger": "blur"
+    }],
+    "dengji": [{
+        "required": true,
+        "message": "请输入旅游局登记号",
+        "trigger": "blur"
+    }],
+    "people": [{
+        "required": true,
+        "message": "请输入联系人姓名",
+        "trigger": "blur"
+    }],
+    "phone": [{
+        "required": true,
+        "message": "请输入联系人电话",
+        "trigger": "blur"
+    }],
+    "price": [{
+        "required": true,
+        "message": "请输入每公里价格",
+        "trigger": "blur"
+    }]
+}
