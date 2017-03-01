@@ -13,36 +13,39 @@ import enLocale from 'element-ui/lib/locale/lang/en'
 import zhLocale from 'element-ui/lib/locale/lang/zh-CN'
 
 Vue.use(VueI18n);
-Vue.use(ElementUI,{enLocale,zhLocale});
+Vue.use(ElementUI, {
+    enLocale,
+    zhLocale
+});
 Vue.config.lang = 'en';
 Vue.locale('zh-cn', zhLocale);
 Vue.locale('en', enLocale);
-Vue.prototype.$locale =  {
-  change(lang){
-    Vue.config.lang = lang;
-  }
+Vue.prototype.$locale = {
+    change(lang) {
+        Vue.config.lang = lang;
+    }
 };
 Vue.prototype.$http = axios;
 
 Object.keys(filters).forEach(key => {
-  Vue.filter(key, filters[key])
+    Vue.filter(key, filters[key])
 });
 
-Vue.filter('room',function(arr,option) {
-  let sum = 0;
-  arr.forEach(item=>{
-    sum += item.used;
-  });
-  if (option){
-    return Math.floor(sum/option*100);
-  }else {
-    return sum
-  }
+Vue.filter('room', function(arr, option) {
+    let sum = 0;
+    arr.forEach(item => {
+        sum += item.used;
+    });
+    if (option) {
+        return Math.floor(sum / option * 100);
+    } else {
+        return sum
+    }
 });
 
 new Vue({
-  el: '#app',
-  router,
-  store,
-  ...App
+    el: '#app',
+    router,
+    store,
+    ...App
 });
