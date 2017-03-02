@@ -51,8 +51,10 @@
     }
 </style>
 <script>
-    import ContentTop from "../../../../components/ContentTop.vue"
-    import editRule from "../../../../../assets/valid/editVehicle.json"
+    import ContentTop from "src/views/components/ContentTop.vue"
+    import editRule from "src/assets/valid/editVehicle.json"
+    //验证价格信息
+    import priceValid from 'src/util/priceValid.js'
     export default{
         data(){
             return{
@@ -64,16 +66,8 @@
             }
         },
         created(){
-            this.rule.price.push({ validator: this.validPrice, trigger: 'blur' });
-        },
-        methods:{
-            validPrice(rule,value,callback){
-                var bool = /^-?[1-9]+(\.\d+)?$|^-?0(\.\d+)?$|^-?[1-9]+[0-9]*(\.\d+)?$/.test(value);
-                if (!bool){
-                    callback(new Error('必须为数字,可以有小数'));
-                }
-                callback();
-            }
+            //验证价格信息
+            this.rule.price.push({ validator: priceValid, trigger: 'blur' });
         },
         components:{
             ContentTop

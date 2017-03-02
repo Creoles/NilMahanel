@@ -1,25 +1,25 @@
 {
-  "name": "hathaway",
-  "version": "0.0.1",
-  "description": "A vue project.",
-  "private": true,
-  "keywords": [],
-  "scripts": {
-    "dev": "cooking watch -p",
-    "dist": "cooking build -p",
-    "deploy": "cooking build --no-color"
-  },
-  "dependencies": {
-    "babel-polyfill": "*",
-    "element-ui": "^1.1.6",
-    "vue": "^2.0.1",
-    "vue-i18n": "^5.0.0",
-    "vue-router": "^2.1.1",
-    "vuex": "^2.1.1"
-  },
-  "devDependencies": {
-    "cooking-autoprefixer": "^1.0.0",
-    "cooking-sass": "^0.5.0",
-    "cooking-vue2": "*"
-  }
+    "name": "hathaway",
+    "version": "0.0.1",
+    "description": "A vue project.",
+    "private": true,
+    "keywords": [],
+    "scripts": {
+        "dev": "cooking watch -p",
+        "dist": "cooking build -p",
+        "deploy": "cooking build --no-color"
+    },
+    "dependencies": {
+        "babel-polyfill": "*",
+        "element-ui": "^1.2.1",
+        "vue": "^2.1.0",
+        "vue-i18n": "^5.0.0",
+        "vue-router": "^2.1.1",
+        "vuex": "^2.1.1"
+    },
+    "devDependencies": {
+        "cooking-autoprefixer": "^1.0.0",
+        "cooking-sass": "^0.5.0",
+        "cooking-vue2": "*"
+    }
 }

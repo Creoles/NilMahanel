@@ -8,7 +8,7 @@
                 <i v-if='isList' class="down-icon fa fa-chevron-down"></i>
             </div>
             <ul class="child-item" v-show="open"  v-if='isList'>
-                <items v-for='cel in model.childTreeNode' :model='cel'></items>
+                <items v-for='cel in model.childTreeNode' :model='cel' :key="cel.id"></items>
             </ul>
         </router-link>
         <div class="menu-item" @click='toggle' v-else>
@@ -17,7 +17,7 @@
             <i v-if='isList' class="down-icon fa fa-chevron-down"></i>
         </div>
         <ul class="child-item" v-show="open" v-if='isList'>
-            <items v-for='cel in model.childTreeNode' :model='cel'></items>
+            <items v-for='cel in model.childTreeNode' :model='cel' :key="cel.id"></items>
         </ul>
     </li>
     <!--<router-link to="/admin/hotel/order"></router-link>-->

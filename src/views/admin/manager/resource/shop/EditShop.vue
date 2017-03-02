@@ -75,8 +75,8 @@
     }
 </style>
 <script>
-    import ContentTop from "../../../../components/ContentTop.vue"
-    import editRule from "../../../../../assets/valid/editShop.json"
+    import ContentTop from "src/views/components/ContentTop.vue"
+    import editRule from "src/assets/valid/editShop.json"
     export default{
         data(){
             return{
