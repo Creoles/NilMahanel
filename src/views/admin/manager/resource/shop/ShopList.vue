@@ -5,13 +5,48 @@
                 添加商店
             </el-button>
         </content-top>
+        <div>
+            <el-form :inline="true" label-position="left"  :model="shopFilter" class="shop-filter">
+                <el-form-item label="国家地区">
+                    <el-select v-model="shopFilter.country" placeholder="country">
+                        <el-option label="Srilanka" value="0"></el-option>
+                        <el-option label="New Zealand" value="1"></el-option>
+                        <el-option label="Nepal" value="2"></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="城市">
+                    <el-select v-model="shopFilter.city" placeholder="city">
+                        <el-option label="Srilanka" value="0"></el-option>
+                        <el-option label="New Zealand" value="1"></el-option>
+                        <el-option label="Nepal" value="2"></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="商店类型">
+                    <el-select v-model="shopFilter.type" placeholder="type">
+                        <el-option label="Srilanka" value="0"></el-option>
+                        <el-option label="New Zealand" value="1"></el-option>
+                        <el-option label="Nepal" value="2"></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item>
+                    <el-button type="primary" @click="fitler">查询</el-button>
+                </el-form-item>
+            </el-form>
+       </div>
         <el-table
                 :data="shopList"
                 style="width: 100%">
             <el-table-column
+                    prop="country"
+                    label="国家"
+                    width="130"
+                    sortable>
+            </el-table-column>
+            <el-table-column
                     prop="city"
                     label="城市"
-                    width="130">
+                    width="130"
+                    sortable>
             </el-table-column>
             <el-table-column
                     prop="name"
@@ -61,10 +96,13 @@
 
 </style>
 <script>
-    import ContentTop from "../../../../components/ContentTop.vue"
+    import ContentTop from "src/views/components/ContentTop.vue"
     export default{
         data(){
             return{
+                shopFilter:{
+
+                },
                 shopList:[
 
                 ]
@@ -73,6 +111,9 @@
          methods:{
             addShop(){
                 this.$router.push({name:"ADD SHOP"})
+            },
+            fitler(){
+
             }
         },
         components:{

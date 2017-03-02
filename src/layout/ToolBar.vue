@@ -1,7 +1,7 @@
 <template>
         <el-col :span="4" class="toolbar">
             <ul>
-                <items  :model='model' v-for='model in menuConfig'></items>
+                <items  :model='model' v-for='model in menuConfig' :key="model.id"></items>
             </ul>
         </el-col>
 </template>

@@ -7,7 +7,8 @@
                 <el-option
                         v-for="item in orderConfig.status"
                         :label="item.label"
-                        :value="item.value">
+                        :value="item.value"
+                        :key="item.value">
                 </el-option>
             </el-select>
         </div>
@@ -115,9 +116,9 @@
     }
 </style>
 <script>
-    import ContentTop from "../../../components/ContentTop.vue"
+    import ContentTop from "src/views/components/ContentTop.vue"
     import { mapGetters, mapActions } from "vuex"
-    import OrderLang from "../../../../assets/lang/hotel-seller.json"
+    import OrderLang from "src/assets/lang/hotel-seller.json"
 
     export default{
         data(){
