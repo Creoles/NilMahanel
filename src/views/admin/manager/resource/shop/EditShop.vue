@@ -77,6 +77,7 @@
 <script>
     import ContentTop from "src/views/components/ContentTop.vue"
     import editRule from "src/assets/valid/editShop.json"
+    import  ValidPrice from 'src/util/priceValid.js'
     export default{
         data(){
             return{
@@ -90,7 +91,8 @@
             ContentTop
         },
         created(){
-            console.log(this.rule)
+            this.rule.rentou.push({ validator: ValidPrice, trigger: 'blur' });
+             this.rule.bili.push({ validator: ValidPrice, trigger: 'blur' });
         },
         methods:{
             test(){
