@@ -1,286 +1,282 @@
-[
-  {
-    "lang": "zh-CN",
-    "menu": [
-      {
-        "id": "1",
-        "role":"hotel",
-        "data": {
-          "menuName": "订单查询",
-          "menuPath":"/admin/hotel/order",
-          "icon":"fa-th-list",
-          "menuCode": "hotel-order"
-        },
-        "childTreeNode": []
-      },
-      {
-        "id": "2",
-        "role":"hotel",
-        "data": {
-          "menuName": "用房统计",
-          "menuPath":"/admin/hotel/",
-          "icon":"fa-pie-chart",
-          "menuCode": "hotel-statistics"
-        },
-        "childTreeNode": []
-      },
-      {
-        "id": "3",
-        "role":"hotel",
-        "data": {
-          "menuName": "动态房量",
-          "menuPath":"/admin/hotel/",
-          "icon":"fa-hourglass-2",
-          "menuCode": "hotel-dynamic"
-        },
-        "childTreeNode": []
-      },
-      {
-        "id": "4",
-        "data": {
-          "menuName": "财务中心",
-          "menuPath":"/admin/hotel/",
-          "icon":"fa-dollar",
-          "menuCode": "hotel-finance"
-        },
-        "childTreeNode": []
-      },
-      {
-        "id":"5",
-        "data": {
-          "menuName":"客户管理",
-          "menuPath":"/admin/manager/customer",
-          "icon":"fa-handshake-o",
-          "menuCode":"manager-customer"
-        },
-        "childTreeNode": []
-      },
-      {
-        "id":"6",
-        "data": {
-          "menuName":"资源管理",
-          "menuPath":"",
-          "icon":"fa-linode",
-          "menuCode":"manager-customer"
-        },
-        "childTreeNode": [
-          {
-            "id":"7",
-            "data": {
-              "menuName":"酒店管理",
-              "menuPath":"/admin/manager/hotel",
-              "icon":"fa-hotel",
-              "menuCode":"manager-hotel"
+[{
+        "lang": "zh-CN",
+        "menu": [{
+                "id": "1",
+                "role": "hotel",
+                "data": {
+                    "menuName": "订单查询",
+                    "menuPath": "/admin/hotel/order",
+                    "icon": "fa-th-list",
+                    "menuCode": "hotel-order"
+                },
+                "childTreeNode": []
             },
-            "childTreeNode": []
-          },
-          {
-            "id":"8",
-            "data": {
-              "menuName":"车辆管理",
-              "menuPath":"/admin/manager/vehicle",
-              "icon":"fa-bus",
-              "menuCode":"manager-car"
+            {
+                "id": "2",
+                "role": "hotel",
+                "data": {
+                    "menuName": "用房统计",
+                    "menuPath": "/admin/hotel/",
+                    "icon": "fa-pie-chart",
+                    "menuCode": "hotel-statistics"
+                },
+                "childTreeNode": []
             },
-            "childTreeNode": []
-          },
-          {
-            "id":"9",
-            "data": {
-              "menuName":"餐厅管理",
-              "menuPath":"/admin/manager/restaurant",
-              "icon":"fa-cutlery",
-              "menuCode":"manager-restaurant"
+            {
+                "id": "3",
+                "role": "hotel",
+                "data": {
+                    "menuName": "动态房量",
+                    "menuPath": "/admin/hotel/",
+                    "icon": "fa-hourglass-2",
+                    "menuCode": "hotel-dynamic"
+                },
+                "childTreeNode": []
             },
-            "childTreeNode": []
-          },
-          {
-            "id":"10",
-            "data": {
-              "menuName":"商店管理",
-              "menuPath":"/admin/manager/shop",
-              "icon":"fa-shopping-bag",
-              "menuCode":"manager-shop"
+            {
+                "id": "4",
+                "data": {
+                    "menuName": "财务中心",
+                    "menuPath": "/admin/hotel/",
+                    "icon": "fa-dollar",
+                    "menuCode": "hotel-finance"
+                },
+                "childTreeNode": []
             },
-            "childTreeNode": []
-          },
-          {
-            "id":"11",
-            "data": {
-              "menuName":"景点管理",
-              "menuPath":"/admin/manager/scenery",
-              "icon":"fa-tree",
-              "menuCode":"manager-scenery"
+            {
+                "id": "5",
+                "data": {
+                    "menuName": "客户管理",
+                    "menuPath": "/admin/manager/customer",
+                    "icon": "fa-handshake-o",
+                    "menuCode": "manager-customer"
+                },
+                "childTreeNode": []
             },
-            "childTreeNode": []
-          },
-          {
-            "id":"12",
-            "data": {
-              "menuName":"自费管理",
-              "menuPath":"/admin/manager/additional-manage",
-              "icon":"fa-money",
-              "menuCode":"manager-additional－manage"
+            {
+                "id": "6",
+                "data": {
+                    "menuName": "资源管理",
+                    "menuPath": "",
+                    "icon": "fa-linode",
+                    "menuCode": "manager-customer"
+                },
+                "childTreeNode": [{
+                        "id": "7",
+                        "data": {
+                            "menuName": "酒店管理",
+                            "menuPath": "/admin/manager/hotel",
+                            "icon": "fa-hotel",
+                            "menuCode": "manager-hotel"
+                        },
+                        "childTreeNode": []
+                    },
+                    {
+                        "id": "8",
+                        "data": {
+                            "menuName": "车辆管理",
+                            "menuPath": "/admin/manager/vehicle",
+                            "icon": "fa-bus",
+                            "menuCode": "manager-car"
+                        },
+                        "childTreeNode": []
+                    },
+                    {
+                        "id": "9",
+                        "data": {
+                            "menuName": "餐厅管理",
+                            "menuPath": "/admin/manager/restaurant",
+                            "icon": "fa-cutlery",
+                            "menuCode": "manager-restaurant"
+                        },
+                        "childTreeNode": []
+                    },
+                    {
+                        "id": "10",
+                        "data": {
+                            "menuName": "商店管理",
+                            "menuPath": "/admin/manager/shop",
+                            "icon": "fa-shopping-bag",
+                            "menuCode": "manager-shop"
+                        },
+                        "childTreeNode": []
+                    },
+                    {
+                        "id": "11",
+                        "data": {
+                            "menuName": "景点管理",
+                            "menuPath": "/admin/manager/scenic",
+                            "icon": "fa-tree",
+                            "menuCode": "manager-scenery"
+                        },
+                        "childTreeNode": []
+                    },
+                    {
+                        "id": "12",
+                        "data": {
+                            "menuName": "自费管理",
+                            "menuPath": "/admin/manager/additional-manage",
+                            "icon": "fa-money",
+                            "menuCode": "manager-additional－manage"
+                        },
+                        "childTreeNode": []
+                    },
+                    {
+                        "id": "13",
+                        "data": {
+                            "menuName": "服务人员管理",
+                            "menuPath": "/admin/manager/service－personal",
+                            "icon": "fa-id-card-o",
+                            "menuCode": "manager-service－personal"
+                        },
+                        "childTreeNode": []
+                    }
+                ]
             },
-            "childTreeNode": []
-          },
-          {
-            "id":"13",
-            "data": {
-              "menuName":"服务人员管理",
-              "menuPath":"/admin/manager/service－personal",
-              "icon":"fa-id-card-o",
-              "menuCode":"manager-service－personal"
+            {
+                "id": "14",
+                "data": {
+                    "menuName": "团务监控",
+                    "menuPath": "/admin/manager/group-service-monitoring",
+                    "icon": "fa-pencil",
+                    "menuCode": "manager-group－service－monitoring"
+                },
+                "childTreeNode": []
             },
-            "childTreeNode": []
-          }
-        ]
-      },
-      {
-        "id":"14",
-        "data": {
-          "menuName":"团务监控",
-          "menuPath":"/admin/manager/group-service-monitoring",
-          "icon":"fa-pencil",
-          "menuCode":"manager-group－service－monitoring"
-        },
-        "childTreeNode": []
-      },
-      {
-        "id":"15",
-        "data": {
-          "menuName":"房务监控",
-          "menuPath":"/admin/manager/room-monitor",
-          "icon":"fa-paper-plane",
-          "menuCode":"manager-room－monitor"
-        },
-        "childTreeNode": []
-      },
-      {
-        "id":"16",
-        "data": {
-          "menuName":"行程监控",
-          "menuPath":"/admin/manager/travel－monitoring",
-          "icon":" fa-map",
-          "menuCode":"manager-travel－monitoring"
-        },
-        "childTreeNode": []
-      },
-      {
-        "id":"17",
-        "data": {
-          "menuName":"海外监控",
-          "menuPath":"/admin/manager/overseas－monitoring",
-          "icon":"fa-podcast",
-          "menuCode":"manager-overseas－monitoring"
-        },
-        "childTreeNode": []
-      },
-      {
-        "id":"18",
-        "data": {
-          "menuName":"财务监控",
-          "menuPath":"/admin/manager/financial－monitoring",
-          "icon":"fa-line-chart",
-          "menuCode":"manager-financial－monitoring"
-        },
-        "childTreeNode": []
-      },
-      {
-        "id":"19",
-        "data": {
-          "menuName":"车辆报表",
-          "menuPath":"/admin/manager/vehicle－reports",
-          "icon":"fa-tasks",
-          "menuCode":"manager-vehicle-reports"
-        },
-        "childTreeNode": []
-      },
-      {
-        "id":"20",
-        "data": {
-          "menuName":"购物报表",
-          "menuPath":"/admin/manager/shopping－reports",
-          "icon":"fa-signal",
-          "menuCode":"manager-shopping-reports"
-        },
-        "childTreeNode": []
-      },
-      {
-        "id":"21",
-        "data": {
-          "menuName":"自费报表",
-          "menuPath":"/admin/manager/additional－charge",
-          "icon":"fa-industry",
-          "menuCode":"manager-additional－charge"
-        },
-        "childTreeNode": []
-      },
-      {
-        "id":"22",
-        "data": {
-          "menuName":"翻译、导游报表",
-          "menuPath":"/admin/manager/interpreter－tour",
-          "icon":"fa-magnet",
-          "menuCode":"manager-interpreter－tour"
-        },
-        "childTreeNode": []
-      },
-      {
-        "id":"23",
-        "data":{
-          "menuName":"账号管理",
-          "menuPath":"/admin/manager/account",
-          "icon":"fa-role",
-          "menuCode":"account-management"
-        },
-        "childTreeNode": []
-      }
+            {
+                "id": "15",
+                "data": {
+                    "menuName": "房务监控",
+                    "menuPath": "/admin/manager/room-monitor",
+                    "icon": "fa-paper-plane",
+                    "menuCode": "manager-room－monitor"
+                },
+                "childTreeNode": []
+            },
+            {
+                "id": "16",
+                "data": {
+                    "menuName": "行程监控",
+                    "menuPath": "/admin/manager/travel－monitoring",
+                    "icon": " fa-map",
+                    "menuCode": "manager-travel－monitoring"
+                },
+                "childTreeNode": []
+            },
+            {
+                "id": "17",
+                "data": {
+                    "menuName": "海外监控",
+                    "menuPath": "/admin/manager/overseas－monitoring",
+                    "icon": "fa-podcast",
+                    "menuCode": "manager-overseas－monitoring"
+                },
+                "childTreeNode": []
+            },
+            {
+                "id": "18",
+                "data": {
+                    "menuName": "财务监控",
+                    "menuPath": "/admin/manager/financial－monitoring",
+                    "icon": "fa-line-chart",
+                    "menuCode": "manager-financial－monitoring"
+                },
+                "childTreeNode": []
+            },
+            {
+                "id": "19",
+                "data": {
+                    "menuName": "车辆报表",
+                    "menuPath": "/admin/manager/vehicle－reports",
+                    "icon": "fa-tasks",
+                    "menuCode": "manager-vehicle-reports"
+                },
+                "childTreeNode": []
+            },
+            {
+                "id": "20",
+                "data": {
+                    "menuName": "购物报表",
+                    "menuPath": "/admin/manager/shopping－reports",
+                    "icon": "fa-signal",
+                    "menuCode": "manager-shopping-reports"
+                },
+                "childTreeNode": []
+            },
+            {
+                "id": "21",
+                "data": {
+                    "menuName": "自费报表",
+                    "menuPath": "/admin/manager/additional－charge",
+                    "icon": "fa-industry",
+                    "menuCode": "manager-additional－charge"
+                },
+                "childTreeNode": []
+            },
+            {
+                "id": "22",
+                "data": {
+                    "menuName": "翻译、导游报表",
+                    "menuPath": "/admin/manager/interpreter－tour",
+                    "icon": "fa-magnet",
+                    "menuCode": "manager-interpreter－tour"
+                },
+                "childTreeNode": []
+            },
+            {
+                "id": "23",
+                "data": {
+                    "menuName": "账号管理",
+                    "menuPath": "/admin/manager/account",
+                    "icon": "fa-role",
+                    "menuCode": "account-management"
+                },
+                "childTreeNode": []
+            }
 
-    ]
-  },
-  {
-    "lang": "en-US",
-    "menu": [
-      {
-        "id": "1",
-        "role":"hotel",
-        "data": {
-          "menuName": "Order System",
-          "icon":"fa-th-list",
-          "menuCode": "hotel-order"
-        },
-        "childTreeNode": []
-      },
-      {
-        "id": "2",
-        "role":"hotel",
-        "data": {
-          "menuName": "Room statistics",
-          "icon":"fa-pie-chart",
-          "menuCode": "hotel-statistics"
-        },
-        "childTreeNode": []
-      },
-      {
-        "id": "3",
-        "role":"hotel",
-        "data": {
-          "menuName": "Dynamic room",
-          "icon":"fa-hourglass-2",
-          "menuCode": "hotel-dynamic"
-        },
-        "childTreeNode": []
-      },
-      {
-        "id": "4",
-        "data": {
-          "menuName": "Financial Statements",
-          "icon":"fa-dollar",
-          "menuCode": "hotel-finance"
-        },
-        "childTreeNode": []
-      }
-    ]
-  }
+        ]
+    },
+    {
+        "lang": "en-US",
+        "menu": [{
+                "id": "1",
+                "role": "hotel",
+                "data": {
+                    "menuName": "Order System",
+                    "icon": "fa-th-list",
+                    "menuCode": "hotel-order"
+                },
+                "childTreeNode": []
+            },
+            {
+                "id": "2",
+                "role": "hotel",
+                "data": {
+                    "menuName": "Room statistics",
+                    "icon": "fa-pie-chart",
+                    "menuCode": "hotel-statistics"
+                },
+                "childTreeNode": []
+            },
+            {
+                "id": "3",
+                "role": "hotel",
+                "data": {
+                    "menuName": "Dynamic room",
+                    "icon": "fa-hourglass-2",
+                    "menuCode": "hotel-dynamic"
+                },
+                "childTreeNode": []
+            },
+            {
+                "id": "4",
+                "data": {
+                    "menuName": "Financial Statements",
+                    "icon": "fa-dollar",
+                    "menuCode": "hotel-finance"
+                },
+                "childTreeNode": []
+            }
+        ]
+    }
 ]
