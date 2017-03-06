@@ -1,10 +1,58 @@
 <template>
     <div>
         <content-top></content-top>
+        <el-steps :space="300" center="true" :active="1" align-center="true">
+            <el-step title="基础信息"></el-step>
+            <el-step title="费率"></el-step>
+            <el-step title="介绍&图片"></el-step>
+        </el-steps>
+        <el-row>
+            <el-col :span="11" style="padding-right:30px;">
+                中文
+                <el-form label-position="right" label-width="100px" style="margin-top:10px;">
+                    <el-form-item label="所属集团" >
+                        <el-input v-model="params.name"></el-input>
+                    </el-form-item> 
+                    <el-form-item label="名称">
+                        <el-input v-model="params.name"></el-input>
+                    </el-form-item>
+                    <el-form-item label="简称">
+                        <el-input v-model="params.name"></el-input>
+                    </el-form-item>
+                    <el-form-item label="特色">
+                        <el-input v-model="params.name"></el-input>
+                    </el-form-item>
+                </el-form>
+            </el-col>
+            <el-col :span="12">
+                English
+                <el-form label-position="right" label-width="90px" style="margin-top:10px;">
+                    <el-form-item label="所属集团">
+                        <el-input v-model="params.name"></el-input>
+                    </el-form-item> 
+                    <el-form-item label="名称">
+                        <el-input v-model="params.name"></el-input>
+                    </el-form-item>
+                    <el-form-item label="简称">
+                        <el-input v-model="params.name"></el-input>
+                    </el-form-item>
+                    <el-form-item label="特色">
+                        <el-input v-model="params.name"></el-input>
+                    </el-form-item>
+                </el-form>
+            </el-col>
+        </el-row>
+        <hr>
         <el-form :model="params" label-position="top" label-width="100px" class="hotel-form">
-            <el-form-item label="酒店名称">
+            <el-form-item label="所属集团" class="inline" style="width:40%">
                 <el-input v-model="params.name"></el-input>
             </el-form-item>
+            <el-form-item label="中文名称" class="inline" style="width:40%">
+                <el-input v-model="params.name"></el-input>
+            </el-form-item>
+            <el-form-item label="英文名称" class="inline" style="width:40%">
+                <el-input v-model="params.name"></el-input>
+            </el-form-item><br>
             <el-form-item label="酒店区域" class="inline">
                 <el-select v-model="params.region" class="hotel-region" placeholder="select">
                     <el-option label="1" value="shanghai"></el-option>
@@ -14,7 +62,7 @@
             <el-form-item label="具体地址" class="inline hotel-address">
                 <el-input v-model="params.address"></el-input>
             </el-form-item>
-            <el-form-item label="星级" class="inline hotel-star" >
+            <el-form-item label="星级" class="inline hotel-star">
                 <el-select v-model="params.star" placeholder="select">
                     <el-option label="一星级" value="1"></el-option>
                     <el-option label="二星级" value="2"></el-option>
@@ -115,9 +163,7 @@
     </div>
 </template>
 <style lang="scss">
-    .hotel-form {
-        width: 500px;
-    }
+    
     .hotel-region {
         width: 100px;
     }
