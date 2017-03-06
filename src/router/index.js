@@ -25,6 +25,7 @@ import ScenicManager from "../views/admin/manager/resource/scenic/Scenic.vue"
 import ScenicList from "../views/admin/manager/resource/scenic/ScenicList.vue"
 import EditScenic from "../views/admin/manager/resource/scenic/EditScenic.vue"
 import Account from "../views/admin/manager/Account.vue"
+import Country from "../views/admin/manager/Country.vue"
 Vue.use(VueRoute);
 
 function generateRoutes() {
@@ -166,6 +167,11 @@ export default new VueRoute({
             name: "ACCOUNT MANAGE",
             path: "/admin/manager/account",
             component: Account
+        },
+        {
+            name: "COUNTRY MANAGE",
+            path: "/admin/manager/country",
+            component: Country
         }
         // ...generateRoutes(),
     ]
