@@ -44,78 +44,50 @@
         </el-row>
         <hr>
         <el-form :model="params" label-position="top" label-width="100px" class="hotel-form">
-            <el-form-item label="所属集团" class="inline" style="width:40%">
-                <el-input v-model="params.name"></el-input>
-            </el-form-item>
-            <el-form-item label="中文名称" class="inline" style="width:40%">
-                <el-input v-model="params.name"></el-input>
-            </el-form-item>
-            <el-form-item label="英文名称" class="inline" style="width:40%">
-                <el-input v-model="params.name"></el-input>
-            </el-form-item><br>
-            <el-form-item label="酒店区域" class="inline">
-                <el-select v-model="params.region" class="hotel-region" placeholder="select">
-                    <el-option label="1" value="shanghai"></el-option>
-                    <el-option label="2" value="beijing"></el-option>
-                </el-select>
-            </el-form-item>
             <el-form-item label="具体地址" class="inline hotel-address">
                 <el-input v-model="params.address"></el-input>
             </el-form-item>
             <el-form-item label="星级" class="inline hotel-star">
                 <el-select v-model="params.star" placeholder="select">
-                    <el-option label="一星级" value="1"></el-option>
-                    <el-option label="二星级" value="2"></el-option>
+                    <el-option label="1 star" value="1"></el-option>
+                    <el-option label="2 star" value="2"></el-option>
+                     <el-option label="3 star" value="3"></el-option>
+                     <el-option label="4 star" value="4"></el-option>
+                     <el-option label="5 star" value="5"></el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item label="房间总数" class="inline hotel-total">
-                <el-input v-model="params.total"></el-input>
-            </el-form-item>
-            <el-form-item class="inline" label="酒店图片">
-                <el-upload class="hotel-upload"
-                           action="//jsonplaceholder.typicode.com/posts/"
-                           type="select"
-                           :on-preview="handlePreview"
-                           :on-remove="handleRemove"
-                           :on-success="handleSuccess"
-                           :on-error="handleError"
-                >
-                    <i class="el-icon-upload"></i>
-                    <div class="el-dragger__text"><em>点击上传</em></div>
-                    <!--<div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>-->
-                </el-upload>
-            </el-form-item>
-            <el-form-item label="酒店介绍">
-                <el-input
-                        type="textarea"
-                        autosize
-                        v-model="params.textarea">
-                </el-input>
-            </el-form-item>
-            <el-form-item label="订房部联系人" class="inline">
+            <el-form-item label="酒店网址" class="inline">
                 <el-input v-model="params.costPerson"></el-input>
             </el-form-item>
-            <el-form-item label="订房部电话" class="inline cost-phone">
-                <el-input placeholder="" v-model="params.costPhone">
-                    <el-select style="width:85px" v-model="params.quhao" slot="prepend" placeholder="select">
-                        <el-option label="餐厅名" value="1"></el-option>
-                        <el-option label="订单号" value="2"></el-option>
-                        <el-option label="用户电话" value="3"></el-option>
-                    </el-select>
-                </el-input>
-            </el-form-item>
-            <el-form-item label="销售部联系人" class="inline">
+            <el-form-item label="预定邮箱">
                 <el-input v-model="params.costPerson"></el-input>
             </el-form-item>
-            <el-form-item label="销售部电话" class="inline cost-phone">
-                <el-input placeholder="" v-model="params.costPhone">
-                    <el-select style="width:85px" v-model="params.quhao" slot="prepend" placeholder="select">
-                        <el-option label="餐厅名" value="1"></el-option>
-                        <el-option label="订单号" value="2"></el-option>
-                        <el-option label="用户电话" value="3"></el-option>
-                    </el-select>
-                </el-input>
+            <el-form-item label="预定电话">
+                <el-input v-model="params.costPerson"></el-input>
             </el-form-item>
+            <div class="hotel-people">
+                联系人员
+                <div>
+                    <el-form-item label="职位" class="inline-people">
+                        <el-input v-model="params.costPerson"></el-input>
+                    </el-form-item>
+                    <el-form-item label="姓名" class="inline-people">
+                        <el-input v-model="params.costPerson"></el-input>
+                    </el-form-item>
+                    <el-form-item label="办公电话" class="inline-people">
+                        <el-input v-model="params.costPerson"></el-input>
+                    </el-form-item>
+                    <el-form-item label="个人手机" class="inline-people">
+                        <el-input v-model="params.costPerson"></el-input>
+                    </el-form-item>
+                    <el-form-item label="邮件地址" class="inline-people">
+                        <el-input v-model="params.costPerson"></el-input>
+                    </el-form-item>
+                    <el-form-item label="备注" class="inline-people">
+                        <el-input v-model="params.costPerson"></el-input>
+                    </el-form-item>
+                </div>
+            </div>
             <div class="room">
                 <el-form-item label="单人间数量" class="inline hotel-single">
                     <el-input v-model="params.single"></el-input>
@@ -206,6 +178,10 @@
     }
     .inline {
         display: inline-block;
+    }
+    .inline-people {
+        display: inline-block;
+        width:150px;
     }
 
 </style>
