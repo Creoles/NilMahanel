@@ -66,67 +66,60 @@
                 <el-input v-model="params.costPerson"></el-input>
             </el-form-item>
             <div class="hotel-people">
-                联系人员
-                <div>
+                <h5>联系人员<el-button class="add-people" type="primary" size="mini" @click="addPeople">添加记录</el-button></h5>
+                <div v-for="item in params.people">
                     <el-form-item label="职位" class="inline-people">
-                        <el-input v-model="params.costPerson"></el-input>
+                        <el-input v-model="item.zhiwei"></el-input>
                     </el-form-item>
                     <el-form-item label="姓名" class="inline-people">
-                        <el-input v-model="params.costPerson"></el-input>
+                        <el-input v-model="item.name"></el-input>
                     </el-form-item>
                     <el-form-item label="办公电话" class="inline-people">
-                        <el-input v-model="params.costPerson"></el-input>
+                        <el-input v-model="item.phone1"></el-input>
                     </el-form-item>
                     <el-form-item label="个人手机" class="inline-people">
-                        <el-input v-model="params.costPerson"></el-input>
+                        <el-input v-model="item.phone2"></el-input>
                     </el-form-item>
                     <el-form-item label="邮件地址" class="inline-people">
-                        <el-input v-model="params.costPerson"></el-input>
+                        <el-input v-model="item.email"></el-input>
                     </el-form-item>
                     <el-form-item label="备注" class="inline-people">
-                        <el-input v-model="params.costPerson"></el-input>
+                        <el-input v-model="item.beizhu"></el-input>
+                    </el-form-item>
+                    <el-form-item class="inline">
+                        <el-button type="warning" @click="removePeople($index)">删除</el-button>
                     </el-form-item>
                 </div>
             </div>
-            <div class="room">
-                <el-form-item label="单人间数量" class="inline hotel-single">
-                    <el-input v-model="params.single"></el-input>
-                </el-form-item>
-                <el-form-item label="单人间成本(USD)" class="inline hotel-single">
-                    <el-input v-model="params.singleCost"></el-input>
-                </el-form-item>
-                <el-form-item label="单人间报价(USD)" class="inline hotel-single">
-                    <el-input v-model="params.singleOffer"></el-input>
-                </el-form-item>
-                <el-form-item label="双人间数量" class="inline hotel-double">
-                    <el-input v-model="params.double"></el-input>
-                </el-form-item>
-                <el-form-item label="双人间成本(USD)" class="inline hotel-double">
-                    <el-input v-model="params.doubleCost"></el-input>
-                </el-form-item>
-                <el-form-item label="双人间报价(USD)" class="inline hotel-triple">
-                    <el-input v-model="params.doubleOffer"></el-input>
-                </el-form-item>
-                <el-form-item label="三人间数量" class="inline hotel-double">
-                    <el-input v-model="params.double"></el-input>
-                </el-form-item>
-                <el-form-item label="三人间成本(USD)" class="inline hotel-triple">
-                    <el-input v-model="params.doubleCost"></el-input>
-                </el-form-item>
-                <el-form-item label="三人间报价(USD)" class="inline hotel-triple">
-                    <el-input v-model="params.doubleOffer"></el-input>
-                </el-form-item>
+            <div class="hotel-bank">
+                <h5>银行信息<el-button class="add-bank" type="primary" size="mini" @click="addBank">添加记录</el-button></h5>
+                <div v-for="bank in params.bank">
+                    <el-form-item label="币种" class="inline-bank">
+                        <el-select v-model="bank.type" placeholder="select">
+                            <el-option label="USD/美元" value="1"></el-option>
+                            <el-option label="LKR/斯里兰卡卢布" value="2"></el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="银行名称" class="inline-bank">
+                        <el-input v-model="bank.bankName"></el-input>
+                    </el-form-item>
+                    <el-form-item label="开户支行" class="inline-bank">
+                        <el-input v-model="bank.zhihang"></el-input>
+                    </el-form-item>
+                    <el-form-item label="收款人名称" class="inline-bank">
+                        <el-input v-model="bank.name"></el-input>
+                    </el-form-item>
+                    <el-form-item label="收款人账号" class="inline-bank">
+                        <el-input v-model="bank.account"></el-input>
+                    </el-form-item>
+                    <el-form-item label="备注" class="inline-bank">
+                        <el-input v-model="bank.beizhu"></el-input>
+                    </el-form-item>
+                    <el-form-item class="inline">
+                        <el-button type="warning" @click="removeBank($index)" >删除</el-button>
+                    </el-form-item>
+                </div>
             </div>
-            <el-form-item label="是否有儿童优惠">
-                <el-switch class="inline"
-                        v-model="params.child"
-                        on-text="Yes"
-                        off-text="No">
-                </el-switch>
-                <el-form-item class="inline" v-if="params.child">
-                    <el-input v-model="params.doubleOffer" placeholder="优惠比例"></el-input>
-                </el-form-item>
-            </el-form-item>
             <el-form-item>
                 <el-button type="primary" v-if="!submitting">提 交</el-button>
                 <el-button type="primary" v-if="submitting" :loading="submitting">正在提交...</el-button>
@@ -135,31 +128,6 @@
     </div>
 </template>
 <style lang="scss">
-    
-    .hotel-region {
-        width: 100px;
-    }
-    .hotel-address {
-        width: 394px;
-    }
-    .hotel-star {
-        width: 100px;
-    }
-    .hotel-total {
-        width: 200px;
-    }
-    .hotel-single {
-        width: 150px;
-    }
-    .hotel-double {
-        width: 150px;
-    }
-    .hotel-triple {
-        width: 150px;
-    }
-    .cost-phone {
-        width:325px;
-    }
     .hotel-upload {
         width: 250px;
         text-align: center;
@@ -176,6 +144,16 @@
         padding: 5px;
         margin-bottom: 10px;
     }
+    .hotel-people,.hotel-bank {
+        h5 {
+            margin-bottom:8px;
+            .add-people,.add-bank{
+                margin-left:5px;
+            }
+        }
+        
+    }
+
     .inline {
         display: inline-block;
     }
@@ -183,29 +161,42 @@
         display: inline-block;
         width:150px;
     }
+    .inline-bank {
+        display:inline-block;
+        width:150px;
+    }
 
 </style>
 <script>
-    import ContentTop from "../../../../components/ContentTop.vue"
+    import ContentTop from "src/views/components/ContentTop.vue"
     export default{
         data(){
             return{
                 params:{
                     quhao:"0094",
-                    child:false,
-                    cent:''
-
+                    people:[
+                        {zhiwei:'',name:'',phone1:'',phone2:'',email:'',beizhu:''}
+                    ],
+                    bank:[
+                        {type:'',bankName:'',zhihang:'',name:'',account:'',beizhu:''}
+                    ]
                 },
                 submitting:false
             }
         },
 
         methods: {
-            handleRemove(file, fileList) {
-                console.log(file, fileList);
+            addPeople(){
+                this.params.people.push({zhiwei:'',name:'',phone1:'',phone2:'',email:'',beizhu:''})
             },
-            handlePreview(file) {
-                console.log(file)
+            removePeople(index){
+                this.params.people.splice(index,1);
+            },
+            addBank(){
+                this.params.bank.push({type:'',bankName:'',zhihang:'',name:'',account:'',beizhu:''});
+            },
+            removeBank(index){
+                this.params.bank.splice(index,1)
             }
         },
         components:{
