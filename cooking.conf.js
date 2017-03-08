@@ -26,7 +26,7 @@ cooking.set({
         'src': path.join(__dirname, 'src'),
         'assets': path.join(__dirname, 'src/assets')
     },
-    static: 'assets',
+    static: 'src/assets',
     extends: ['vue2', 'sass', 'buble', 'autoprefixer']
 });
 
