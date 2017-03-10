@@ -25,8 +25,6 @@ Vue.prototype.$locale = {
         Vue.config.lang = lang;
     }
 };
-Vue.prototype.$http = axios;
-
 Object.keys(filters).forEach(key => {
     Vue.filter(key, filters[key])
 });
@@ -42,6 +40,10 @@ Vue.filter('room', function(arr, option) {
         return sum
     }
 });
+var apiBase = axios.create({
+    baseURL: 'https://api.example.com'
+});
+Vue.prototype.$http = apiBase;
 
 new Vue({
     el: '#app',

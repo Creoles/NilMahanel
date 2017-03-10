@@ -192,10 +192,10 @@
             })
         },
         created(){
-            daovoice('init', {
-                app_id: "6947d5af"
-            });
-            daovoice('update');
+            // daovoice('init', {
+            //     app_id: "6947d5af"
+            // });
+            // daovoice('update');
             RongIMClient.init("8w7jv4qb8yr2y");
             this.setStatusListener();
             this.setMessageListener();

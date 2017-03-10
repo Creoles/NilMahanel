@@ -1,11 +1,11 @@
 <template>
-    <div>
+    <div class="edit-hotel">
         <content-top></content-top>
-        <el-steps :space="300" center="true" :active="1" align-center="true">
+        <!--<el-steps :space="300" center="true" :active="1" align-center="true">
             <el-step title="基础信息"></el-step>
             <el-step title="费率"></el-step>
             <el-step title="介绍&图片"></el-step>
-        </el-steps>
+        </el-steps>-->
         <el-row>
             <el-col :span="11" style="padding-right:30px;">
                 中文
@@ -44,27 +44,23 @@
         </el-row>
         <hr>
         <el-form :model="params" label-position="top" label-width="100px" class="hotel-form">
-            <el-form-item label="具体地址" class="inline hotel-address">
+            <el-form-item label="星级" class="inline hotel-star">
+                <hotel-star v-on:star-change="onStarChange($event)"></hotel-star>
+            </el-form-item>
+            <el-form-item label="具体地址" class="hotel-address">
                 <el-input v-model="params.address"></el-input>
             </el-form-item>
-            <el-form-item label="星级" class="inline hotel-star">
-                <el-select v-model="params.star" placeholder="select">
-                    <el-option label="1 star" value="1"></el-option>
-                    <el-option label="2 star" value="2"></el-option>
-                     <el-option label="3 star" value="3"></el-option>
-                     <el-option label="4 star" value="4"></el-option>
-                     <el-option label="5 star" value="5"></el-option>
-                </el-select>
-            </el-form-item>
-            <el-form-item label="酒店网址" class="inline">
+            <br>
+            <el-form-item label="酒店网址" class="hotel-site">
                 <el-input v-model="params.costPerson"></el-input>
             </el-form-item>
-            <el-form-item label="预定邮箱">
+            <el-form-item label="预定邮箱" class="inline">
                 <el-input v-model="params.costPerson"></el-input>
             </el-form-item>
-            <el-form-item label="预定电话">
+            <el-form-item label="预定电话" class="inline">
                 <el-input v-model="params.costPerson"></el-input>
             </el-form-item>
+            <hr>
             <div class="hotel-people">
                 <h5>联系人员<el-button class="add-people" type="primary" size="mini" @click="addPeople">添加记录</el-button></h5>
                 <div v-for="item in params.people">
@@ -91,6 +87,7 @@
                     </el-form-item>
                 </div>
             </div>
+            <hr>
             <div class="hotel-bank">
                 <h5>银行信息<el-button class="add-bank" type="primary" size="mini" @click="addBank">添加记录</el-button></h5>
                 <div v-for="bank in params.bank">
@@ -116,7 +113,7 @@
                         <el-input v-model="bank.beizhu"></el-input>
                     </el-form-item>
                     <el-form-item class="inline">
-                        <el-button type="warning" @click="removeBank($index)" >删除</el-button>
+                        <el-button type="warning" @click="removeBank($index)">删除</el-button>
                     </el-form-item>
                 </div>
             </div>
@@ -128,52 +125,66 @@
     </div>
 </template>
 <style lang="scss">
-    .hotel-upload {
-        width: 250px;
-        text-align: center;
-        cursor: pointer;
-        border: 2px solid #fff;
-        padding-top: 8px;
-        .el-icon-upload {
-            font-size: 40px;
-            color: #ccc;
-        }
-    }
-    .room {
-        border: 3px solid #fff;
-        padding: 5px;
-        margin-bottom: 10px;
-    }
-    .hotel-people,.hotel-bank {
-        h5 {
-            margin-bottom:8px;
-            .add-people,.add-bank{
-                margin-left:5px;
+    .edit-hotel {
+        .hotel-upload {
+            width: 250px;
+            text-align: center;
+            cursor: pointer;
+            border: 2px solid #fff;
+            padding-top: 8px;
+            .el-icon-upload {
+                font-size: 40px;
+                color: #ccc;
             }
         }
-        
-    }
+        .hotel-people,.hotel-bank {
+            h5 {
+                margin-bottom:8px;
+                .add-people,.add-bank{
+                    margin-left:5px;
+                }
+            }
+            
+        }
 
-    .inline {
-        display: inline-block;
-    }
-    .inline-people {
-        display: inline-block;
-        width:150px;
-    }
-    .inline-bank {
-        display:inline-block;
-        width:150px;
+        .inline {
+            display: inline-block;
+        }
+        .inline-people {
+            display: inline-block;
+            width:150px;
+        }
+        .inline-bank {
+            display:inline-block;
+            width:150px;
+        }
+        .hotel-address {
+            display:inline-block;
+            width:400px;
+        }
+        .hotel-site  {
+            display:inline-block;
+            width:300px;
+        }
     }
 
 </style>
 <script>
     import ContentTop from "src/views/components/ContentTop.vue"
+    import HotelStar from 'src/views/components/HotelStar.vue'
     export default{
         data(){
             return{
+                star:{
+                    value1:1,
+                    value2:2,
+                    value3:3,
+                    value4:4,
+                    value5:5
+                },
                 params:{
                     quhao:"0094",
+                    star:'',
                     people:[
                         {zhiwei:'',name:'',phone1:'',phone2:'',email:'',beizhu:''}
                     ],
@@ -184,8 +195,10 @@
                 submitting:false
             }
         },
-
         methods: {
+            onStarChange(msg){
+                this.params.star = msg;
+            },
             addPeople(){
                 this.params.people.push({zhiwei:'',name:'',phone1:'',phone2:'',email:'',beizhu:''})
             },
@@ -200,7 +213,8 @@
             }
         },
         components:{
-            ContentTop
+            ContentTop,
+            HotelStar
         }
     }
 </script>
