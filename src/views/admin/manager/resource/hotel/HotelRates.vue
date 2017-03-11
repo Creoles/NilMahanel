@@ -49,5 +49,12 @@
   
 </style>
 <script>
-  export 
+  export default {
+    data(){
+
+    },
+    methods(){
+      
+    }
+  }
 </script>
