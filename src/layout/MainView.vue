@@ -5,16 +5,22 @@
             <tool-bar></tool-bar>
             <el-col :span="20" :offset="4">
                 <div class="main">
-                    <transition mode="out-in" appear>
-                        <router-view></router-view>
+                    <transition mode="out-in" 
+                                enter-active-class="fadeIn"
+                                leave-active-class="fadeOut"
+                                appear>
+                        <router-view class="animated"></router-view>
                     </transition>
                 </div>
             </el-col>
         </el-row>
     </div>
     <div v-else>
-        <transition mode="out-in" appear>
-            <router-view></router-view>
+        <transition mode="out-in" 
+                    enter-active-class="fadeIn"
+                    leave-active-class="fadeOut"
+                    appear>
+            <router-view class="animated"></router-view>
         </transition>
     </div>
 </template>
@@ -23,6 +29,9 @@
         padding: 1rem;
         min-height: 100%;
         margin-top: 67px;
+        .animated {
+            animation-duration: .377s;
+        }
     }
 </style>
 <script>
