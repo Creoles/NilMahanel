@@ -8,6 +8,6 @@ RUN npm install
 COPY . /app/
 RUN npm run dist
 RUN cp -R /app/* /usr/share/nginx/html
-RUN cp /app/nilmahanel.conf /etc/nginx/conf.d
+RUN cp /app/nilmahanel /etc/nginx/sites-enabled
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
