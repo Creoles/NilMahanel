@@ -17,13 +17,11 @@
 <script>
   import MainView from "./layout/MainView.vue"
   import ToolBar from "./layout/ToolBar.vue"
-  import Copyright from "./views/components/Copyright.vue"
   export default {
     name: 'app',
     components:{
       MainView,
-      ToolBar,
-      Copyright
+      ToolBar
     },
     created(){
        var lang = localStorage.getItem("LANG");

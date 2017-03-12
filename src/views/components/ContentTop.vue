@@ -1,7 +1,8 @@
 <template>
     <div>
         <div class="clearfix"><h1 class="content-title">{{contentTitle}}</h1>
-            <slot></slot></div>
+            <slot></slot>
+        </div>
         <hr>
     </div>
 </template>
