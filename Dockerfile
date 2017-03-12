@@ -1,6 +1,7 @@
 FROM daocloud.io/ubuntu:14.04
 MAINTAINER CongjieRan "rancongjie@126.com"
-RUN apt-get -y update && apt-get install -y nginx && apt-get install -y nodejs
+RUN apt-get -y update && apt-get install -y nginx
+RUN curl http://npmjs.org/install.sh | sudo sh
 WORKDIR /
 RUN npm i cooking-cli -g
 RUN npm run dist
