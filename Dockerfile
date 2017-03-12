@@ -10,4 +10,4 @@ RUN npm run dist
 RUN cp -R /app/* /usr/share/nginx/html
 RUN cp /app/nilmahanel.conf /etc/nginx/conf.d
 EXPOSE 80
-CMD ["nginx", "-s", "reload;"]
+CMD ["nginx", "-g", "daemon off;"]
