@@ -2,7 +2,7 @@ FROM daocloud.io/node
 MAINTAINER CongjieRan "rancongjie@126.com"
 RUN apt-get -y update && apt-get install -y nginx
 WORKDIR /app
-COPY . /app/
+COPY ./* /app/
 RUN npm i cooking-cli -g
 RUN npm i babel-core babel-loader css-loader vue-loader vue-template-compiler file-loader postcss postcss-loader\
  html-loader html-webpack-plugin json-loader style-loader url-loader\
