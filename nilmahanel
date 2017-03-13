@@ -3,7 +3,7 @@ server {
   server_name 0.0.0.0;
 
   location / {
-    root /usr/share/nginx/html;
+    root /usr/share/nginx/html/nilmahanel/dist;
     index index.html;
     try_files $uri $uri/ /index.html;
   }
