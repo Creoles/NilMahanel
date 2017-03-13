@@ -7,9 +7,14 @@
                     <el-option label="Srilanka" value="1"></el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item label="公司名称" style="width:400px" prop="name">
+            <br>
+            <el-form-item label="公司名称"  prop="name">
                 <el-input v-model="params.name"></el-input>
             </el-form-item>
+            <el-form-item label="英文名称" prop="name_en">
+                <el-input v-model="params.name_en"></el-input>
+            </el-form-item>
+            <br>
             <el-form-item label="车辆型号" prop="model" class="width-class">
                 <el-input v-model="params.xinghao"></el-input>
             </el-form-item>
