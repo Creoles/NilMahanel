@@ -7,7 +7,7 @@ COPY ./package.json /app/
 RUN npm install
 COPY . /app/
 RUN npm run dist
-RUN cp -R /app/* /usr/share/nginx/html
+RUN cp -R /app/dist /usr/share/nginx/html
 RUN cd /etc/nginx/sites-enabled && rm default
 RUN cp /app/nilmahanel /etc/nginx/sites-enabled
 EXPOSE 80
