@@ -29,9 +29,10 @@
         padding: 1rem;
         min-height: 100%;
         margin-top: 67px;
-        .animated {
-            animation-duration: .377s;
-        }
+    }
+    //全局
+    .animated {
+        animation-duration: .377s;
     }
 </style>
 <script>
