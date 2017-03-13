@@ -15,14 +15,14 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item label="城市">
-                    <el-select v-model="shopFilter.city" placeholder="city">
+                    <el-select v-model="shopFilter.city"  placeholder="city" clearable>
                         <el-option label="Srilanka" value="0"></el-option>
                         <el-option label="New Zealand" value="1"></el-option>
                         <el-option label="Nepal" value="2"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="商店类型">
-                    <el-select v-model="shopFilter.type" placeholder="type">
+                    <el-select v-model="shopFilter.type"  placeholder="type" clearable>
                         <el-option label="Srilanka" value="0"></el-option>
                         <el-option label="New Zealand" value="1"></el-option>
                         <el-option label="Nepal" value="2"></el-option>
@@ -101,7 +101,9 @@
         data(){
             return{
                 shopFilter:{
-
+                    country:'',
+                    city:'',
+                    type:''
                 },
                 shopList:[
 

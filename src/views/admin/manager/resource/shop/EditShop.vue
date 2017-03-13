@@ -21,12 +21,14 @@
                     <el-option label="综合" value="4"></el-option>
                 </el-select>
             </el-form-item>
+            <br>
             <el-form-item label="中文店名" prop="name" class="inline-input">
                 <el-input v-model="params.name"></el-input>
             </el-form-item>
             <el-form-item label="英文店名" prop="name" class="inline-input">
                 <el-input v-model="params.name"></el-input>
             </el-form-item>
+            <br>
             <el-form-item label="商店地址" prop="address" class="inline-input">
                 <el-input v-model="params.address"></el-input>
             </el-form-item>
@@ -36,20 +38,22 @@
             <el-form-item label="联系电话" class="inline contact" prop="phone">
                 <el-input v-model="params.phone"></el-input>
             </el-form-item>
+            <br>
             <el-form-item label="中文介绍" class="inline-input">
                 <el-input
                         type="textarea"
-                        autosize
+                        :rows="4"
                         v-model="params.textarea">
                 </el-input>
             </el-form-item>
             <el-form-item label="英文介绍" class="inline-input">
                 <el-input
                         type="textarea"
-                        autosize
+                        :rows="4"
                         v-model="params.textarea">
                 </el-input>
             </el-form-item>
+            <br>
             <!--<el-form-item class="inline" label="商店图片">-->
                 <!--<el-upload class="restaurant-upload"-->
                            <!--action="//jsonplaceholder.typicode.com/posts/"-->
@@ -105,13 +109,11 @@
         },
         created(){
             this.rule.rentou.push({ validator: ValidPrice, trigger: 'blur' });
-             this.rule.bili.push({ validator: ValidPrice, trigger: 'blur' });
+            this.rule.bili.push({ validator: ValidPrice, trigger: 'blur' });
         },
         methods:{
-            test(){
-                this.$http.get('http://baidu.com').then(res=>{
-                    console.log(res);
-                })
+            submit(){
+
             }
         }
     }
