@@ -46,7 +46,7 @@
         },
         computed: {
             isAdminPath() {
-                return /admin/.test(this.$route.path)
+                return true;
             }
         },
         components: {

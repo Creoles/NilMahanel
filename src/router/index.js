@@ -24,8 +24,13 @@ import EditShop from "../views/admin/manager/resource/shop/EditShop.vue"
 import ScenicManager from "../views/admin/manager/resource/scenic/Scenic.vue"
 import ScenicList from "../views/admin/manager/resource/scenic/ScenicList.vue"
 import EditScenic from "../views/admin/manager/resource/scenic/EditScenic.vue"
+import ProductManager from "../views/wholesaler/product/product.vue"
+import ProductList from "../views/wholesaler/product/list.vue"
+import EditProduct from "../views/wholesaler/product/edit.vue"
+import ProductDetail from "../views/wholesaler/product/detail.vue"
 import Account from "../views/admin/manager/Account.vue"
 import Country from "../views/admin/manager/Country.vue"
+
 Vue.use(VueRoute);
 
 function generateRoutes() {
@@ -160,6 +165,31 @@ export default new VueRoute({
                     name: "EDIT SCENIC",
                     path: "edit/:id",
                     component: EditScenic
+                }
+            ]
+        },
+        {
+            path: "/wholesaler/product",
+            component: ProductManager,
+            children: [{
+                    name: "PRODUCT LIST",
+                    path: "",
+                    component: ProductList
+                },
+                {
+                    name: "ADD PRODUCT",
+                    path: "add",
+                    component: EditProduct
+                },
+                {
+                    name: "EDIT PRODUCT",
+                    path: "edit/:id",
+                    component: EditProduct
+                },
+                {
+                    name: "PRODUCT DETAIL",
+                    path: "detail",
+                    component: ProductDetail
                 }
             ]
         },
