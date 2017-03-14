@@ -12,9 +12,6 @@
   <body>
     <div id="app"></div>
     <!-- built files will be auto injected -->
-    <div style="display:none">
-      <script src="http://s4.cnzz.com/stat.php?id=1261477291&web_id=1261477291" language="JavaScript"></script>
-    </div>
     <script src="//cdn.bootcss.com/axios/0.15.3/axios.min.js"></script>
     <script src="http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js"></script>
     <script src="https://cdn.jsdelivr.net/lodash/4.17.4/lodash.min.js"></script>
