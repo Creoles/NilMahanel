@@ -7,7 +7,7 @@
               {{item.name}}/{{item.name_en}} <el-button type="text" @click="openCityModel(item)">添加城市</el-button>
             </template>
             <el-table :data="item.city_data" max-height="250">
-              <el-table-column label="ID" prop="id"></el-table-column>
+              <el-table-column label="ID" prop="city_id"></el-table-column>
               <el-table-column label="城市中文名称" prop="name"></el-table-column>
               <el-table-column label="城市英文名称" prop="name_en"></el-table-column>
               <el-table-column label="操作">
