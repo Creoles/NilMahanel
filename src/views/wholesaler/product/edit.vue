@@ -38,7 +38,7 @@
         <draggable v-model="myArray">
           <transition-group>
             <div class="day-box" v-for="element in myArray" :key="element.id">
-                {{element.name}}
+              
             </div>
           </transition-group>
         </draggable>
