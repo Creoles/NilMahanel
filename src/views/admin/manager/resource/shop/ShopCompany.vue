@@ -17,17 +17,17 @@
       <el-table-column label="操作">
         <template scope="scope">
           <el-button type="text" @click="editShopCompany(scope.row)">编辑</el-button>
-          <el-button type="text" @click="deleteShopCompany">删除</el-button>
+          <el-button type="text" @click="deleteShopCompany(scope)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
-    <el-dialog title="添加商店集团" v-model="dialogShopCompany" size="tiny">
-      <el-form :model="shopConpmayModel">
+    <el-dialog :title="shopCompanyModel.id?'编辑集团':'添加集团'" v-model="dialogShopCompany" size="tiny" v-on:close="onDialogClose">
+      <el-form :model="shopCompanyModel">
         <el-form-item label="中文名称">
-          <el-input v-model="shopConpmayModel.name" auto-complete="off"></el-input>
+          <el-input v-model="shopCompanyModel.name" auto-complete="off"></el-input>
         </el-form-item>
         <el-form-item label="英文名称">
-          <el-input v-model="shopConpmayModel.name_en" auto-complete="off"></el-input>
+          <el-input v-model="shopCompanyModel.name_en" auto-complete="off"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -46,7 +46,8 @@
     data(){
       return {
         dialogShopCompany:false,
-        shopConpmayModel:{
+        shopCompanyModel:{
+          id:'',
           name:'',
           name_en:''
         },
@@ -58,27 +59,72 @@
     },
     created(){
       this.loadShopCompanyList();
-
     },
     methods:{
       addShopCompany(){
-        this.$http.post('/shop_company/create',this.shopConpmayModel).then(res=>{
-          if(res.code === 200){
-            this.shopConpmayModel = false;
-            this.$message({
+        if(this.shopCompanyModel.id){
+          this.$http.put('/shop_company/'+this.shopCompanyModel.id,this.shopCompanyModel).then(res=>{
+            if (res.code === 200){
+              this.shopCompanyModel = false;
+              this.$message({
                 type: 'success',
-                message: '添加成功!'
-            });
-            this.dialogShopCompany()
-          }else {
-            this.$message({
+                message: '修改成功!'
+              });
+              this.loadShopCompanyList();
+            }else {
+              this.$message({
                 type: 'error',
                 message: res.message
-            });
+              });
+            }
+          },err =>{
+            console.log(err);
+          })
+        }else {
+          this.$http.post('/shop_company/create_company',this.shopCompanyModel).then(res=>{
+            if(res.code === 200){
+              this.shopCompanyModel = false;
+              this.$message({
+                type: 'success',
+                message: '添加成功!'
+              });
+              this.loadShopCompanyList();
+            }else {
+              this.$message({
+                type: 'error',
+                message: res.message
+              });
+            }
+          },err=>{
+            console.log(err);
+          })
+        }
+        
+      },
+      editShopCompany(item){
+        this.dialogShopCompany = true;
+        this.shopCompanyModel = item;
+      },
+      deleteShopCompany(scope){
+        this.$http.delete('/shop'+scope.row.id).then(res=>{
+          if (res.code === 200){
+            this.shopCompanyList.splice(scope.$index,1);
+            this.$message({
+              type: 'success',
+              message: '删除成功'
+            })
+          }else {
+            this.$message({
+              type: 'error',
+              message: res.message
+            })
           }
         },err=>{
           console.log(err);
         })
+      },
+      onDialogClose(){
+        this.shopCompanyModel = {id:'',name:'',name_en:''}
       },
       loadShopCompanyList(){
         this.$http.get('/shop_company').then(res=>{
