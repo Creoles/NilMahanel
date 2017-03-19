@@ -111,7 +111,8 @@
                 },
                 rule:editRule,
                 submitting:false,
-                countryArr:[]
+                countryArr:[],
+                isEdit:false
             }
 
         },
@@ -122,9 +123,9 @@
         created(){
             this.rule.rentou.push({ validator: ValidPrice, trigger: 'blur' });
             this.rule.bili.push({ validator: ValidPrice, trigger: 'blur' });
-            console.log(this.$route)
             if (this.$route.params.id){
                 let id = this.$route.params.id;
+                this.isEdit = true;
                 this.loadShopById(id).then(res=>{
                     this.params = this.res.data;
                     

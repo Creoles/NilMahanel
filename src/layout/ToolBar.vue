@@ -19,7 +19,6 @@
             margin-right: 0;
             color: #fff;
         }
-
     }
 
 </style>

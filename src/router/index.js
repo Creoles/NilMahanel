@@ -30,6 +30,7 @@ import EditProduct from "../views/wholesaler/product/edit.vue"
 import ProductDetail from "../views/wholesaler/product/detail.vue"
 import Account from "../views/admin/manager/Account.vue"
 import Country from "../views/admin/manager/Country.vue"
+import ShopCompany from "../views/admin/manager/resource/shop/ShopCompany.vue"
 
 Vue.use(VueRoute);
 
@@ -202,6 +203,11 @@ export default new VueRoute({
             name: "COUNTRY MANAGE",
             path: "/admin/manager/country",
             component: Country
+        },
+        {
+            name: "SHOP COMPANY",
+            path: "/admin/manager/shop-company",
+            component: ShopCompany
         }
         // ...generateRoutes(),
     ]
