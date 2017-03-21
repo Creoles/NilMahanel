@@ -31,6 +31,9 @@ import ProductDetail from "../views/wholesaler/product/detail.vue"
 import Account from "../views/admin/manager/Account.vue"
 import Country from "../views/admin/manager/Country.vue"
 import ShopCompany from "../views/admin/manager/resource/shop/ShopCompany.vue"
+import VehicleCompany from "../views/admin/manager/resource/vehicle/VehicleCompany.vue"
+
+
 
 Vue.use(VueRoute);
 
@@ -208,7 +211,13 @@ export default new VueRoute({
             name: "SHOP COMPANY",
             path: "/admin/manager/shop-company",
             component: ShopCompany
+        },
+        {
+            name: "VEHICLE COMPANY",
+            path: "/admin/manager/vehicle-company",
+            component: VehicleCompany
         }
+
         // ...generateRoutes(),
     ]
 });

@@ -10,9 +10,9 @@
         style="width: 100%">
       <el-table-column label="id" prop="id">
       </el-table-column>
-      <el-table-column label="中文名称" prop="name">
+      <el-table-column :label="$t('tableth.name')" prop="name">
       </el-table-column>
-      <el-table-column label="英文名称" prop="name_en">
+      <el-table-column :label="$t('tableth.name_en')" prop="name_en">
       </el-table-column>
       <el-table-column label="操作">
         <template scope="scope">
@@ -59,6 +59,19 @@
     },
     created(){
       this.loadShopCompanyList();
+    },
+    locales:{
+      en:{
+        tableth:{
+          name:'chinese name',
+          name_en:'english name'
+        }
+      },'zh-cn':{
+        tableth:{
+          name:'中文名称',
+          name_en:'英文名称'
+        }
+      }
     },
     methods:{
       addShopCompany(){
