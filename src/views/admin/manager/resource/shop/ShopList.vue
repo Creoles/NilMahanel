@@ -7,23 +7,23 @@
         </content-top>
         <div>
             <el-form :inline="true" label-position="left"  :model="shopFilter" class="shop-filter">
-                <el-form-item label="国家及城市">
+                <el-form-item :label="$t('label.filter.country')">
                     <country-select :country="countryArr" v-on:country-change="onFilterCountryChange($event)"></country-select>
                 </el-form-item>
-                <el-form-item label="商店类型">
+                <el-form-item :label="$t('label.filter.type')">
                     <el-select v-model="shopFilter.shop_type"  placeholder="type" clearable>
                         <el-option label="珠宝" value="1"></el-option>
                         <el-option label="红茶" value="2"></el-option>
                         <el-option label="其他" value="3"></el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="所属集团">
+                <el-form-item :label="$t('label.filter.company')">
                     <el-select v-model="shopFilter.company_id"  placeholder="type" clearable>
                         <el-option :key="item.id" value="item.id" label="item.name" v-for="item in companyList"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item>
-                    <el-button type="primary" @click="fitler">查询</el-button>
+                    <el-button type="primary" @click="fitler">{{$t('label.filter.search')}}</el-button>
                 </el-form-item>
             </el-form>
        </div>
@@ -158,6 +158,30 @@
                 lang:"getLang"
             })
         },
+        locales:{
+            en:{
+                name:'name_en',
+                label:{
+                    filter:{
+                        country:'country&city',
+                        type:'shop type',
+                        company:'company',
+                        search:'search'
+                    }
+                }
+            },
+            'zh-cn':{
+                name:'name',
+                label:{
+                    filter:{
+                        country:'国家及城市',
+                        type:'商店类型',
+                        company:'所属公司',
+                        search:'查询'
+                    }
+                }
+            }
+        },
         methods:{
             addShop(){
                 this.$router.push({name:"ADD SHOP"})
@@ -258,7 +282,7 @@
             countryFormatter(row,column){
                 let country = this.countryList.filter(country=>
                     country.id === row.country_id
-                )[0][this.lang==="zh-CN"?'name':'name_en']
+                )[0][this.$t('name')]
                 return country;
             },
             cityFormatter(row,column){
@@ -267,7 +291,7 @@
                 )[0]['city_data'];
                 let city = cityList.filter(city=>
                     city.id === row.city_id
-                )[0][this.lang==="zh-CN"?'name':'name_en'];
+                )[0][this.$t('name')];
                 return city;
             }
         },

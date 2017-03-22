@@ -3,7 +3,7 @@
     :options="options"
     v-model="selectArr"
     @change="handleChange"
-    :props="config['zh-CN']"
+    :props="config[$lang]"
     change-on-select
     clearable
     placeholder="select">
@@ -16,15 +16,15 @@
         options:[],
         selectArr:this.country,
         config:{
-          "zh-CN":{
+          "zh-cn":{
             label:"name",
             value:"id",
             children:"city_data"
           },
-          "en-US":{
+          "en":{
             label:"name_en",
             value:"id",
-            chidren:"city_data"
+            children:"city_data"
           }
         }
       }
