@@ -9,7 +9,8 @@
              ref="vehicleForm">
       <el-form-item label="国家及城市">
         <country-select v-on:country-change="onCountryChange($event)"
-                        :country="countryArr"></country-select>
+                        :country="countryArr">
+        </country-select>
       </el-form-item>
       <el-form-item label="所属车辆公司">
         <el-select clearable
@@ -17,7 +18,8 @@
           <el-option v-for="item in companyList"
                      :key="item.id"
                      value="item.id"
-                     label="item.name"></el-option>
+                     label="item.name">
+          </el-option>
         </el-select>
       </el-form-item>
       <br>
@@ -127,11 +129,25 @@ export default {
     //验证价格信息
     this.rule.price.push({ validator: priceValid, trigger: 'blur' });
     this.loadVehicleCompanyList();
+    if (this.$route.params.id) {
+      let id = this.$route.params.id;
+      this.isEdit = true;
+      this.loadVehicleById(id).then(res => {
+        this.params = this.res.data;
+        this.countryArr.push(this.params.country_id, this.params.city_id);
+      }, err => {
+        console.log(err);
+      })
+    }
+    this.countryArr.push(this.params.country_id, this.params.city_id);
   },
   methods: {
     onCountryChange(msg) {
       this.params.contry_id = msg[0];
       this.params.city_id = msg[1]
+    },
+    loadVehicleById(id) {
+      return this.$http.get('/vehicle/' + id);
     },
     loadVehicleCompanyList() {
       this.$http.get('/vehicle_company').then(res => {
@@ -148,19 +164,41 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.submitting = true;
-          this.$http.post('/vehicle/create_vehicle', this.params).then(res => {
-            if (res.code === 200) {
-              this.$message({
-                type: 'success',
-                message: ' 添加成功!'
-              });
-            } else {
-              console.log(res.message);
-            }
-            this.submitting = false;
-          }, err => {
-            console.log(err);
-          })
+          //判断是新建 还是 编辑
+          if (this.params.id) {
+            this.$http.post('/vehicle/' + this.params.id, this.params).then(res => {
+              if (res.code === 200) {
+                this.$message({
+                  type: 'success',
+                  message: ' 修改成功!'
+                });
+              } else {
+                this.$message({
+                  type: 'error',
+                  message: res.message
+                });
+              }
+              this.submitting = false;
+            }, err => {
+              console.log(err);
+              this.submitting = false;
+            })
+          } else {
+            this.$http.post('/vehicle/create_vehicle', this.params).then(res => {
+              if (res.code === 200) {
+                this.$message({
+                  type: 'success',
+                  message: ' 添加成功!'
+                });
+              } else {
+                console.log(res.message);
+              }
+              this.submitting = false;
+            }, err => {
+              console.log(err);
+              this.submitting = false;
+            })
+          }
         } else {
           console.log('error submit!!');
           return false;

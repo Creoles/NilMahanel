@@ -51,6 +51,7 @@
       </el-form>
     </div>
     <el-table :data="vehicleList"
+              v-loading.body="loading"
               style="width: 100%">
       <el-table-column prop="country_id"
                        label="国家"
@@ -83,9 +84,9 @@
                        label="联系电话">
       </el-table-column>
       <el-table-column label="操作">
-        <template>
+        <template scope="scope">
           <el-button type="text"
-                     @click="editVehicle">编辑</el-button>
+                     @click="editVehicle(scope.row.id)">编辑</el-button>
           <el-button type="text"
                      @click="deleteVehicle(scope)">删除</el-button>
         </template>
@@ -147,6 +148,9 @@ export default {
       this.filter.contry_id = msg[0];
       this.filter.city_id = msg[1];
     },
+    editVehicle(id) {
+      this.$router.push({ name: "EDIT VEHICLE", params: { id: id } })
+    },
     deleteVehicle(scope) {
       this.$confirm('此操作将永久删除该车辆, 是否继续?', '提示', {
         confirmButtonText: '确定',
@@ -154,8 +158,9 @@ export default {
         type: 'warning'
       }).then(() => {
         //todo
-        this.$http.delete('/vehicle/' + id).then(res => {
+        this.$http.delete('/vehicle/' + scope.row.id).then(res => {
           if (res.code === 200) {
+            this.vehicleList.splice(scope.$index, 1);
             this.$message({
               type: 'success',
               message: '删除成功'
