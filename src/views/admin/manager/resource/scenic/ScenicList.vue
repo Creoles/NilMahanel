@@ -1,94 +1,202 @@
 <template>
+  <div>
+    <content-top>
+      <el-button class="add-btn el-icon-plus"
+                 type="primary"
+                 @click="addScenic">
+        添加景点
+      </el-button>
+    </content-top>
     <div>
-        <content-top>
-            <el-button class="add-btn el-icon-plus" type="primary"  @click="addScenic">
-                添加景点
-            </el-button>
-        </content-top>
-        <el-table
-                :data="scenicList"
-                style="width: 100%">
-            <el-table-column
-                    prop="country"
-                    label="国家"
-                    width="130">
-            </el-table-column>
-            <el-table-column
-                    prop="city"
-                    label="城市"
-                    width="130">
-            </el-table-column>
-            <el-table-column
-                    prop="name"
-                    label="名称"
-                    width="130">
-            </el-table-column>
-            <el-table-column
-                    prop="cost"
-                    label="报价与成本">
-                <template scope="props">
-                    <div v-if="props.row.cost">
-                        <el-popover
-                                ref="popover"
-                                placement="bottom"
-                                width="400"
-                                trigger="hover">
-                            <el-table :data="props.row.cost">
-                                <el-table-column width="100" property="adultOffer" label="成人报价"></el-table-column>
-                                <el-table-column width="100" property="adultCost" label="成人成本"></el-table-column>
-                                <el-table-column width="100" property="childOffer" label="儿童报价"></el-table-column>
-                                <el-table-column width="100" property="childCost" label="儿童成本"></el-table-column>
-                            </el-table>
-                        </el-popover>
-                        <i v-popover:popover class="el-icon-view"></i>
-                    </div>
-                </template>
-            </el-table-column>
-
-            <el-table-column
-                    prop="people"
-                    label="联系人">
-            </el-table-column>
-            <el-table-column
-                    prop="phone"
-                    label="联系电话">
-            </el-table-column>
-            <el-table-column
-                    label="操作">
-            </el-table-column>
-        </el-table>
+      <el-form :inline="true"
+               label-position="left"
+               :model="filter"
+               class="vehicle-filter">
+        <el-form-item label="城市及国家">
+          <country-select :country="countryArr"
+                          v-on:country-change="onFilterCountryChange($event)"></country-select>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary"
+                     @click="loadScenicList(1)">查询</el-button>
+        </el-form-item>
+      </el-form>
     </div>
+    <el-table :data="scenicList"
+              style="width: 100%"
+              v-loading.body="loading">
+      <el-table-column prop="country"
+                       label="国家"
+                       :formatter="countryFormatter">
+      </el-table-column>
+      <el-table-column prop="city"
+                       label="城市"
+                       :formatter="cityFormatter">
+      </el-table-column>
+      <el-table-column prop="name"
+                       label="名称">
+      </el-table-column>
+      <el-table-column prop="address"
+                       label="地址">
+      </el-table-column>
+      <el-table-column prop="adult_fee"
+                       label="成人门票(USD)">
+      </el-table-column>
+      <el-table-column prop="child_fee"
+                       label="儿童门票(USD)">
+      </el-table-column>
+      <el-table-column label="操作">
+        <template scope="scope">
+          <el-button type="text"
+                     @click="editScenic(scope.row.id)">编辑</el-button>
+          <el-button type="text"
+                     @click="deleteScenic(scope)">删除</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+    <el-pagination style="text-align:right;margin-top:30px;"
+                   v-if="scenicList.length !== 0"
+                   @size-change="handleSizeChange"
+                   @current-change="handleCurrentChange"
+                   :current-page="filter.page"
+                   :page-sizes="[20, 50, 100, 200]"
+                   :page-size="filter.number"
+                   layout="total,sizes, prev, pager, next"
+                   :total="total">
+    </el-pagination>
+  </div>
 </template>
 <style>
 
 </style>
 <script>
-    import ContentTop from "src/views/components/ContentTop.vue"
-    export default{
-        data(){
-            return{
-                scenicList:[
-                    {
-                        country:'Srilanka',
-                        cost:[
-                            {
-                                adultOffer:1,
-                                adultCost:2,
-                                childOffer:1,
-                                childCost:2
-                            }
-                        ]
-                    }
-                ]
-            }
-        },
-            methods:{
-            addScenic(){
-                this.$router.push({name:"ADD SCENIC"})
-            }
-        },
-        components:{
-            ContentTop
-        }
+import ContentTop from "src/views/components/ContentTop.vue"
+import CountrySelect from "src/views/components/CountrySelect.vue"
+export default {
+  data() {
+    return {
+      scenicList: [
+        //todo []
+        { id: 1, country_id: 1, city_id: 1, name: '大象孤儿院', name_en: 'elephent', address: "sadsdasd", adult_fee: 14.48, child_fee: 7.99, intro_cn: "asdasd", intro_en: "asdasd" }
+      ],
+      filter: {
+        country_id: '',
+        city_id: '',
+        page: 1,
+        number: 20
+      },
+      loading: false,
+      total: 10,
+      countryArr: [],
+      countryList: []
     }
+  },
+  created() {
+    this.loadScenicList(1);
+    this.loadContryList();
+  },
+  methods: {
+    addScenic() {
+      this.$router.push({ name: "ADD SCENIC" })
+    },
+    editScenic(id) {
+      this.$router.push({ name: "EDIT SCENIC", params: { id: id } });
+    },
+    deleteScenic(scope) {
+      this.$confirm('此操作将永久删除该景点, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        //todo
+        this.$http.delete('/attraction/' + scope.row.id).then(res => {
+          if (res.code === 200) {
+            this.scenicList.splice(scope.$index, 1);
+            this.$message({
+              type: 'success',
+              message: '删除成功'
+            })
+          } else {
+            this.$message({
+              type: 'error',
+              message: res.message
+            })
+          }
+        }, err => {
+          console.log(err);
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });
+      });
+    },
+    onFilterCountryChange(msg) {
+      this.filter.country_id = msg[0];
+      this.filter.city_id = msg[1];
+    },
+    loadScenicList(page) {
+      this.filter.page = page ? page : this.filter.page;
+      this.loading = true;
+      this.$http.get('/attraction/search', {
+        params: this.filter
+      }).then(res => {
+        if (res.code === 200) {
+          this.vehicleList = res.data.vehicle_data;
+          if (paga === 1) {
+            this.total = res.data.total;
+          }
+          this.loading = false;
+        } else {
+          this.loading = false;
+          console.log(res.message);
+        }
+      }, err => {
+        console.log(err);
+        this.loading = false;
+      })
+    },
+    loadContryList() {
+      this.$http.get('/country/all').then(res => {
+        if (res.code === 200) {
+          this.countryList = res.data;
+        } else {
+          console.log(res.message);
+        }
+      }, err => {
+        console.log(err);
+      })
+      this.countryList = [{ id: 1, name: "斯里兰卡", name_en: "Srilanka", "city_data": [{ id: 1, name: "科伦坡", name_en: "asdas" }] }];
+    },
+    handleSizeChange(size) {
+      this.filter.number = size;
+      this.loadScenicList();
+    },
+    handleCurrentChange(page) {
+      this.filter.page = page;
+      this.loadScenicList();
+    },
+    countryFormatter(row, column) {
+      let country = this.countryList.filter(country =>
+        country.id === row.country_id
+      )[0]['name']
+      return country;
+    },
+    cityFormatter(row, column) {
+      let cityList = this.countryList.filter(country =>
+        country.id === row.country_id
+      )[0]['city_data'];
+      let city = cityList.filter(city =>
+        city.id === row.city_id
+      )[0]['name'];
+      return city;
+    }
+
+  },
+  components: {
+    ContentTop,
+    CountrySelect
+  }
+}
 </script>
