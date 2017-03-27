@@ -227,18 +227,12 @@ export default {
       })
     },
     countryFormatter(row, column) {
-      let country = this.countryList.filter(country =>
-        country.id === row.country_id
-      )[0]['name']
+      let country = _.find(this.countryList, country => country.id === row.country_id)['name'];
       return country;
     },
     cityFormatter(row, column) {
-      let cityList = this.countryList.filter(country =>
-        country.id === row.country_id
-      )[0]['city_data'];
-      let city = cityList.filter(city =>
-        city.id === row.city_id
-      )[0]['name'];
+      let cityList = _.find(this.countryList, country => country.id === row.country_id)['city_data'];
+      let city = _.find(cityList, city => city.id === row.city_id)['name'];
       return city;
     }
   },
