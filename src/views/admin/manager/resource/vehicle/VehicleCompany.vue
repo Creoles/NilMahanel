@@ -309,8 +309,9 @@ export default {
       });
     },
     //加载 当前公司 收款账户
-    currentCompAccountList($event, id) {
-      this.$http.get('/vehicle_account/' + id).then(res => {
+    currentCompAccountList($event, owner_id) {
+      //account_type=1 公司  =2 个人
+      this.$http.get('/vehicle_account/' + owner_id + "?account_type=1").then(res => {
         if (res.code === 200) {
           this.compAccountList = res.data;
         } else {
