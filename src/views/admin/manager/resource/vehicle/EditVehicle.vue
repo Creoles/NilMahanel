@@ -131,9 +131,8 @@ export default {
     this.loadVehicleCompanyList();
     if (this.$route.params.id) {
       let id = this.$route.params.id;
-      this.isEdit = true;
       this.loadVehicleById(id).then(res => {
-        this.params = this.res.data;
+        this.params = res.data.data;
         this.countryArr.push(this.params.country_id, this.params.city_id);
       }, err => {
         console.log(err);
@@ -166,7 +165,7 @@ export default {
           this.submitting = true;
           //判断是新建 还是 编辑
           if (this.params.id) {
-            this.$http.post('/vehicle/' + this.params.id, this.params).then(res => {
+            this.$http.put('/vehicle/' + this.params.id, this.params).then(res => {
               if (res.code === 200) {
                 this.$message({
                   type: 'success',
