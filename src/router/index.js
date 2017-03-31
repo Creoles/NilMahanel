@@ -32,7 +32,7 @@ import Account from "../views/admin/manager/Account.vue"
 import Country from "../views/admin/manager/Country.vue"
 import ShopCompany from "../views/admin/manager/resource/shop/ShopCompany.vue"
 import VehicleCompany from "../views/admin/manager/resource/vehicle/VehicleCompany.vue"
-
+import RestaurantCompany from "../views/admin/manager/resource/restaurant/RestCompany.vue"
 
 
 Vue.use(VueRoute);
@@ -216,6 +216,11 @@ export default new VueRoute({
             name: "VEHICLE COMPANY",
             path: "/admin/manager/vehicle-company",
             component: VehicleCompany
+        },
+        {
+            name: "RESTAURANT COMPANY",
+            path: "/admin/manager/restaurant-company",
+            component: RestaurantCompany
         }
 
         // ...generateRoutes(),

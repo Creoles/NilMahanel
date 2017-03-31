@@ -50,7 +50,7 @@
     </el-dialog>
   </div>
 </template>
-<style lang="lang">
+<style lang="scss">
 
 </style>
 <script>
@@ -128,22 +128,34 @@ export default {
       this.restCompanyModel = item;
     },
     deleteRestCompany(scope) {
-      this.$http.delete('/restautant_company/' + scope.row.id).then(res => {
-        if (res.code === 200) {
-          this.restCompanyList.splice(scope.$index, 1);
-          this.$message({
-            type: 'success',
-            message: '删除成功'
-          })
-        } else {
-          this.$message({
-            type: 'error',
-            message: res.message
-          })
-        }
-      }, err => {
-        console.log(err);
-      })
+      this.$confirm('此操作将永久删除该公司, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$http.delete('/restautant_company/' + scope.row.id).then(res => {
+          if (res.code === 200) {
+            this.restCompanyList.splice(scope.$index, 1);
+            this.$message({
+              type: 'success',
+              message: '删除成功'
+            })
+          } else {
+            this.$message({
+              type: 'error',
+              message: res.message
+            })
+          }
+        }, err => {
+          console.log(err);
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });
+      });
+
     }
   },
   components: {

@@ -144,7 +144,7 @@ export default {
       }).then(res => {
         if (res.code === 200) {
           this.vehicleList = res.data.vehicle_data;
-          if (paga === 1) {
+          if (page === 1) {
             this.total = res.data.total;
           }
           this.loading = false;

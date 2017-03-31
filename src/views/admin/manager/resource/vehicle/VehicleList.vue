@@ -148,6 +148,7 @@ export default {
       this.filter.contry_id = msg[0];
       this.filter.city_id = msg[1];
     },
+
     editVehicle(id) {
       this.$router.push({ name: "EDIT VEHICLE", params: { id: id } })
     },
@@ -215,7 +216,7 @@ export default {
       this.countryList = [{ id: 1, name: "斯里兰卡", name_en: "Srilanka", "city_data": [{ id: 1, name: "科伦坡", name_en: "asdas" }] }];
     },
     loadCompanyList() {
-      this.$http.get('/vehicle_company').then(res => {
+      this.$http.get('/vehicle_company/search').then(res => {
         if (res.code === 200) {
           //todo
           this.companyList = res.data.data;
