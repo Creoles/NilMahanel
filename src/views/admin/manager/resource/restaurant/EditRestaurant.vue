@@ -106,43 +106,6 @@
                    :loading="submitting">正在提交...</el-button>
       </el-form-item>
   
-      <!--<el-form-item label="就餐等级">
-                                                                                                                      <el-button :disabled="!(params.price.length<3)"
-                                                                                                                                 @click.prevent="addType()">增加一种</el-button>
-                                                                                                                      <div v-for="item in params.price"
-                                                                                                                           style="width:590px">
-                                                                                                                        <el-form-item class="inline"
-                                                                                                                                      :label="等级">
-                                                                                                                          <el-select v-model="item.type"
-                                                                                                                                     class="price"
-                                                                                                                                     placeholder="select">
-                                                                                                                            <el-option label="标准餐"
-                                                                                                                                       value="1"></el-option>
-                                                                                                                            <el-option label="升级餐"
-                                                                                                                                       value="2"></el-option>
-                                                                                                                            <el-option label="豪华餐"
-                                                                                                                                       value="3"></el-option>
-                                                                                                                          </el-select>
-                                                                                                                        </el-form-item>
-                                                                                                                        <el-form-item class="inline price"
-                                                                                                                                      label="成人报价(USD)">
-                                                                                                                          <el-input v-model="params.name"></el-input>
-                                                                                                                        </el-form-item>
-                                                                                                                        <el-form-item class="inline price"
-                                                                                                                                      label="成人成本(USD)">
-                                                                                                                          <el-input v-model="params.name"></el-input>
-                                                                                                                        </el-form-item>
-                                                                                                                        <el-form-item class="inline price"
-                                                                                                                                      label="儿童报价(USD)">
-                                                                                                                          <el-input v-model="params.name"></el-input>
-                                                                                                                        </el-form-item>
-                                                                                                                        <el-form-item class="inline price"
-                                                                                                                                      label="儿童成本(USD)">
-                                                                                                                          <el-input v-model="params.name"></el-input>
-                                                                                                                        </el-form-item>
-                                                                                                                        <el-button @click.prevent="removeType(item)">删除</el-button>
-                                                                                                                      </div>
-                                                                                                                    </el-form-item>-->
     </el-form>
   </div>
 </template>
