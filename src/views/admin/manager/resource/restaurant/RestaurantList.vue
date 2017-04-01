@@ -71,7 +71,9 @@
       <el-table-column label="操作">
         <template scope="scope">
           <el-button type="text"
-                     @click="editRestaurant(scope.row.id)">编辑</el-button>
+                     @click="editRestaurant(scope.row.id)">编辑信息</el-button>
+          <el-button type="text"
+                     @click="editMeal(scope)">价格</el-button>
           <el-button type="text"
                      @click="deleteRestaurant(scope)">删除</el-button>
         </template>
@@ -87,10 +89,80 @@
                    layout="total,sizes, prev, pager, next"
                    :total="total">
     </el-pagination>
+    <el-dialog id="rest-price"
+               title="编辑价格"
+               v-model="dialogMeal"
+               size="large"
+               v-on:close="onDialogClose">
+      <el-form :inline="true">
+        <div>
+          <el-button type="primary"
+                     style="margin-bottom:10px;"
+                     @click="addOneMeal">添加一条</el-button>
+        </div>
+        <div v-for="(item,index) in mealModel"
+             class="price-box">
+          <el-form-item label="套餐类型">
+            <el-select v-model="item.restaurant_type"
+                       class="price-width"
+                       :disabled="item.id != null">
+              <el-option label="标准餐"
+                         :value="1"></el-option>
+              <el-option label="升级餐"
+                         :value="2"></el-option>
+              <el-option label="豪华餐"
+                         :value="3"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="成人报价">
+            <el-input v-model.number="item.adult_fee"
+                      class="price-width"></el-input>
+          </el-form-item>
+          <el-form-item label="成人成本">
+            <el-input v-model.number="item.adult_cost"
+                      class="price-width"></el-input>
+          </el-form-item>
+          <el-form-item label="儿童报价">
+            <el-input v-model.number="item.child_fee"
+                      class="price-width"></el-input>
+          </el-form-item>
+          <el-form-item label="儿童成本">
+            <el-input v-model.number="item.child_cost"
+                      class="price-width"></el-input>
+          </el-form-item>
+          <el-form-item scope="scope">
+            <i class="el-icon-circle-cross"
+               style="cursor:pointer"
+               @click="deleteMeal(item.id,index)"></i>
+          </el-form-item>
+        </div>
+      </el-form>
+      <div slot="footer"
+           class="dialog-footer">
+        <el-button @click="dialogMeal = false"
+                   v-if="!submitting">取 消</el-button>
+        <el-button type="primary"
+                   v-if="!submitting"
+                   @click="submitMeal">确 定</el-button>
+        <el-button type="primary"
+                   v-if="submitting"
+                   :loading="submitting">正在提交...</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
-<style>
-
+<style lang="scss">
+#rest-price {
+  .el-dialog--large {
+    width: 78%;
+    left: 60%;
+  }
+  .price-box {
+    .price-width {
+      width: 100px;
+    }
+  }
+}
 </style>
 <script>
 import ContentTop from "src/views/components/ContentTop.vue"
@@ -102,7 +174,17 @@ export default {
         {
           id: 1, name: "阿萨德撒的",
           name_en: "asdad", address: "asdsad",
-          country_id: 1, city_id: 1,
+          country_id: 1, city_id: 1, meal_list: [
+            {
+              id: 1,
+              restaurant_id: 1,
+              restaurant_type: 1,
+              adult_fee: 2,
+              adult_cost: 2,
+              child_fee: 2,
+              child_cost: 2
+            }
+          ],
           restaurant_type: 1, contcat: "冉聪杰", telephone: "18523199991"
         }
       ],
@@ -118,6 +200,20 @@ export default {
       companyList: [],
       countryArr: [],
       loading: false,
+      dialogMeal: false,
+      deleteList: [],
+      submitting: false,
+      mealModel: [
+        {
+          id: null,
+          restaurant_id: null,
+          restaurant_type: null,
+          adult_fee: null,
+          adult_cost: null,
+          child_fee: null,
+          child_cost: null
+        }
+      ],
       restType: [
         { value: 1, label: '中餐' },
         { value: 2, label: '西餐' },
@@ -127,8 +223,11 @@ export default {
     }
   },
   created() {
-    this.loadCompanyList();
-    this.loadContryList();
+    axios.all([this.loadCompanyList(), this.loadContryList()]).then(axios.spread((res1, res2) => {
+
+    }))
+    // this.loadCompanyList();
+    // this.loadContryList();
     this.loadRestList(1);
   },
   methods: {
@@ -137,6 +236,68 @@ export default {
     },
     editRestaurant(id) {
       this.$router.push({ name: "EDIT RESTAURANT", params: { id: id } });
+    },
+    editMeal(scope) {
+      if (scope.row.meal_list.length) {
+        this.mealModel = _.cloneDeep(scope.row.meal_list);
+      }
+      this.dialogMeal = true;
+    },
+    onDialogClose() {
+      this.deleteList = [];
+      this.loadRestList();
+    },
+    deleteMeal(id, index) {
+      if (id) {
+        this.deleteList.push(id);
+      }
+      this.mealModel.splice(index, 1);
+    },
+    addOneMeal() {
+      this.mealModel.push({
+        id: null,
+        restaurant_id: null,
+        restaurant_type: null,
+        adult_fee: null,
+        adult_cost: null,
+        child_fee: null,
+        child_cost: null
+      });
+    },
+    submitMeal() {
+      this.submitting = true;
+      let updateList = [];
+      let createList = [];
+      let paramsList = {};
+      _.forIn(this.mealModel, item => {
+        if (item.id) {
+          updateList.push(item);
+        } else {
+          createList.push(item);
+        }
+      })
+      paramsList['create_list'] = createList;
+      paramsList['update_list'] = updateList;
+      paramsList['delete_list'] = this.deleteList;
+      this.$http.post('/restaurant/meal/edit_meal').then(res => {
+        if (res.code === 200) {
+          this.submitting = false;
+          this.$message({
+            type: 'success',
+            message: '修改成功!'
+          });
+          this.loadRestList();
+        } else {
+          this.$message({
+            type: 'error',
+            message: res.message
+          })
+          this.submitting = false;
+        }
+      }, err => {
+        this.submitting = false;
+        console.log(err);
+      })
     },
     deleteRestaurant(scope) {
       this.$confirm('此操作将永久删除该餐厅, 是否继续?', '提示', {
