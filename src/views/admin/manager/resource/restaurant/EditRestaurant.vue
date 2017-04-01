@@ -151,7 +151,7 @@ export default {
       this.loadRestaurantById(id).then(res => {
         this.params = res.data.data;
         this.countryArr.push(this.params.country_id, this.params.city_id);
-      }, err => {
+      }).catch(err => {
         console.log(err);
       })
     }
@@ -168,7 +168,7 @@ export default {
         } else {
           console.log(res.message);
         }
-      }, err => {
+      }).catch(err => {
         console.log(err);
       })
     },

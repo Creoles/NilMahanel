@@ -47,6 +47,7 @@ var apiBase = axios.create({
 });
 Vue.prototype.$http = apiBase;
 
+
 new Vue({
     el: '#app',
     router,
