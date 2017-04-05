@@ -24,6 +24,9 @@ import EditShop from "../views/admin/manager/resource/shop/EditShop.vue"
 import ScenicManager from "../views/admin/manager/resource/scenic/Scenic.vue"
 import ScenicList from "../views/admin/manager/resource/scenic/ScenicList.vue"
 import EditScenic from "../views/admin/manager/resource/scenic/EditScenic.vue"
+import CiceroneManager from "../views/admin/manager/resource/cicerone/Cicerone.vue"
+import CiceroneList from "../views/admin/manager/resource/cicerone/CiceroneList.vue"
+import EditCicerone from "../views/admin/manager/resource/cicerone/EditCicerone.vue"
 import ProductManager from "../views/wholesaler/product/product.vue"
 import ProductList from "../views/wholesaler/product/list.vue"
 import EditProduct from "../views/wholesaler/product/edit.vue"
@@ -171,6 +174,23 @@ export default new VueRoute({
                     component: EditScenic
                 }
             ]
+        },
+        {
+            path: "/admin/manager/cicerone",
+            component: CiceroneManager,
+            children: [{
+                name: "CICERONE LIST",
+                path: "",
+                component: CiceroneList
+            }, {
+                name: "ADD CICERONE",
+                path: "add",
+                component: EditCicerone
+            }, {
+                name: "EDIT CICERONE",
+                path: "edit/:id",
+                component: EditCicerone
+            }]
         },
         {
             path: "/wholesaler/product",
