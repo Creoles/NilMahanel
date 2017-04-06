@@ -4,56 +4,62 @@
     <el-form :model="params"
              label-position="top"
              :inline="true">
-      <el-form-item label="国家及城市"
+      <el-form-item label="国家"
                     class="inline select">
-        <country-select v-on:country-change="onCountryChange($event)"
-                        :country="countryArr">
-        </country-select>
+        <el-select v-model="params.country">
+          <el-option v-for="country in countryList"
+                     :key="country.id"
+                     :label="country.name"
+                     :value="country.id"></el-option>
+        </el-select>
       </el-form-item>
-      <el-form-item label="所属集团">
+      <el-form-item label="人员类型">
         <el-select clearable
-                   v-model="params.company_id">
-          <el-option v-for="item in companyList"
+                   v-model="params.type">
+          <el-option v-for="item in typeList"
                      :key="item.id"
-                     value="item.id"
-                     label="item.name">
+                     :value="item.id"
+                     :label="item.label">
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="酒店名称">
+      <br>
+      <el-form-item label="中文名">
         <el-input v-model="params.name"></el-input>
       </el-form-item>
-      <el-form-item label="英文名称">
+      <el-form-item label="英文名">
         <el-input v-model="params.name_en"></el-input>
       </el-form-item>
-      <br>
-      <el-form-item label="地址"
-                    style="width:500px;">
-        <el-input v-model="params.address"></el-input>
+      <el-form-item label="性别">
+        <el-input v-model="params.sex"></el-input>
       </el-form-item>
       <br>
-      <el-form-item label="类型"
-                    class="inline select">
-        <el-select v-model="params.restaurant_type"
-                   class="restaurant-region"
-                   placeholder="select">
-          <el-option label="中餐"
-                     :value="1"></el-option>
-          <el-option label="西餐"
-                     :value="2"></el-option>
-          <el-option label="特色"
-                     :value="3"></el-option>
-          <el-option label="综合"
-                     :value="4"></el-option>
+      <el-form-item label="年龄">
+        <el-input v-model="params.age"></el-input>
+      </el-form-item>
+      <el-form-item label="工作经验">
+        <el-input v-model="params.gongzuojingy"></el-input>
+      </el-form-item>
+      <el-form-item label="联系电话">
+        <el-input v-model="params.telephone"></el-input>
+      </el-form-item>
+      <el-form-item label="语言">
+        <el-input v-model="params.language"></el-input>
+      </el-form-item>
+      <br>
+      <el-form-item label="证件类型">
+        <el-select v-model="params.zhengjianleixing">
+          <el-option v-for="idType in idTypeList"
+                     :label="idType.label"
+                     :value="idType.id"
+                     :key="idType.id"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="联系人员"
-                    class="inline contact">
-        <el-input v-model="params.concact"></el-input>
+      <el-form-item label="证件编号">
+        <el-input v-model="params.idNum"></el-input>
       </el-form-item>
-      <el-form-item label="联系电话"
-                    class="inline contact">
-        <el-input v-model="params.telephone"></el-input>
+      <el-form-item label="导游证编号">
+        <el-input v-model="tourId"></el-input>
       </el-form-item>
       <br>
       <el-form-item label="币种">
@@ -121,9 +127,7 @@ export default {
         name: null,
         name_en: null,
         country_id: null,
-        city_id: null,
-        company_id: null,
-        restautant_type: null,
+        type: null,
         address: null,
         teltephone: null,
         intro_cn: null,
@@ -136,15 +140,27 @@ export default {
         account: null,
         note: null
       },
-      countryArr: [],
+      countryList: [],
       submitting: false,
       companyList: [],
-      submitting: false
+      submitting: false,
+      typeList: [
+        { id: 1, label: "国际导游" },
+        { id: 2, label: "司机导游" },
+        { id: 3, label: "景点导游" },
+        { id: 4, label: "中国翻译" }
+      ],
+      idType: [
+        { id: 1, label: "身份证" },
+        { id: 2, label: "护照" }
+      ]
 
     }
   },
   created() {
-    this.loadCompanyList();
+    axios.all([this.loadCountryList]).then(axios.spread((res1) => {
+
+    }));
     if (this.$route.params.id) {
       let id = this.$route.params.id;
       this.loadRestaurantById(id).then(res => {
@@ -156,34 +172,13 @@ export default {
     }
   },
   methods: {
-    onCountryChange(msg) {
-      this.params.country_id = msg[0];
-      this.params.city_id = msg[1];
-    },
-    loadCompanyList() {
-      this.$http.get('/restautant_company/search').then(res => {
-        if (res.code === 200) {
-          this.companyList = res.data.data;
-        } else {
-          console.log(res.message);
-        }
-      }).catch(err => {
-        console.log(err);
+    loadCountryList() {
+      this.$http.get('/country/all').then(res => {
+        this.countryList = res.data.data;
       })
-    },
-    addType() {
-      if (this.params.price.length < 3) {
-        this.params.price.push({ type: '' })
-      }
     },
     loadRestaurantById(id) {
       return this.$http.get('/restautant/' + id);
-    },
-    removeType(item) {
-      var index = this.params.price.indexOf(item);
-      if (index !== -1) {
-        this.params.price.splice(index, 1)
-      }
     },
     submit() {
       this.submitting = true;
