@@ -6,16 +6,16 @@
              :inline="true">
       <el-form-item label="国家"
                     class="inline select">
-        <el-select v-model="params.country">
-          <el-option v-for="country in countryList"
-                     :key="country.id"
-                     :label="country.name"
-                     :value="country.id"></el-option>
+        <el-select v-model="params.country_id">
+          <el-option v-for="item in countryList"
+                     :label="item.label"
+                     :value="item.id"
+                     :key="item.id">
+          </el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="人员类型">
-        <el-select clearable
-                   v-model="params.type">
+        <el-select v-model="params.type">
           <el-option v-for="item in typeList"
                      :key="item.id"
                      :value="item.id"
@@ -33,18 +33,18 @@
       <el-form-item label="性别">
         <el-input v-model="params.sex"></el-input>
       </el-form-item>
+      <el-form-item label="语言">
+        <el-input v-model="params.language"></el-input>
+      </el-form-item>
       <br>
-      <el-form-item label="年龄">
+      <el-form-item label="出生年份">
         <el-input v-model="params.age"></el-input>
       </el-form-item>
-      <el-form-item label="工作经验">
-        <el-input v-model="params.gongzuojingy"></el-input>
+      <el-form-item label="工作经验(开始工作年份)">
+        <el-input v-model.number="params.gongzuojingy"></el-input>
       </el-form-item>
       <el-form-item label="联系电话">
         <el-input v-model="params.telephone"></el-input>
-      </el-form-item>
-      <el-form-item label="语言">
-        <el-input v-model="params.language"></el-input>
       </el-form-item>
       <br>
       <el-form-item label="证件类型">
@@ -89,16 +89,10 @@
         <el-input v-model="params.note"></el-input>
       </el-form-item>
       <br>
-      <el-form-item label="中文介绍"
+      <el-form-item label="自我介绍"
                     style="width:300px">
         <el-input type="textarea"
                   v-model="params.intro_cn">
-        </el-input>
-      </el-form-item>
-      <el-form-item label="英文介绍"
-                    style="width:300px">
-        <el-input type="textarea"
-                  v-model="params.intro_en">
         </el-input>
       </el-form-item>
       <br>
@@ -150,7 +144,7 @@ export default {
         { id: 3, label: "景点导游" },
         { id: 4, label: "中国翻译" }
       ],
-      idType: [
+      idTypeList: [
         { id: 1, label: "身份证" },
         { id: 2, label: "护照" }
       ]
