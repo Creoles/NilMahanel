@@ -10,6 +10,7 @@
     <title>YouLanka-you trivial expects-游兰卡-您身边的旅行专家</title>
   </head>
   <body>
+    
     <div id="app"></div>
     <!-- built files will be auto injected -->
     <script src="//cdn.bootcss.com/axios/0.15.3/axios.min.js"></script>

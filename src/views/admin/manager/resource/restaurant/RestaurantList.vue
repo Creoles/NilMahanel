@@ -279,7 +279,7 @@ export default {
       paramsList['create_list'] = createList;
       paramsList['update_list'] = updateList;
       paramsList['delete_list'] = this.deleteList;
-      this.$http.post('/restaurant/meal/edit_meal').then(res => {
+      this.$http.post('/restaurant/meal/edit_meal', paramsList).then(res => {
         if (res.code === 200) {
           this.submitting = false;
           this.$message({
