@@ -15,7 +15,7 @@
         </el-select>
       </el-form-item>
       <el-form-item label="人员类型">
-        <el-select v-model="params.type">
+        <el-select v-model="params.guide_type">
           <el-option v-for="item in typeList"
                      :key="item.id"
                      :value="item.id"
@@ -31,68 +31,49 @@
         <el-input v-model="params.name_en"></el-input>
       </el-form-item>
       <el-form-item label="性别">
-        <el-input v-model="params.sex"></el-input>
+        <el-select v-model="params.gender">
+          <el-option label="男"
+                     :value="1"></el-option>
+          <el-option label="女"
+                     :value="2"></el-option>
+        </el-select>
       </el-form-item>
+      <br>
       <el-form-item label="语言">
         <el-input v-model="params.language"></el-input>
       </el-form-item>
-      <br>
       <el-form-item label="出生年份">
-        <el-input v-model="params.age"></el-input>
+        <el-input v-model="params.birthday"></el-input>
       </el-form-item>
       <el-form-item label="工作经验(开始工作年份)">
-        <el-input v-model.number="params.gongzuojingy"></el-input>
+        <el-input v-model.number="params.start_work"></el-input>
       </el-form-item>
       <el-form-item label="联系电话">
         <el-input v-model="params.telephone"></el-input>
       </el-form-item>
       <br>
       <el-form-item label="证件类型">
-        <el-select v-model="params.zhengjianleixing">
+        <el-select v-model="params.certificate_type">
           <el-option v-for="idType in idTypeList"
                      :label="idType.label"
                      :value="idType.id"
                      :key="idType.id"></el-option>
         </el-select>
       </el-form-item>
+      <el-form-item label="签证国别">
+        <el-input v-model="params.passport_country"></el-input>
+      </el-form-item>
       <el-form-item label="证件编号">
-        <el-input v-model="params.idNum"></el-input>
+        <el-input v-model="params.certificate_number"></el-input>
       </el-form-item>
       <el-form-item label="导游证编号">
-        <el-input v-model="tourId"></el-input>
-      </el-form-item>
-      <br>
-      <el-form-item label="币种">
-        <el-select v-model="params.currency">
-          <el-option label="美元"
-                     :value="1"></el-option>
-          <el-option label="人民币"
-                     :value="2"></el-option>
-          <el-option label="斯里兰卡卢比"
-                     :value="3"></el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item label="银行名称">
-        <el-input v-model="params.bank_name"></el-input>
-      </el-form-item>
-      <el-form-item label="开户支行">
-        <el-input v-model="params.deposit_bank"></el-input>
-      </el-form-item>
-      <el-form-item label="收款人名称">
-        <el-input v-model="params.payee"></el-input>
-      </el-form-item>
-      <el-form-item label="收款人账号">
-        <el-input v-model="params.account"></el-input>
-      </el-form-item>
-      <br>
-      <el-form-item label="备注">
-        <el-input v-model="params.note"></el-input>
+        <el-input v-model="params.tour_guide_number"></el-input>
       </el-form-item>
       <br>
       <el-form-item label="自我介绍"
                     style="width:300px">
         <el-input type="textarea"
-                  v-model="params.intro_cn">
+                  v-model="params.intro">
         </el-input>
       </el-form-item>
       <br>
@@ -104,7 +85,6 @@
                    v-if="submitting"
                    :loading="submitting">正在提交...</el-button>
       </el-form-item>
-  
     </el-form>
   </div>
 </template>
@@ -121,18 +101,18 @@ export default {
         name: null,
         name_en: null,
         country_id: null,
-        type: null,
-        address: null,
-        teltephone: null,
-        intro_cn: null,
-        intro_en: null,
-        contact: null,
-        currency: null,
-        bank_name: null,
-        deposit_bank: null,
-        peyee: null,
-        account: null,
-        note: null
+        guide_type: null,
+        gender: null,
+        birthday: null,
+        start_work: null,
+        language: null,
+        certificate_type: null,
+        certificate_number: null,
+        tour_guide_number: null,
+        passport_country: null,
+        telephone: null,
+        intro: null,
+        image_hash: "dasdasdas",
       },
       countryList: [],
       submitting: false,
@@ -172,13 +152,13 @@ export default {
       })
     },
     loadRestaurantById(id) {
-      return this.$http.get('/restautant/' + id);
+      return this.$http.get('/tour_guide/' + id);
     },
     submit() {
       this.submitting = true;
       //判断是新建 还是 编辑
       if (this.params.id) {
-        this.$http.put('/restautant/' + this.params.id, this.params).then(res => {
+        this.$http.put('/tour_guide/' + this.params.id, this.params).then(res => {
           if (res.code === 200) {
             this.$message({
               type: 'success',
@@ -196,7 +176,7 @@ export default {
           this.submitting = false;
         })
       } else {
-        this.$http.post('/restautant/create_restautant', this.params).then(res => {
+        this.$http.post('/tour_guide/create_tour_guide', this.params).then(res => {
           if (res.code === 200) {
             this.$message({
               type: 'success',
