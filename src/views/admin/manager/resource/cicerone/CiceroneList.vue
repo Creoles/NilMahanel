@@ -387,6 +387,7 @@ export default {
             type: 'success',
             message: '修改成功!'
           });
+          this.dialogAccount = false;
           this.loadRestList();
         } else {
           this.$message({
