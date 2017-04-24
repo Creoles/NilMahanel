@@ -26,7 +26,7 @@
               <el-button type="text"
                          size="small"
                          @click="removeCity(scope.
-                    $index,item.city)">删除</el-button>
+                    $index,scope)">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -103,11 +103,14 @@ export default {
       currentCountry: ''
     }
   },
+  created(){
+    this.loadList();
+  },
   methods: {
     loadList() {
       this.$http.get('/country/all').then(res => {
         if (res.data.code === 200) {
-          this.countryList = res.data
+          this.countryList = res.data.data;
         }
       }, err => {
         console.log(new Error(err))
@@ -116,7 +119,7 @@ export default {
     addCountry() {
       this.$http.post('/country/create', this.countryModel).then(res => {
         if (res.data.code === 200) {
-          dialogCountry = false;
+          this.dialogCountry = false;
           this.countryModel = {};
           this.loadList();
         }
@@ -127,7 +130,7 @@ export default {
       this.cityModel['country_id'] = this.currentCountry;
       this.$http.post('/city/create', this.cityModel).then(res => {
         if (res.data.code === 200) {
-          dialogCity = false;
+          this.dialogCity = false;
           this.countryModel = {};
           this.loadList();
         }
@@ -139,17 +142,27 @@ export default {
       this.currentCountry = item.id;
       this.dialogCity = true;
     },
-    removeCity(index, row) {
+    removeCity(index, scope) {
       this.$confirm('此操作将删除该地区, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        //todo
-        this.$message({
-          type: 'success',
-          message: '删除成功!'
-        });
+        this.$http.delete('/city/'+scope.row.id).then(res=>{
+          if(res.data.code === 200){
+            this.$message({
+              type: 'success',
+              message: '删除成功!'
+            });
+            this.loadList();
+          }else {
+            this.$message({
+              type: 'error',
+              message: '删除失败!'
+            });
+          }
+        })
+
       }).catch(() => {
         this.$message({
           type: 'info',
