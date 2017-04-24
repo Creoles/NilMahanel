@@ -40,7 +40,7 @@
               border
               style="width: 100%">
       <el-table-column fixed
-                       prop="date"
+                       prop="country_id"
                        label="国家"
                        :formatter="countryFormatter">
       </el-table-column>
@@ -54,47 +54,47 @@
                        label="英文名"
                        width="120">
       </el-table-column>
-      <el-table-column prop="name"
+      <el-table-column prop="guide_type"
                        label="类别"
                        :formatter="typeFormatter">
       </el-table-column>
   
-      <el-table-column prop="address"
+      <el-table-column prop="gender"
                        label="性别"
                        :formatter="sexFormatter">
       </el-table-column>
-      <el-table-column prop="zip"
+      <el-table-column prop="birthday"
                        label="年龄"
                        width="120"
                        :formatter="oldFormatter">
       </el-table-column>
-      <el-table-column prop="zip"
+      <el-table-column prop="start_work"
                        label="工作经验"
                        width="120"
                        :formatter="experienceFromatter">
       </el-table-column>
-      <el-table-column prop="zip"
+      <el-table-column prop="language"
                        label="语言"
                        width="120">
       </el-table-column>
-      <el-table-column prop="zip"
+      <el-table-column prop="certificate_type"
                        label="证件类型"
                        width="120"
                        :formatter="idFromatter">
       </el-table-column>
-      <el-table-column prop="zip"
+      <el-table-column prop="certificate_number"
                        label="证件编号"
                        width="120">
       </el-table-column>
-      <el-table-column prop="zip"
+      <el-table-column prop="tour_guide_number"
                        label="导游证编号"
                        width="120">
       </el-table-column>
-      <el-table-column prop="zip"
+      <el-table-column prop="passport_country"
                        label="签证国别"
                        width="120">
       </el-table-column>
-      <el-table-column prop="zip"
+      <el-table-column prop="telephone"
                        label="联系电话"
                        width="120">
       </el-table-column>
@@ -387,6 +387,7 @@ export default {
             type: 'success',
             message: '修改成功!'
           });
+          this.dialogAccount = false;
           this.loadRestList();
         } else {
           this.$message({

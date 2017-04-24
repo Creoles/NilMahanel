@@ -11,9 +11,6 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-default/index.css'
 import enLocale from 'element-ui/lib/locale/lang/en'
 import zhLocale from 'element-ui/lib/locale/lang/zh-CN'
-import VueDragula from 'vue-dragula'
-//vue-tragula for days list
-Vue.use(VueDragula);
 Vue.use(VueI18n);
 Vue.use(ElementUI, {
     enLocale,
@@ -43,7 +40,7 @@ Vue.filter('room', function(arr, option) {
     }
 });
 var apiBase = axios.create({
-    baseURL: 'https://api.example.com'
+    baseURL: 'http://118.193.211.109:10026/ota/api/v1/'
 });
 Vue.prototype.$http = apiBase;
 
