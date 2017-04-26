@@ -281,7 +281,7 @@ export default {
         name_en: null,
       },
       submitting: false,
-      total: 100,
+      total: null,
       countryList: [],
       loading: false,
       dialogAccount: false,
@@ -353,9 +353,9 @@ export default {
       });
       paramsList['create_account_list'] = createList;
       paramsList['update_account_list'] = updateList;
-      paramsList['delete_account_list'] = this.deleteList;
+      paramsList['delete_id_list'] = this.deleteList;
       this.$http.post('/tour_guide/account/edit', paramsList).then(res => {
-        if (res.code === 200) {
+        if (res.data.code === 200) {
           this.submitting = false;
           this.$message({
             type: 'success',
@@ -366,7 +366,7 @@ export default {
         } else {
           this.$message({
             type: 'error',
-            message: res.message
+            message: res.data.message
           });
           this.submitting = false;
         }
@@ -403,7 +403,7 @@ export default {
             });
           } else {
             this.$message({
-              type: 'success',
+              type: 'error',
               message: res.data.message
             });
           }
