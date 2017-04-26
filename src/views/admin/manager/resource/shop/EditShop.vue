@@ -2,7 +2,6 @@
   <div>
     <content-top></content-top>
     <el-form :model="params"
-             :rules="rule"
              label-position="top"
              class="shop-form"
              ref="shopForm">
@@ -13,22 +12,25 @@
       <el-form-item label="所属集团"
                     class="inline select">
         <el-select placeholder="select"
-                   v-model="params.belong"></el-select>
+                   v-model="params.company_id">
+          <el-option :key="item.id"
+                     :value="item.id"
+                     :label="item.name"
+                     v-for="item in companyList"></el-option>
+
+        </el-select>
       </el-form-item>
       <el-form-item label="类型"
-                    class="inline select"
-                    prop="type">
+                    class="inline select">
         <el-select v-model="params.shop_type"
                    class="restaurant-region"
                    placeholder="select">
-          <el-option label="中餐"
-                     value="1"></el-option>
-          <el-option label="西餐"
-                     value="2"></el-option>
-          <el-option label="特色"
-                     value="3"></el-option>
-          <el-option label="综合"
-                     value="4"></el-option>
+          <el-option label="珠宝"
+                     :value="1"></el-option>
+          <el-option label="红茶"
+                     :value="2"></el-option>
+          <el-option label="其他"
+                     :value="3"></el-option>
         </el-select>
       </el-form-item>
       <br>
@@ -50,12 +52,12 @@
       </el-form-item>
       <el-form-item label="联系人员"
                     class="inline contact"
-                    prop="people">
-        <el-input v-model="params.contcat"></el-input>
+                    prop="contact">
+        <el-input v-model="params.contact"></el-input>
       </el-form-item>
       <el-form-item label="联系电话"
                     class="inline contact"
-                    prop="phone">
+                    prop="telephone">
         <el-input v-model="params.telephone"></el-input>
       </el-form-item>
       <br>
@@ -89,12 +91,12 @@
       <!--</el-form-item>-->
       <el-form-item class="inline"
                     label="人头费"
-                    prop="rentou">
+                    prop="fee_person">
         <el-input v-model="params.fee_person"></el-input>
       </el-form-item>
       <el-form-item class="inline"
                     label="返佣比例(%)"
-                    prop="bili">
+                    prop="commission_ratio">
         <el-input v-model="params.commission_ratio"></el-input>
       </el-form-item>
       <el-form-item>
@@ -121,7 +123,6 @@
 </style>
 <script>
 import ContentTop from "src/views/components/ContentTop.vue"
-import editRule from "src/assets/valid/editShop.json"
 import ValidPrice from 'src/util/priceValid.js'
 import CountrySelect from 'src/views/components/CountrySelect.vue'
 export default {
@@ -135,18 +136,18 @@ export default {
         telephone: null,
         country_id: null,
         city_id: null,
-        belong: null,
+        company_id: null,
         shop_type: null,
-        contcat: null,
-        fee_person: null,
-        commission_ratio: null,
+        contact: null,
+        fee_person: '',
+        commission_ratio: '',
         intro_cn: null,
         intro_en: null
       },
-      rule: editRule,
       submitting: false,
       countryArr: [],
-      isEdit: false
+      isEdit: false,
+      companyList: []
     }
 
   },
@@ -155,23 +156,24 @@ export default {
     CountrySelect
   },
   created() {
-    this.rule.rentou.push({ validator: ValidPrice, trigger: 'blur' });
-    this.rule.bili.push({ validator: ValidPrice, trigger: 'blur' });
+//    this.rule.fee_person.push({ validator: ValidPrice, trigger: 'blur' });
+//    this.rule.commission_ratio.push({ validator: ValidPrice, trigger: 'blur' });
     this.loadCompanyList();
     if (this.$route.params.id) {
       let id = this.$route.params.id;
       this.isEdit = true;
       this.loadShopById(id).then(res => {
-        if (res.code === 200) {
-          this.params = this.res.data;
+        if (res.data.code === 200) {
+          this.params = res.data.data;
+          this.countryArr.push(this.params.country_id, this.params.city_id);
         } else {
-          console.log(res.message);
+          console.log(res.data.message);
         }
       }, err => {
         console.log(err);
       })
     }
-    this.countryArr.push(this.params.country_id, this.params.city_id);
+
   },
   methods: {
     submit(formName) {
@@ -180,37 +182,39 @@ export default {
           this.submitting = true;
           if (this.params.id) {
             this.$http.put('/shop/' + this.params.id, this.params).then(res => {
-              if (res.code === 200) {
+              if (res.data.code === 200) {
                 this.$message({
                   type: 'success',
                   message: ' 修改成功!'
                 });
+                this.$router.push({name: 'SHOP LIST'});
               } else {
                 this.$message({
                   type: 'error',
-                  message: res.message
+                  message: res.data.message
                 });
               }
             }, err => {
               console.log(err)
-            })
+            });
             this.submitting = false;
           } else {
             this.$http.post('/shop/create_shop', this.params).then(res => {
-              if (res.code === 200) {
+              if (res.data.code === 200) {
                 this.$message({
                   type: 'success',
-                  message: ' 添加成功!'
+                  message: '添加成功!'
                 });
+                this.$router.push({name: 'SHOP LIST'});
               } else {
                 this.$message({
                   type: 'error',
-                  message: res.message
+                  message: res.data.message
                 });
               }
             }, err => {
               console.log(err);
-            })
+            });
             this.submitting = false;
           }
 
@@ -225,9 +229,9 @@ export default {
       return this.$http.get('/shop/' + id)
     },
     loadCompanyList() {
-      this.$http.get('/shop_company').then(res => {
-        if (res.code === 200) {
-          this.companyList = res.data;
+      this.$http.get('/shop_company/search', {params: {is_all: true}}).then(res => {
+        if (res.data.code === 200) {
+          this.companyList = res.data.data;
         } else {
           console.log(res.message);
         }

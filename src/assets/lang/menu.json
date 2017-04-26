@@ -125,7 +125,7 @@
                         "id": "13",
                         "data": {
                             "menuName": "服务人员管理",
-                            "menuPath": "/admin/manager/service－personal",
+                          "menuPath": "/admin/manager/cicerone",
                             "icon": "fa-id-card-o",
                             "menuCode": "manager-service－personal"
                         },

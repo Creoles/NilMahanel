@@ -40,7 +40,7 @@ Vue.filter('room', function(arr, option) {
     }
 });
 var apiBase = axios.create({
-    baseURL: 'http://118.193.211.109:10026/ota/api/v1/'
+  baseURL: 'http://118.193.211.109:10026/ota/api/v1/'
 });
 Vue.prototype.$http = apiBase;
 

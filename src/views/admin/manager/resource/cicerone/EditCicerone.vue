@@ -8,7 +8,7 @@
                     class="inline select">
         <el-select v-model="params.country_id">
           <el-option v-for="item in countryList"
-                     :label="item.label"
+                     :label="item.name"
                      :value="item.id"
                      :key="item.id">
           </el-option>
@@ -132,14 +132,15 @@ export default {
     }
   },
   created() {
-    axios.all([this.loadCountryList]).then(axios.spread((res1) => {
-
-    }));
+    this.loadCountryList();
     if (this.$route.params.id) {
       let id = this.$route.params.id;
       this.loadRestaurantById(id).then(res => {
-        this.params = res.data.data;
-        this.countryArr.push(this.params.country_id, this.params.city_id);
+        if (res.data.code === 200) {
+          this.params = res.data.data;
+        } else {
+          console.log(res.data.message);
+        }
       }).catch(err => {
         console.log(err);
       })
@@ -148,7 +149,12 @@ export default {
   methods: {
     loadCountryList() {
       this.$http.get('/country/all').then(res => {
-        this.countryList = res.data.data;
+        if (res.data.code === 200) {
+          this.countryList = res.data.data;
+        } else {
+          console.log(res.data.message)
+        }
+
       })
     },
     loadRestaurantById(id) {
@@ -159,11 +165,12 @@ export default {
       //判断是新建 还是 编辑
       if (this.params.id) {
         this.$http.put('/tour_guide/' + this.params.id, this.params).then(res => {
-          if (res.code === 200) {
+          if (res.data.code === 200) {
             this.$message({
               type: 'success',
               message: ' 修改成功!'
             });
+            this.$router.push({name: "CICERONE LIST"});
           } else {
             this.$message({
               type: 'error',
@@ -177,13 +184,14 @@ export default {
         })
       } else {
         this.$http.post('/tour_guide/create_tour_guide', this.params).then(res => {
-          if (res.code === 200) {
+          if (res.data.code === 200) {
             this.$message({
               type: 'success',
               message: ' 添加成功!'
             });
+            this.$router.push({name: "CICERONE LIST"});
           } else {
-            console.log(res.message);
+            console.log(res.data.message);
           }
           this.submitting = false;
         }, err => {

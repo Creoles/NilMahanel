@@ -71,7 +71,7 @@
       <el-table-column prop="start_work"
                        label="工作经验"
                        width="120"
-                       :formatter="experienceFromatter">
+                       :formatter="experienceFormatter">
       </el-table-column>
       <el-table-column prop="language"
                        label="语言"
@@ -80,7 +80,7 @@
       <el-table-column prop="certificate_type"
                        label="证件类型"
                        width="120"
-                       :formatter="idFromatter">
+                       :formatter="idFormatter">
       </el-table-column>
       <el-table-column prop="certificate_number"
                        label="证件编号"
@@ -219,11 +219,11 @@
           </el-select>
         </el-form-item>
         <el-form-item label="基本工资">
-          <el-input v-model="priceModel.jibengongzi"></el-input>
+          <el-input v-model="priceModel.base_fee"></el-input>
         </el-form-item>
         <br>
         <el-form-item label="服务费类型">
-          <el-select v-model="priceModel.fuwufeiType">
+          <el-select v-model="priceModel.service_type">
             <el-option label="固定服务费"
                        :value="1"></el-option>
             <el-option label="按人头费"
@@ -231,7 +231,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="服务费">
-          <el-input v-model="priceModel.fuwufei"></el-input>
+          <el-input v-model="priceModel.service_fee"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer"
@@ -253,38 +253,8 @@ import ContentTop from "src/views/components/ContentTop.vue"
 export default {
   data() {
     return {
-      ciceroneList: [{
-        id: 1,
-        country_id: 1,
-        type: 1,
-        sex: 1,
-        old: "1993",
-        experience: 1990,
-        idType: 1,
-        name: 'asda',
-        name_en: 'asd'
-      }, {
-        id: 2,
-        country_id: 1,
-        type: 1,
-        sex: 2,
-        old: "1993",
-        experience: 1991,
-        idType: 2,
-        name: 'asddddd',
-        name_en: 'bbbbb'
-      }],
-      accountList: [
-        {
-          account: null,
-          bank_name: null,
-          currency: null,
-          deposit_bank: null,
-          note: null,
-          payee: null,
-          tour_guide_id: null
-        }
-      ],
+      ciceroneList: [],
+      accountList: [],
       filter: {
         country_id: null,
         type: null,
@@ -299,11 +269,13 @@ export default {
       ],
       priceModel: {
         id: null,
+        tour_guide_id: null,
         currency: null,
-        jibengongzi: null,
-        fuwufeiType: null,
-        price: null
+        base_fee: null,
+        service_type: null,
+        service_fee: null
       },
+      currentTourId: null,
       currentPriceName: {
         name: null,
         name_en: null,
@@ -321,27 +293,28 @@ export default {
 
   },
   created() {
+    this.loadCountryList();
     this.loadCiceroneList(1);
-    this.loadContryList();
   },
   methods: {
     addCicerone() {
       this.$router.push({ name: "ADD CICERONE" })
     },
     editCicerone(id) {
-      this.$router.push({ name: "EDIT CICERONE", params: { id: 1 } });
+      this.$router.push({name: "EDIT CICERONE", params: {id: id}});
     },
     editPrice(scope) {
       this.currentPriceName.name = scope.row.name;
       this.currentPriceName.name_en = scope.row.name_en;
+      this.currentPriceName.tour_guide_id = scope.row.id;
       this.priceLoading = true;
       this.dialogPrice = true;
       this.$http.get('/tour_guide/fee/' + scope.row.id).then(res => {
-        if (res.code === 200) {
+        if (res.data.code === 200) {
           this.priceModel = res.data.data;
           this.priceLoading = false;
         } else {
-          console.log(res.mssage);
+          console.log(res.data.message);
           this.priceLoading = false;
         }
       }).catch(err => {
@@ -351,9 +324,10 @@ export default {
     },
     editAccount(scope) {
       this.dialogAccount = true;
+      this.currentTourId = scope.row.id;
       this.$http('/tour_guide/account/' + scope.row.id).then(res => {
         this.accountLoading = true;
-        if (res.code === 200) {
+        if (res.data.code === 200) {
           this.accountList = res.data.data;
           this.accountLoading = false;
         } else {
@@ -376,7 +350,7 @@ export default {
         } else {
           createList.push(item);
         }
-      })
+      });
       paramsList['create_account_list'] = createList;
       paramsList['update_account_list'] = updateList;
       paramsList['delete_account_list'] = this.deleteList;
@@ -393,7 +367,7 @@ export default {
           this.$message({
             type: 'error',
             message: res.message
-          })
+          });
           this.submitting = false;
         }
       }, err => {
@@ -403,13 +377,14 @@ export default {
     },
     addOneAccount() {
       this.accountList.push({
+        id: null,
         account: null,
         bank_name: null,
         currency: null,
         deposit_bank: null,
         note: null,
         payee: null,
-        tour_guide_id: null
+        tour_guide_id: this.currentTourId
       });
     },
     deleteOneAccount(id, index) {
@@ -419,26 +394,59 @@ export default {
       this.accountList.splice(index, 1);
     },
     submitPrice() {
-      if (priceModel) { }
+      if (this.priceModel.id) {
+        this.$http.put('/tour_guide/fee/' + this.priceModel.id, this.priceModel).then(res => {
+          if (res.data.code === 200) {
+            this.$message({
+              type: 'success',
+              message: '修改成功!'
+            });
+          } else {
+            this.$message({
+              type: 'success',
+              message: res.data.message
+            });
+          }
+        }, err => {
+          console.log(err);
+        })
+      } else {
+        this.priceModel.tour_guide_id = this.currentPriceName.tour_guide_id;
+        this.$http.post('/tour_guide/fee/create_tour_guide_fee', this.priceModel).then(res => {
+          if (res.data.code === 200) {
+            this.$message({
+              type: 'success',
+              message: '创建成功!'
+            });
+          } else {
+            this.$message({
+              type: 'error',
+              message: res.data.message
+            });
+          }
+        }, err => {
+          console.log(err)
+        })
+      }
     },
     onDialogClose() {
       this.priceModel = {};
       this.currentPriceName = {};
     },
-    deleteCicerone() {
-      //todo
+    deleteCicerone(scope) {
       this.$confirm('此操作将永久删除此人员, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
         this.$http.delete('/tour_guide/' + scope.row.id).then(res => {
-          if (res.code === 200) {
-            this.shopList.splice(scope.$index, 1);
+          if (res.data.code === 200) {
+            this.ciceroneList.splice(scope.$index, 1);
             this.$message({
               type: 'success',
               message: '删除成功!'
             });
+            this.loadCiceroneList();
           } else {
             this.$message({
               type: 'error',
@@ -464,62 +472,60 @@ export default {
       this.filter.page = page;
       this.loadCiceroneList();
     },
-    loadContryList() {
+    loadCountryList() {
       this.$http.get('/country/all').then(res => {
-        if (res.code === 200) {
-          this.countryList = res.data;
+        if (res.data.code === 200) {
+          this.countryList = res.data.data;
         } else {
           console.log(res.message);
         }
       }, err => {
         console.log(err);
-      })
-      this.countryList = [{ id: 1, name: "斯里兰卡", name_en: "Srilanka", "city_data": [{ id: 1, name: "科伦坡", name_en: "asdas" }] }];
+      });
     },
     countryFormatter(row, column) {
       let country = _.find(this.countryList, country => country.id === row.country_id)['name'];
       return country;
     },
     typeFormatter(row, column) {
-      let type = _.find(this.ciceroneType, type => type.id === row.type)['label'];
+      let type = _.find(this.ciceroneType, type => type.id === row.certificate_type)['label'];
       return type;
     },
     oldFormatter(row, column) {
       let year = new Date().getFullYear();
-      let old = year - row.old;
+      let old = year - row.birthday;
       return old;
     },
     sexFormatter(row, column) {
       let s = [{ id: 1, label: '男' }, { id: 2, label: '女' }];
-      let sex = _.find(s, sex => sex.id === row.sex)['label'];
+      let sex = _.find(s, sex => sex.id === row.gender)['label'];
       return sex;
     },
-    experienceFromatter(row, column) {
+    experienceFormatter(row, column) {
       let year = new Date().getFullYear();
-      let experience = year - row.experience;
+      let experience = year - row.start_work;
       return experience + 'year';
     },
-    idFromatter(row, column) {
+    idFormatter(row, column) {
       let typeList = [{ id: 1, label: "身份证" }, { id: 2, label: "护照" }];
-      let idType = _.find(typeList, type => type.id === row.idType)['label'];
+      let idType = _.find(typeList, type => type.id === row.certificate_type)['label'];
       return idType;
     },
     loadCiceroneList(page) {
       this.filter.page = page ? page : this.filter.page;
       this.loading = true;
-      //todo
-      this.$http.get('/vehicle/search', {
+      this.$http.get('/tour_guide/search', {
         params: this.filter
       }).then(res => {
-        if (res.code === 200) {
-          this.ciceroneList = res.data.cicerone_data;
-          if (paga === 1) {
-            this.total = res.data.total;
+        if (res.data.code === 200) {
+          this.ciceroneList = res.data.data.tour_guide_data;
+          if (page === 1) {
+            this.total = res.data.data.total;
           }
           this.loading = false;
         } else {
           this.loading = false;
-          console.log(res.message);
+          console.log(res.data.message);
         }
       }, err => {
         console.log(err);
