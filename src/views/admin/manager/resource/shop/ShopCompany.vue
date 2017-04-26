@@ -108,7 +108,7 @@ export default {
         })
       } else {
         this.$http.post('/shop_company/create_company', this.shopCompanyModel).then(res => {
-          if (res.code === 200) {
+          if (res.data.code === 200) {
             this.shopCompanyModel = false;
             this.$message({
               type: 'success',
@@ -154,9 +154,8 @@ export default {
     },
     loadShopCompanyList() {
       this.$http.get('/shop_company/search').then(res => {
-        if (res.code === 200) {
-          //todo list 返回体
-          this, shopCompanyList;
+        if (res.data.code === 200) {
+
         } else {
           console.log(res.message);
         }

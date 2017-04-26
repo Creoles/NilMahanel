@@ -33,8 +33,8 @@
                                placeholder="type"
                                clearable>
                         <el-option :key="item.id"
-                                   value="item.id"
-                                   label="item.name"
+                                   :value="item.id"
+                                   :label="item.name"
                                    v-for="item in companyList"></el-option>
                     </el-select>
                 </el-form-item>
@@ -69,7 +69,7 @@
             <el-table-column prop="commission_ratio"
                              label="返佣比例(%)">
             </el-table-column>
-            <el-table-column prop="contcat"
+            <el-table-column prop="contact"
                              label="联系人">
             </el-table-column>
             <el-table-column prop="telephone"
@@ -107,53 +107,19 @@ export default {
     data() {
         return {
             shopFilter: {
-                country_id: '',
-                city_id: '',
-                shop_type: '',
-                company_id: '',
+              country_id: null,
+              city_id: null,
+              shop_type: null,
+              company_id: null,
                 page: 1,
                 number: 20
             },
             countryArr: [],
-            shopTotalNum: 1000,
+          shopTotalNum: null,
             countryList: [],
             companyList: [],
             loading: false,
-            shopList: [
-                {
-                    id: 1,
-                    country_id: 1,
-                    city_id: 1,
-                    address: "chongqing yubei",
-                    name: "家乐福",
-                    name_en: "family",
-                    shop_type: 1,
-                    belong: 1,
-                    contcat: "rancongjie",
-                    telephone: "18523199991",
-                    intr_cn: "哈哈哈",
-                    intr_en: "hhhh",
-                    fee_person: 14.6,
-                    commission_ratio: 14.6
-
-                },
-                {
-                    id: 2,
-                    country_id: 1,
-                    city_id: 1,
-                    address: "chongqing yubei",
-                    name: "沃尔玛",
-                    name_en: "family",
-                    shop_type: 1,
-                    belong: 1,
-                    contcat: "rancongjie",
-                    telephone: "18523199991",
-                    intr_cn: "哈哈哈",
-                    intr_en: "hhhh",
-                    fee_person: 14.6,
-                    commission_ratio: 14.6
-                }
-            ]
+          shopList: []
         }
     },
     created() {
@@ -215,7 +181,7 @@ export default {
                 type: 'warning'
             }).then(() => {
                 this.$http.delete('/shop/' + scope.row.id).then(res => {
-                    if (res.code === 200) {
+                  if (res.data.code === 200) {
                         this.shopList.splice(scope.$index, 1);
                         this.$message({
                             type: 'success',
@@ -245,15 +211,15 @@ export default {
             this.$http.get('/shop/search', {
                 params: this.shopFilter
             }).then(res => {
-                if (res.code === 200) {
-                    this.shopList = res.data.shop_data;
-                    if (paga === 1) {
-                        this.total = res.data.total;
+              if (res.data.code === 200) {
+                this.shopList = res.data.data.shop_data;
+                if (page === 1) {
+                  this.shopTotalNum = res.data.data.total;
                     }
                     this.loading = false;
                 } else {
                     this.loading = false;
-                    console.log(res.message);
+                console.log(res.data.message);
                 }
             }, err => {
                 console.log(err);
@@ -267,17 +233,21 @@ export default {
         },
         //获得城市列表
         loadCountryList() {
-            //todo api
-            this.countryList = [{ id: 1, name: "斯里兰卡", name_en: "Srilanka", "city_data": [{ id: 1, name: "科伦坡", name_en: "asdas" }] }];
+          this.$http.get('/country/all').then(res => {
+            if (res.data.code === 200) {
+              this.countryList = res.data.data;
+            }
+          }, err => {
+            console.log(new Error(err))
+          });
         },
         //获得公司列表
         loadCompanyList() {
-            this.$http.get('/shop_company').then(res => {
-                if (res.code === 200) {
-                    //todo
+          this.$http.get('/shop_company/search', {params: {is_all: true}}).then(res => {
+            if (res.data.code === 200) {
                     this.companyList = res.data.data;
                 } else {
-                    console.log(res.mssage);
+              console.log(res.msg);
                 }
             }, err => {
                 console.log(err);

@@ -36,15 +36,14 @@ export default {
   methods: {
     loadCountry() {
       this.$http.get('/country/all').then(res => {
-        if (res.code === 200) {
+        if (res.data.code === 200) {
           this.options = res.data.data;
         } else {
-          console.log(res.message);
+          console.log(res.data.message);
         }
       }, err => {
         console.log(err);
-      })
-      this.options = [{ id: 1, name: "斯里兰卡", name_en: "Srilanka", "city_data": [{ id: 1, name: "科伦坡", name_en: "asdas" }] }];
+      });
     },
     handleChange() {
       this.$emit('country-change', this.selectArr);

@@ -291,7 +291,7 @@ export default {
           this.$message({
             type: 'error',
             message: res.message
-          })
+          });
           this.submitting = false;
         }
       }, err => {
@@ -305,7 +305,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.$http.delete('/restautant/' + scope.row.id).then(res => {
+        this.$http.delete('/restaurant/' + scope.row.id).then(res => {
           if (res.code === 200) {
             this.restCompanyList.splice(scope.$index, 1);
             this.$message({
@@ -336,7 +336,7 @@ export default {
       this.countryList = [{ id: 1, name: "斯里兰卡", name_en: "Srilanka", "city_data": [{ id: 1, name: "科伦坡", name_en: "asdas" }] }];
     },
     loadCompanyList() {
-      this.$http.get('/restautant_company/search').then(res => {
+      this.$http.get('/restaurant_company/search').then(res => {
         if (res.code === 200) {
           this.companyList = res.data.data;
         } else {

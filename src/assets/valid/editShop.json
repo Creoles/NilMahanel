@@ -38,24 +38,16 @@
         "message": "请选择商店类型",
         "trigger": "change"
     }],
-    "people": [{
+  "contact": [
+    {
         "required": true,
         "message": "请输入联系人姓名",
         "trigger": "blur"
     }],
-    "phone": [{
+  "telephone": [
+    {
         "required": true,
         "message": "请输入联系人电话",
-        "trigger": "blur"
-    }],
-    "rentou": [{
-        "required": true,
-        "message": "请输入人头费",
-        "trigger": "blur"
-    }],
-    "bili": [{
-        "required": true,
-        "message": "请输入返佣比例",
         "trigger": "blur"
     }]
 }

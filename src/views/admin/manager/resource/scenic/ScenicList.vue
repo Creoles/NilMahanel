@@ -75,13 +75,10 @@ import CountrySelect from "src/views/components/CountrySelect.vue"
 export default {
   data() {
     return {
-      scenicList: [
-        //todo []
-        { id: 1, country_id: 1, city_id: 1, name: '大象孤儿院', name_en: 'elephent', address: "sadsdasd", adult_fee: 14.48, child_fee: 7.99, intro_cn: "asdasd", intro_en: "asdasd" }
-      ],
+      scenicList: [],
       filter: {
-        country_id: '',
-        city_id: '',
+        country_id: null,
+        city_id: null,
         page: 1,
         number: 20
       },
@@ -93,7 +90,7 @@ export default {
   },
   created() {
     this.loadScenicList(1);
-    this.loadContryList();
+    this.loadCountryList();
   },
   methods: {
     addScenic() {
@@ -108,9 +105,8 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        //todo
         this.$http.delete('/attraction/' + scope.row.id).then(res => {
-          if (res.code === 200) {
+          if (res.data.code === 200) {
             this.scenicList.splice(scope.$index, 1);
             this.$message({
               type: 'success',
@@ -142,32 +138,31 @@ export default {
       this.$http.get('/attraction/search', {
         params: this.filter
       }).then(res => {
-        if (res.code === 200) {
-          this.vehicleList = res.data.vehicle_data;
+        if (res.data.code === 200) {
+          this.scenicList = res.data.data.attraction_data;
           if (page === 1) {
-            this.total = res.data.total;
+            this.total = res.data.data.total;
           }
           this.loading = false;
         } else {
           this.loading = false;
-          console.log(res.message);
+          console.log(res.data.message);
         }
       }, err => {
         console.log(err);
         this.loading = false;
       })
     },
-    loadContryList() {
+    loadCountryList() {
       this.$http.get('/country/all').then(res => {
-        if (res.code === 200) {
-          this.countryList = res.data;
+        if (res.data.code === 200) {
+          this.countryList = res.data.data;
         } else {
-          console.log(res.message);
+          console.log(res.data.message);
         }
       }, err => {
         console.log(err);
-      })
-      this.countryList = [{ id: 1, name: "斯里兰卡", name_en: "Srilanka", "city_data": [{ id: 1, name: "科伦坡", name_en: "asdas" }] }];
+      });
     },
     handleSizeChange(size) {
       this.filter.number = size;
