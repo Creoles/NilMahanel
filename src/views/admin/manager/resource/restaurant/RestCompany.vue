@@ -64,18 +64,19 @@ export default {
         name: '',
         name_en: ''
       },
-      restCompanyList: [
-        { id: 1, name: '啊实打实的', name_en: 'asddas' }
-      ]
+      restCompanyList: []
     }
+  },
+  created(){
+    this.loadRestCompanyList();
   },
   methods: {
     loadRestCompanyList() {
-      this.$http.get('/restaurant_company/search').then(res => {
-        if (res.code === 200) {
+      this.$http.get('/restaurant_company/search', {params: {is_all: true}}).then(res => {
+        if (res.data.code === 200) {
           this.restCompanyList = res.data.data;
         } else {
-          console.log(res.message)
+          console.log(res.data.message)
         }
       }, err => {
         console.log(err);
@@ -87,17 +88,18 @@ export default {
     addRestCompany() {
       if (this.restCompanyModel.id) {
         this.$http.put('/restaurant_company/' + this.restCompanyModel.id, this.restCompanyModel).then(res => {
-          if (res.code === 200) {
-            this.restCompanyModel = false;
+          if (res.data.code === 200) {
+            this.dialogRestCompany = false;
             this.$message({
               type: 'success',
               message: '修改成功!'
             });
             this.loadRestCompanyList();
           } else {
+
             this.$message({
               type: 'error',
-              message: res.message
+              message: res.data.message
             });
           }
         }, err => {
@@ -105,8 +107,8 @@ export default {
         })
       } else {
         this.$http.post('/restaurant_company/create_company', this.restCompanyModel).then(res => {
-          if (res.code === 200) {
-            this.restCompanyModel = false;
+          if (res.data.code === 200) {
+            this.dialogRestCompany = false;
             this.$message({
               type: 'success',
               message: '添加成功!'
@@ -115,7 +117,7 @@ export default {
           } else {
             this.$message({
               type: 'error',
-              message: res.message
+              message: res.data.message
             });
           }
         }, err => {
@@ -133,8 +135,8 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.$http.delete('/restautant_company/' + scope.row.id).then(res => {
-          if (res.code === 200) {
+        this.$http.delete('/restaurant_company/' + scope.row.id).then(res => {
+          if (res.data.code === 200) {
             this.restCompanyList.splice(scope.$index, 1);
             this.$message({
               type: 'success',
