@@ -59,8 +59,6 @@
   </div>
 </template>
 <style lang="scss" scoped>
-  @import "~assets/var/error.scss";
-
   .scenic-form {
     width: 500px;
     .textearea-width {

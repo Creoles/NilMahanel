@@ -9,9 +9,6 @@
     </content-top>
     <el-table :data="vehicleCompanyList"
               style="width: 100%">
-      <el-table-column label="id"
-                       prop="id">
-      </el-table-column>
       <el-table-column :label="$t('tableth.name')"
                        prop="name">
       </el-table-column>
@@ -149,9 +146,7 @@ export default {
       vehicleCompanyList: [
         { id: 1, name: "萨达所", name_en: "asdasd" }
       ],
-      compAccountList: [
-        { id: 1, owner_id: 1, account_type: 1, bank_name: '上海银行', deposit_bank: "上海支行", currency: 1, payee: '冉聪杰', account: '123456', note: 'hhhhh' }
-      ],
+      compAccountList: [],
       vehicleAccountModel: {
         id: '',//新建为空，编辑有值
         owner_id: '',//公司时 是公司id,个人时是个人id
@@ -188,7 +183,7 @@ export default {
     addVehicleCompany() {
       if (this.vehicleCompanyModel.id) {
         this.$http.put('/vehicle_company/' + this.vehicleCompanyModel.id, this.vehicleCompanyModel).then(res => {
-          if (res.code === 200) {
+          if (res.data.code === 200) {
             this.vehicleCompanyModel = false;
             this.$message({
               type: 'success',
@@ -198,7 +193,7 @@ export default {
           } else {
             this.$message({
               type: 'error',
-              message: res.message
+              message: res.data.message
             });
           }
         }, err => {
@@ -206,8 +201,8 @@ export default {
         })
       } else {
         this.$http.post('/vehicle_company/create_company', this.vehicleCompanyModel).then(res => {
-          if (res.code === 200) {
-            this.vehicleCompanyModel = false;
+          if (res.data.code === 200) {
+            this.dialogVehicleCompany = false;
             this.$message({
               type: 'success',
               message: '添加成功!'
@@ -216,7 +211,7 @@ export default {
           } else {
             this.$message({
               type: 'error',
-              message: res.message
+              message: res.data.message
             });
           }
         }, err => {
@@ -238,12 +233,12 @@ export default {
     },
     submitAccount() {
       if (this.vehicleAccountModel.id) {
-        this.$http.put('/vehicle_account/' + this.this.vehicleAccountModel.id, this.this.vehicleAccountModel).then(res => {
-          if (res.code === 200) {
+        this.$http.put('/vehicle_account/' + this.vehicleAccountModel.id, this.vehicleAccountModel).then(res => {
+          if (res.data.code === 200) {
             this.$message({
               type: 'success',
               message: '编辑成功'
-            })
+            });
             this.dialogVehicleAccount = false;
             this.vehicleAccountModel = {};
           } else {
@@ -256,18 +251,18 @@ export default {
           console.log(err);
         })
       } else {
-        this.$http.post('/vehicle_account/create_account', vehicleAccountModel).then(res => {
-          if (res.code === 200) {
+        this.$http.post('/vehicle_account/create_account', this.vehicleAccountModel).then(res => {
+          if (res.data.code === 200) {
             this.$message({
               type: 'success',
               message: '添加成功'
-            })
+            });
             this.dialogVehicleAccount = false;
             this.vehicleAccountModel = {};
           } else {
             this.$message({
               type: 'error',
-              message: res.message
+              message: res.data.message
             })
           }
         }, err => {
@@ -287,7 +282,7 @@ export default {
         type: 'warning'
       }).then(() => {
         this.$http.delete('/vehicle_account/' + id).then(res => {
-          if (res.code === 200) {
+          if (res.data.code === 200) {
             this.$message({
               type: 'success',
               message: '删除成功'
@@ -295,7 +290,7 @@ export default {
           } else {
             this.$message({
               type: 'error',
-              message: res.message
+              message: res.data.message
             })
           }
         }, err => {
@@ -312,10 +307,10 @@ export default {
     currentCompAccountList($event, owner_id) {
       //account_type=1 公司  =2 个人
       this.$http.get('/vehicle_account/' + owner_id + "?account_type=1").then(res => {
-        if (res.code === 200) {
-          this.compAccountList = res.data;
+        if (res.data.code === 200) {
+          this.compAccountList = res.data.data;
         } else {
-          console.log(res.message);
+          console.log(res.data.message);
         }
       }, err => {
         console.log(err);
@@ -335,17 +330,17 @@ export default {
         type: 'warning'
       }).then(() => {
         this.$http.delete('/vehicle_company/' + scope.row.id).then(res => {
-          if (res.code === 200) {
-            this.vehicelCompanyList.splice(scope.$index, 1);
+          if (res.data.code === 200) {
+            this.vehicleCompanyList.splice(scope.$index, 1);
             this.$message({
               type: 'success',
               message: '删除成功'
-            })
+            });
           } else {
             this.$message({
               type: 'error',
-              message: res.message
-            })
+              message: res.data.message
+            });
           }
         }, err => {
           console.log(err);
@@ -364,19 +359,17 @@ export default {
       this.vehicleAccountModel = {};
     },
     loadVehicleCompanyList() {
-      this.$http.get('/vehicle_company').then(res => {
-        if (res.code === 200) {
-          //todo list 返回体
-          this.vehicelCompanyList;
+      this.$http.get('/vehicle_company/search', {params: {is_all: true}}).then(res => {
+        if (res.data.code === 200) {
+          this.vehicleCompanyList = res.data.data;
         } else {
-          console.log(res.message);
+          console.log(res.data.message);
         }
       }, err => {
         console.log(err);
       })
     },
     currencyFormatter(row, column) {
-
       let currency = [
         { id: 1, name: '美元', name_en: 'USD' },
         { id: 2, name: '人民币', name_en: 'CNY' },
