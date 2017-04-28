@@ -30,8 +30,8 @@
                      v-model="filter.company_id">
             <el-option v-for="item in companyList"
                        :key="item.id"
-                       value="item.id"
-                       label="item.name">
+                       :value="item.id"
+                       :label="item.name">
             </el-option>
           </el-select>
         </el-form-item>
@@ -189,10 +189,10 @@ export default {
         }
       ],
       filter: {
-        country_id: '',
-        city_id: '',
-        company_id: '',
-        restaurant_type: '',
+        country_id: null,
+        city_id: null,
+        company_id: null,
+        restaurant_type: null,
         number: 20,
         page: 1
       },
@@ -203,17 +203,7 @@ export default {
       dialogMeal: false,
       deleteList: [],
       submitting: false,
-      mealModel: [
-        {
-          id: null,
-          restaurant_id: null,
-          restaurant_type: null,
-          adult_fee: null,
-          adult_cost: null,
-          child_fee: null,
-          child_cost: null
-        }
-      ],
+      mealModel: [],
       restType: [
         { value: 1, label: '中餐' },
         { value: 2, label: '西餐' },
@@ -223,11 +213,11 @@ export default {
     }
   },
   created() {
-    axios.all([this.loadCompanyList(), this.loadContryList()]).then(axios.spread((res1, res2) => {
+    axios.all([this.loadCompanyList(), this.loadCountryList()]).then(axios.spread((res1, res2) => {
 
-    }))
+    }));
     // this.loadCompanyList();
-    // this.loadContryList();
+    // this.loadCountryList();
     this.loadRestList(1);
   },
   methods: {
@@ -275,12 +265,12 @@ export default {
         } else {
           createList.push(item);
         }
-      })
-      paramsList['create_list'] = createList;
-      paramsList['update_list'] = updateList;
-      paramsList['delete_list'] = this.deleteList;
+      });
+      paramsList['create_meal_list'] = createList;
+      paramsList['update_meal_list'] = updateList;
+      paramsList['delete_id_list'] = this.deleteList;
       this.$http.post('/restaurant/meal/edit_meal', paramsList).then(res => {
-        if (res.code === 200) {
+        if (res.data.code === 200) {
           this.submitting = false;
           this.$message({
             type: 'success',
@@ -290,7 +280,7 @@ export default {
         } else {
           this.$message({
             type: 'error',
-            message: res.message
+            message: res.data.message
           });
           this.submitting = false;
         }
@@ -306,7 +296,7 @@ export default {
         type: 'warning'
       }).then(() => {
         this.$http.delete('/restaurant/' + scope.row.id).then(res => {
-          if (res.code === 200) {
+          if (res.data.code === 200) {
             this.restCompanyList.splice(scope.$index, 1);
             this.$message({
               type: 'success',
@@ -315,7 +305,7 @@ export default {
           } else {
             this.$message({
               type: 'error',
-              message: res.message
+              message: res.data.message
             })
           }
         }, err => {
@@ -323,24 +313,23 @@ export default {
         })
       })
     },
-    loadContryList() {
+    loadCountryList() {
       this.$http.get('/country/all').then(res => {
-        if (res.code === 200) {
-          this.countryList = res.data;
+        if (res.data.code === 200) {
+          this.countryList = res.data.data;
         } else {
           console.log(res.message);
         }
       }, err => {
         console.log(err);
-      })
-      this.countryList = [{ id: 1, name: "斯里兰卡", name_en: "Srilanka", "city_data": [{ id: 1, name: "科伦坡", name_en: "asdas" }] }];
+      });
     },
     loadCompanyList() {
-      this.$http.get('/restaurant_company/search').then(res => {
-        if (res.code === 200) {
+      this.$http.get('/restaurant_company/search', {params: {is_all: true}}).then(res => {
+        if (res.data.code === 200) {
           this.companyList = res.data.data;
         } else {
-          console.log(res.message);
+          console.log(res.data.message);
         }
       }, err => {
         console.log(err);
@@ -352,15 +341,15 @@ export default {
       this.$http.get('/restaurant/search', {
         params: this.filter
       }).then(res => {
-        if (res.code === 200) {
-          this.restaurantList = res.data.restaurant_data;
+        if (res.data.code === 200) {
+          this.restaurantList = res.data.data.restaurant_data;
           if (page === 1) {
-            this.total = res.data.total;
+            this.total = res.data.data.total;
           }
           this.loading = false;
         } else {
           this.loading = false;
-          console.log(res.message);
+          console.log(res.data.message);
         }
       }, err => {
         console.log(err);

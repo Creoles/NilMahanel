@@ -36,7 +36,7 @@
       <el-form-item label="座位数"
                     prop="seat"
                     class="width-class">
-        <el-input v-model="params.seat"></el-input>
+        <el-input v-model.number="params.seat"></el-input>
       </el-form-item>
       <el-form-item label="年限"
                     prop="start_use"
@@ -66,7 +66,7 @@
       <el-form-item label="价格/每公里(USD)"
                     class="width-class"
                     prop="unit_price">
-        <el-input v-model="params.unit_price"></el-input>
+        <el-input v-model.number="params.unit_price"></el-input>
       </el-form-item>
     </el-form>
     <el-button type="primary"

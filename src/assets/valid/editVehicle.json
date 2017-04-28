@@ -1,74 +1,87 @@
 {
-    "name": [{
-            "required": true,
-            "message": "请输入车辆所属公司名称",
-            "trigger": "blur"
-        },
-        {
-            "min": 3,
-            "max": 20,
-            "message": "长度在 3 到 20 个字符",
-            "trigger": "blur"
-        }
-    ],
-    "country": [{
-        "required": true,
-        "message": "请选择车辆所在选择国家",
-        "trigger": "change"
-    }],
+  "name": [
+    {
+      "required": true,
+      "message": "请输入车辆所属公司名称",
+      "trigger": "blur"
+    },
+    {
+      "min": 3,
+      "max": 20,
+      "message": "长度在 3 到 20 个字符",
+      "trigger": "blur"
+    }
+  ],
+  "country": [
+    {
+      "required": true,
+      "message": "请选择车辆所在选择国家",
+      "trigger": "change"
+    }
+  ],
   "vehicle_type": [
     {
-        "required": true,
-        "message": "请输入车辆型号",
-        "trigger": "blur"
-    }],
+      "required": true,
+      "message": "请输入车辆型号",
+      "trigger": "blur"
+    }
+  ],
   "license": [
     {
-        "required": true,
-        "message": "请输入车牌号",
-        "trigger": "blur"
-    }],
+      "required": true,
+      "message": "请输入车牌号",
+      "trigger": "blur"
+    }
+  ],
   "seat": [
     {
-        "required": true,
-        "message": "请输入座位数",
+      "required": true,
+      "message": "请输入座位数",
       "trigger": "blur",
       "type": "number"
-    }],
+    }
+  ],
   "start_use": [
     {
-        "required": true,
-        "message": "请输入车辆年代",
-        "trigger": "blur"
-    }],
-    "baoxian": [{
-        "required": true,
-        "message": "请输入保险号",
-        "trigger": "blur"
-    }],
+      "required": true,
+      "message": "请输入车辆年代",
+      "trigger": "blur"
+    }
+  ],
+  "baoxian": [
+    {
+      "required": true,
+      "message": "请输入保险号",
+      "trigger": "blur"
+    }
+  ],
   "register_number": [
     {
-        "required": true,
-        "message": "请输入旅游局登记号",
-        "trigger": "blur"
-    }],
+      "required": true,
+      "message": "请输入旅游局登记号",
+      "trigger": "blur"
+    }
+  ],
   "contact": [
     {
-        "required": true,
-        "message": "请输入联系人姓名",
-        "trigger": "blur"
-    }],
+      "required": true,
+      "message": "请输入联系人姓名",
+      "trigger": "blur"
+    }
+  ],
   "telephone": [
     {
-        "required": true,
-        "message": "请输入联系人电话",
-        "trigger": "blur"
-    }],
+      "required": true,
+      "message": "请输入联系人电话",
+      "trigger": "blur"
+    }
+  ],
   "unit_price": [
     {
       "type": "number",
-        "required": true,
-        "message": "请输入每公里价格",
-        "trigger": "blur"
-    }]
+      "required": true,
+      "message": "请输入每公里价格",
+      "trigger": "blur"
+    }
+  ]
 }
