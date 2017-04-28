@@ -232,6 +232,27 @@
                     "menuCode": "account-management"
                 },
                 "childTreeNode": []
+            },
+          {
+            "id": "24",
+            "data": {
+              "menuName": "集团管理",
+              "menuPath": "",
+              "icon": "fa-role",
+              "menuCode": "account-management"
+            },
+            "childTreeNode": [
+              {
+                "id": "25",
+                "data": {
+                  "menuName": "集团管理",
+                  "menuPath": "",
+                  "icon": "fa-role",
+                  "menuCode": "account-management"
+                },
+                "childTreeNode": []
+              }
+            ]
             }
 
         ]

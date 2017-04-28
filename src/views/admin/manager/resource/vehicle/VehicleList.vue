@@ -80,7 +80,7 @@
       <el-table-column prop="start_use"
                        label="年限">
       </el-table-column>
-      <el-table-column prop="baoxianhao"
+      <el-table-column prop="insurance_number"
                        label="保险号">
       </el-table-column>
       <el-table-column prop="telephone"
@@ -193,7 +193,9 @@
         this.filter.page = page ? page : this.filter.page;
         this.loading = true;
         this.$http.get('/vehicle/search', {
-          params: this.filter
+          params: _.omitBy(this.filter, function (item) {
+            return item === ''
+          })
         }).then(res => {
           if (res.data.code === 200) {
             this.vehicleList = res.data.data.vehicle_data;

@@ -16,8 +16,8 @@
                    v-model="params.company_id">
           <el-option v-for="item in companyList"
                      :key="item.id"
-                     value="item.id"
-                     label="item.name">
+                     :value="item.id"
+                     :label="item.name">
           </el-option>
         </el-select>
       </el-form-item>
@@ -50,7 +50,7 @@
       </el-form-item>
       <el-form-item label="联系人员"
                     class="inline contact">
-        <el-input v-model="params.concact"></el-input>
+        <el-input v-model="params.contact"></el-input>
       </el-form-item>
       <el-form-item label="联系电话"
                     class="inline contact">
@@ -124,16 +124,16 @@ export default {
         country_id: null,
         city_id: null,
         company_id: null,
-        restautant_type: null,
+        restaurant_type: null,
         address: null,
-        teltephone: null,
+        telephone: null,
         intro_cn: null,
         intro_en: null,
         contact: null,
         currency: null,
         bank_name: null,
         deposit_bank: null,
-        peyee: null,
+        payee: null,
         account: null,
         note: null
       },
@@ -149,11 +149,15 @@ export default {
     if (this.$route.params.id) {
       let id = this.$route.params.id;
       this.loadRestaurantById(id).then(res => {
-        this.params = res.data.data;
-        this.countryArr.push(this.params.country_id, this.params.city_id);
+        if (res.data.code === 200) {
+          this.params = res.data.data;
+          this.countryArr.push(this.params.country_id, this.params.city_id);
+        } else {
+          console.log(res.data.message);
+        }
       }).catch(err => {
         console.log(err);
-      })
+      });
     }
   },
   methods: {
@@ -162,44 +166,34 @@ export default {
       this.params.city_id = msg[1];
     },
     loadCompanyList() {
-      this.$http.get('/restautant_company/search').then(res => {
-        if (res.code === 200) {
+      this.$http.get('/restaurant_company/search', {params: {is_all: true}}).then(res => {
+        if (res.data.code === 200) {
           this.companyList = res.data.data;
         } else {
-          console.log(res.message);
+          console.log(res.data.message);
         }
       }).catch(err => {
         console.log(err);
       })
     },
-    addType() {
-      if (this.params.price.length < 3) {
-        this.params.price.push({ type: '' })
-      }
-    },
     loadRestaurantById(id) {
-      return this.$http.get('/restautant/' + id);
-    },
-    removeType(item) {
-      var index = this.params.price.indexOf(item);
-      if (index !== -1) {
-        this.params.price.splice(index, 1)
-      }
+      return this.$http.get('/restaurant/' + id);
     },
     submit() {
       this.submitting = true;
       //判断是新建 还是 编辑
       if (this.params.id) {
-        this.$http.put('/restautant/' + this.params.id, this.params).then(res => {
-          if (res.code === 200) {
+        this.$http.put('/restaurant/' + this.params.id, this.params).then(res => {
+          if (res.data.code === 200) {
             this.$message({
               type: 'success',
               message: ' 修改成功!'
             });
+            this.$router.push({name: 'RESTAURANT LIST'})
           } else {
             this.$message({
               type: 'error',
-              message: res.message
+              message: res.data.message
             });
           }
           this.submitting = false;
@@ -208,14 +202,18 @@ export default {
           this.submitting = false;
         })
       } else {
-        this.$http.post('/restautant/create_restautant', this.params).then(res => {
-          if (res.code === 200) {
+        this.$http.post('/restaurant/create_restaurant', this.params).then(res => {
+          if (res.data.code === 200) {
             this.$message({
               type: 'success',
               message: ' 添加成功!'
             });
+            this.$router.push({name: 'RESTAURANT LIST'})
           } else {
-            console.log(res.message);
+            this.$message({
+              type: 'error',
+              message: res.data.message
+            });
           }
           this.submitting = false;
         }, err => {
