@@ -22,7 +22,7 @@
         </el-form-item>
         <el-form-item label="人员类型">
           <el-select clearable
-                     v-model="filter.type">
+                     v-model="filter.guide_type">
             <el-option v-for="item in ciceroneType"
                        :key="item.id"
                        :value="item.id"
@@ -31,7 +31,8 @@
         </el-form-item>
         <el-form-item>
           <el-button type="primary"
-                     @click="loadCiceroneList(1)">查询</el-button>
+                     @click="loadCiceroneList(1)">查询
+          </el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -58,7 +59,7 @@
                        label="类别"
                        :formatter="typeFormatter">
       </el-table-column>
-  
+
       <el-table-column prop="gender"
                        label="性别"
                        :formatter="sexFormatter">
@@ -104,16 +105,20 @@
         <template scope="scope">
           <el-button type="text"
                      size="small"
-                     @click="editCicerone(scope.row.id)">编辑信息</el-button>
+                     @click="editCicerone(scope.row.id)">编辑信息
+          </el-button>
           <el-button type="text"
                      size="small"
-                     @click="editAccount(scope)">收款账号</el-button>
+                     @click="editAccount(scope)">收款账号
+          </el-button>
           <el-button type="text"
                      size="small"
-                     @click="editPrice(scope)">编辑费用</el-button>
+                     @click="editPrice(scope)">编辑费用
+          </el-button>
           <el-button type="text"
                      size="small"
-                     @click="deleteCicerone(scope)">删除</el-button>
+                     @click="deleteCicerone(scope)">删除
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -134,7 +139,8 @@
       <div>
         <el-button type="primary"
                    style="margin-bottom:10px;"
-                   @click="addOneAccount">添加一条</el-button>
+                   @click="addOneAccount">添加一条
+        </el-button>
       </div>
       <el-form :inline="true"
                label-position="top"
@@ -185,13 +191,16 @@
       <div slot="footer"
            class="dialog-footer">
         <el-button @click="dialogAccount = false"
-                   v-if="!submitting">取 消</el-button>
+                   v-if="!submitting">取 消
+        </el-button>
         <el-button type="primary"
                    v-if="!submitting"
-                   @click="submitAccount">确 定</el-button>
+                   @click="submitAccount">确 定
+        </el-button>
         <el-button type="primary"
                    v-if="submitting"
-                   :loading="submitting">正在提交...</el-button>
+                   :loading="submitting">正在提交...
+        </el-button>
       </div>
     </el-dialog>
     <el-dialog title="编辑价格"
@@ -237,318 +246,323 @@
       <div slot="footer"
            class="dialog-footer">
         <el-button @click="dialogPrice = false"
-                   v-if="!submitting">取 消</el-button>
+                   v-if="!submitting">取 消
+        </el-button>
         <el-button type="primary"
                    v-if="!submitting"
-                   @click="submitPrice">确 定</el-button>
+                   @click="submitPrice">确 定
+        </el-button>
         <el-button type="primary"
                    v-if="submitting"
-                   :loading="submitting">正在提交...</el-button>
+                   :loading="submitting">正在提交...
+        </el-button>
       </div>
     </el-dialog>
   </div>
 </template>
 <script>
-import ContentTop from "src/views/components/ContentTop.vue"
-export default {
-  data() {
-    return {
-      ciceroneList: [],
-      accountList: [],
-      filter: {
-        country_id: null,
-        type: null,
-        page: 1,
-        number: 20
-      },
-      ciceroneType: [
-        { id: 1, label: '国际导游' },
-        { id: 2, label: '司机导游' },
-        { id: 3, label: '景点导游' },
-        { id: 4, label: '中国翻译' }
-      ],
-      priceModel: {
-        id: null,
-        tour_guide_id: null,
-        currency: null,
-        base_fee: null,
-        service_type: null,
-        service_fee: null
-      },
-      currentTourId: null,
-      currentPriceName: {
-        name: null,
-        name_en: null,
-      },
-      submitting: false,
-      total: null,
-      countryList: [],
-      loading: false,
-      dialogAccount: false,
-      dialogPrice: false,
-      accountLoading: false,
-      priceLoading: false,
-      deleteList: [],
-    }
-
-  },
-  created() {
-    this.loadCountryList();
-    this.loadCiceroneList(1);
-  },
-  methods: {
-    addCicerone() {
-      this.$router.push({ name: "ADD CICERONE" })
-    },
-    editCicerone(id) {
-      this.$router.push({name: "EDIT CICERONE", params: {id: id}});
-    },
-    editPrice(scope) {
-      this.currentPriceName.name = scope.row.name;
-      this.currentPriceName.name_en = scope.row.name_en;
-      this.currentPriceName.tour_guide_id = scope.row.id;
-      this.priceLoading = true;
-      this.dialogPrice = true;
-      this.$http.get('/tour_guide/fee/' + scope.row.id).then(res => {
-        if (res.data.code === 200) {
-          this.priceModel = res.data.data;
-          this.priceLoading = false;
-        } else {
-          console.log(res.data.message);
-          this.priceLoading = false;
-        }
-      }).catch(err => {
-        this.priceLoading = false;
-        console.log(err);
-      })
-    },
-    editAccount(scope) {
-      this.dialogAccount = true;
-      this.currentTourId = scope.row.id;
-      this.$http('/tour_guide/account/' + scope.row.id).then(res => {
-        this.accountLoading = true;
-        if (res.data.code === 200) {
-          this.accountList = res.data.data;
-          this.accountLoading = false;
-        } else {
-          console.log(res.message);
-          this.accountLoading = false;
-        }
-      }).catch(err => {
-        this.accountLoading = false;
-        console.log(err);
-      })
-    },
-    submitAccount() {
-      this.submitting = true;
-      let updateList = [];
-      let createList = [];
-      let paramsList = {};
-      _.forIn(this.accountList, item => {
-        if (item.id) {
-          updateList.push(item);
-        } else {
-          createList.push(item);
-        }
-      });
-      paramsList['create_account_list'] = createList;
-      paramsList['update_account_list'] = updateList;
-      paramsList['delete_id_list'] = this.deleteList;
-      this.$http.post('/tour_guide/account/edit', paramsList).then(res => {
-        if (res.data.code === 200) {
-          this.submitting = false;
-          this.$message({
-            type: 'success',
-            message: '修改成功!'
-          });
-          this.dialogAccount = false;
-          this.loadRestList();
-        } else {
-          this.$message({
-            type: 'error',
-            message: res.data.message
-          });
-          this.submitting = false;
-        }
-      }, err => {
-        this.submitting = false;
-        console.log(err);
-      })
-    },
-    addOneAccount() {
-      this.accountList.push({
-        id: null,
-        account: null,
-        bank_name: null,
-        currency: null,
-        deposit_bank: null,
-        note: null,
-        payee: null,
-        tour_guide_id: this.currentTourId
-      });
-    },
-    deleteOneAccount(id, index) {
-      if (id) {
-        this.deleteList.push(id);
+  import ContentTop from "src/views/components/ContentTop.vue"
+  export default {
+    data() {
+      return {
+        ciceroneList: [],
+        accountList: [],
+        filter: {
+          country_id: null,
+          guide_type: null,
+          page: 1,
+          number: 20
+        },
+        ciceroneType: [
+          {id: 0, label: '国际导游'},
+          {id: 1, label: '司机导游'},
+          {id: 2, label: '景点导游'},
+          {id: 3, label: '中国翻译'}
+        ],
+        priceModel: {
+          id: null,
+          tour_guide_id: null,
+          currency: null,
+          base_fee: null,
+          service_type: null,
+          service_fee: null
+        },
+        currentTourId: null,
+        currentPriceName: {
+          name: null,
+          name_en: null,
+        },
+        submitting: false,
+        total: null,
+        countryList: [],
+        loading: false,
+        dialogAccount: false,
+        dialogPrice: false,
+        accountLoading: false,
+        priceLoading: false,
+        deleteList: [],
       }
-      this.accountList.splice(index, 1);
+
     },
-    submitPrice() {
-      if (this.priceModel.id) {
-        this.$http.put('/tour_guide/fee/' + this.priceModel.id, this.priceModel).then(res => {
+    created() {
+      this.loadCountryList();
+      this.loadCiceroneList(1);
+    },
+    methods: {
+      addCicerone() {
+        this.$router.push({name: "ADD CICERONE"})
+      },
+      editCicerone(id) {
+        this.$router.push({name: "EDIT CICERONE", params: {id: id}});
+      },
+      editPrice(scope) {
+        this.currentPriceName.name = scope.row.name;
+        this.currentPriceName.name_en = scope.row.name_en;
+        this.currentPriceName.tour_guide_id = scope.row.id;
+        this.priceLoading = true;
+        this.dialogPrice = true;
+        this.$http.get('/tour_guide/fee/' + scope.row.id).then(res => {
           if (res.data.code === 200) {
+            this.priceModel = res.data.data;
+            this.priceLoading = false;
+          } else {
+            console.log(res.data.message);
+            this.priceLoading = false;
+          }
+        }).catch(err => {
+          this.priceLoading = false;
+          console.log(err);
+        })
+      },
+      editAccount(scope) {
+        this.dialogAccount = true;
+        this.currentTourId = scope.row.id;
+        this.$http('/tour_guide/account/' + scope.row.id).then(res => {
+          this.accountLoading = true;
+          if (res.data.code === 200) {
+            this.accountList = res.data.data;
+            this.accountLoading = false;
+          } else {
+            console.log(res.message);
+            this.accountLoading = false;
+          }
+        }).catch(err => {
+          this.accountLoading = false;
+          console.log(err);
+        })
+      },
+      submitAccount() {
+        this.submitting = true;
+        let updateList = [];
+        let createList = [];
+        let paramsList = {};
+        _.forIn(this.accountList, item => {
+          if (item.id) {
+            updateList.push(item);
+          } else {
+            createList.push(item);
+          }
+        });
+        paramsList['create_account_list'] = createList;
+        paramsList['update_account_list'] = updateList;
+        paramsList['delete_id_list'] = this.deleteList;
+        this.$http.post('/tour_guide/account/edit', paramsList).then(res => {
+          if (res.data.code === 200) {
+            this.submitting = false;
             this.$message({
               type: 'success',
               message: '修改成功!'
             });
+            this.dialogAccount = false;
+            this.loadRestList();
           } else {
             this.$message({
               type: 'error',
               message: res.data.message
             });
+            this.submitting = false;
+          }
+        }, err => {
+          this.submitting = false;
+          console.log(err);
+        })
+      },
+      addOneAccount() {
+        this.accountList.push({
+          id: null,
+          account: null,
+          bank_name: null,
+          currency: null,
+          deposit_bank: null,
+          note: null,
+          payee: null,
+          tour_guide_id: this.currentTourId
+        });
+      },
+      deleteOneAccount(id, index) {
+        if (id) {
+          this.deleteList.push(id);
+        }
+        this.accountList.splice(index, 1);
+      },
+      submitPrice() {
+        if (this.priceModel.id) {
+          this.$http.put('/tour_guide/fee/' + this.priceModel.id, this.priceModel).then(res => {
+            if (res.data.code === 200) {
+              this.$message({
+                type: 'success',
+                message: '修改成功!'
+              });
+            } else {
+              this.$message({
+                type: 'error',
+                message: res.data.message
+              });
+            }
+          }, err => {
+            console.log(err);
+          })
+        } else {
+          this.priceModel.tour_guide_id = this.currentPriceName.tour_guide_id;
+          this.$http.post('/tour_guide/fee/create_tour_guide_fee', this.priceModel).then(res => {
+            if (res.data.code === 200) {
+              this.$message({
+                type: 'success',
+                message: '创建成功!'
+              });
+            } else {
+              this.$message({
+                type: 'error',
+                message: res.data.message
+              });
+            }
+          }, err => {
+            console.log(err)
+          })
+        }
+      },
+      onDialogClose() {
+        this.priceModel = {};
+        this.currentPriceName = {};
+      },
+      deleteCicerone(scope) {
+        this.$confirm('此操作将永久删除此人员, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$http.delete('/tour_guide/' + scope.row.id).then(res => {
+            if (res.data.code === 200) {
+              this.ciceroneList.splice(scope.$index, 1);
+              this.$message({
+                type: 'success',
+                message: '删除成功!'
+              });
+              this.loadCiceroneList();
+            } else {
+              this.$message({
+                type: 'error',
+                message: '删除失败!'
+              });
+            }
+          }, err => {
+            console.log(err);
+          })
+
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });
+        });
+      },
+      handleSizeChange(size) {
+        this.filter.number = size;
+        this.loadCiceroneList();
+      },
+      handleCurrentChange(page) {
+        this.filter.page = page;
+        this.loadCiceroneList();
+      },
+      loadCountryList() {
+        this.$http.get('/country/all').then(res => {
+          if (res.data.code === 200) {
+            this.countryList = res.data.data;
+          } else {
+            console.log(res.message);
           }
         }, err => {
           console.log(err);
-        })
-      } else {
-        this.priceModel.tour_guide_id = this.currentPriceName.tour_guide_id;
-        this.$http.post('/tour_guide/fee/create_tour_guide_fee', this.priceModel).then(res => {
+        });
+      },
+      countryFormatter(row, column) {
+        let country = _.find(this.countryList, country => country.id === row.country_id)['name'];
+        return country;
+      },
+      typeFormatter(row, column) {
+        let type = _.find(this.ciceroneType, type => type.id === row.guide_type)['label'];
+        return type;
+      },
+      oldFormatter(row, column) {
+        let year = new Date().getFullYear();
+        let old = year - row.birthday;
+        return old;
+      },
+      sexFormatter(row, column) {
+        let s = [{id: 1, label: '男'}, {id: 2, label: '女'}];
+        let sex = _.find(s, sex => sex.id === row.gender)['label'];
+        return sex;
+      },
+      experienceFormatter(row, column) {
+        let year = new Date().getFullYear();
+        let experience = year - row.start_work;
+        return experience + 'year';
+      },
+      idFormatter(row, column) {
+        let typeList = [{id: 1, label: "身份证"}, {id: 2, label: "护照"}];
+        let idType = _.find(typeList, type => type.id === row.certificate_type)['label'];
+        return idType;
+      },
+      loadCiceroneList(page) {
+        this.filter.page = page ? page : this.filter.page;
+        this.loading = true;
+        this.$http.get('/tour_guide/search', {
+          params: _.omitBy(this.filter, function (item) {
+            return item === ''
+          })
+        }).then(res => {
           if (res.data.code === 200) {
-            this.$message({
-              type: 'success',
-              message: '创建成功!'
-            });
+            this.ciceroneList = res.data.data.tour_guide_data;
+            if (page === 1) {
+              this.total = res.data.data.total;
+            }
+            this.loading = false;
           } else {
-            this.$message({
-              type: 'error',
-              message: res.data.message
-            });
+            this.loading = false;
+            console.log(res.data.message);
           }
         }, err => {
-          console.log(err)
+          console.log(err);
+          this.loading = false;
         })
       }
-    },
-    onDialogClose() {
-      this.priceModel = {};
-      this.currentPriceName = {};
-    },
-    deleteCicerone(scope) {
-      this.$confirm('此操作将永久删除此人员, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        this.$http.delete('/tour_guide/' + scope.row.id).then(res => {
-          if (res.data.code === 200) {
-            this.ciceroneList.splice(scope.$index, 1);
-            this.$message({
-              type: 'success',
-              message: '删除成功!'
-            });
-            this.loadCiceroneList();
-          } else {
-            this.$message({
-              type: 'error',
-              message: '删除失败!'
-            });
-          }
-        }, err => {
-          console.log(err);
-        })
 
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消删除'
-        });
-      });
     },
-    handleSizeChange(size) {
-      this.filter.number = size;
-      this.loadCiceroneList();
-    },
-    handleCurrentChange(page) {
-      this.filter.page = page;
-      this.loadCiceroneList();
-    },
-    loadCountryList() {
-      this.$http.get('/country/all').then(res => {
-        if (res.data.code === 200) {
-          this.countryList = res.data.data;
-        } else {
-          console.log(res.message);
-        }
-      }, err => {
-        console.log(err);
-      });
-    },
-    countryFormatter(row, column) {
-      let country = _.find(this.countryList, country => country.id === row.country_id)['name'];
-      return country;
-    },
-    typeFormatter(row, column) {
-      let type = _.find(this.ciceroneType, type => type.id === row.certificate_type)['label'];
-      return type;
-    },
-    oldFormatter(row, column) {
-      let year = new Date().getFullYear();
-      let old = year - row.birthday;
-      return old;
-    },
-    sexFormatter(row, column) {
-      let s = [{ id: 1, label: '男' }, { id: 2, label: '女' }];
-      let sex = _.find(s, sex => sex.id === row.gender)['label'];
-      return sex;
-    },
-    experienceFormatter(row, column) {
-      let year = new Date().getFullYear();
-      let experience = year - row.start_work;
-      return experience + 'year';
-    },
-    idFormatter(row, column) {
-      let typeList = [{ id: 1, label: "身份证" }, { id: 2, label: "护照" }];
-      let idType = _.find(typeList, type => type.id === row.certificate_type)['label'];
-      return idType;
-    },
-    loadCiceroneList(page) {
-      this.filter.page = page ? page : this.filter.page;
-      this.loading = true;
-      this.$http.get('/tour_guide/search', {
-        params: this.filter
-      }).then(res => {
-        if (res.data.code === 200) {
-          this.ciceroneList = res.data.data.tour_guide_data;
-          if (page === 1) {
-            this.total = res.data.data.total;
-          }
-          this.loading = false;
-        } else {
-          this.loading = false;
-          console.log(res.data.message);
-        }
-      }, err => {
-        console.log(err);
-        this.loading = false;
-      })
+    components: {
+      ContentTop
     }
-
-  },
-  components: {
-    ContentTop
   }
-}
 </script>
 <style lang="scss">
-#cicerone-account {
-  .el-dialog--large {
-    width: 80%;
-    left: 58%;
-  }
-  .account-box {
-    .account-width {
-      width: 140px;
+  #cicerone-account {
+    .el-dialog--large {
+      width: 80%;
+      left: 58%;
+    }
+    .account-box {
+      .account-width {
+        width: 140px;
+      }
     }
   }
-}
 </style>

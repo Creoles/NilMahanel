@@ -18,7 +18,8 @@
         </el-form-item>
         <el-form-item>
           <el-button type="primary"
-                     @click="loadScenicList(1)">查询</el-button>
+                     @click="loadScenicList(1)">查询
+          </el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -48,9 +49,11 @@
       <el-table-column label="操作">
         <template scope="scope">
           <el-button type="text"
-                     @click="editScenic(scope.row.id)">编辑</el-button>
+                     @click="editScenic(scope.row.id)">编辑
+          </el-button>
           <el-button type="text"
-                     @click="deleteScenic(scope)">删除</el-button>
+                     @click="deleteScenic(scope)">删除
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -70,128 +73,130 @@
 
 </style>
 <script>
-import ContentTop from "src/views/components/ContentTop.vue"
-import CountrySelect from "src/views/components/CountrySelect.vue"
-export default {
-  data() {
-    return {
-      scenicList: [],
-      filter: {
-        country_id: null,
-        city_id: null,
-        page: 1,
-        number: 20
+  import ContentTop from "src/views/components/ContentTop.vue"
+  import CountrySelect from "src/views/components/CountrySelect.vue"
+  export default {
+    data() {
+      return {
+        scenicList: [],
+        filter: {
+          country_id: null,
+          city_id: null,
+          page: 1,
+          number: 20
+        },
+        loading: false,
+        total: 10,
+        countryArr: [],
+        countryList: []
+      }
+    },
+    created() {
+      this.loadScenicList(1);
+      this.loadCountryList();
+    },
+    methods: {
+      addScenic() {
+        this.$router.push({name: "ADD SCENIC"})
       },
-      loading: false,
-      total: 10,
-      countryArr: [],
-      countryList: []
-    }
-  },
-  created() {
-    this.loadScenicList(1);
-    this.loadCountryList();
-  },
-  methods: {
-    addScenic() {
-      this.$router.push({ name: "ADD SCENIC" })
-    },
-    editScenic(id) {
-      this.$router.push({ name: "EDIT SCENIC", params: { id: id } });
-    },
-    deleteScenic(scope) {
-      this.$confirm('此操作将永久删除该景点, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        this.$http.delete('/attraction/' + scope.row.id).then(res => {
+      editScenic(id) {
+        this.$router.push({name: "EDIT SCENIC", params: {id: id}});
+      },
+      deleteScenic(scope) {
+        this.$confirm('此操作将永久删除该景点, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$http.delete('/attraction/' + scope.row.id).then(res => {
+            if (res.data.code === 200) {
+              this.scenicList.splice(scope.$index, 1);
+              this.$message({
+                type: 'success',
+                message: '删除成功'
+              })
+            } else {
+              this.$message({
+                type: 'error',
+                message: res.message
+              })
+            }
+          }, err => {
+            console.log(err);
+          })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });
+        });
+      },
+      onFilterCountryChange(msg) {
+        this.filter.country_id = msg[0];
+        this.filter.city_id = msg[1];
+      },
+      loadScenicList(page) {
+        this.filter.page = page ? page : this.filter.page;
+        this.loading = true;
+        this.$http.get('/attraction/search', {
+          params: _.omitBy(this.filter, function (item) {
+            return item === ''
+          })
+        }).then(res => {
           if (res.data.code === 200) {
-            this.scenicList.splice(scope.$index, 1);
-            this.$message({
-              type: 'success',
-              message: '删除成功'
-            })
+            this.scenicList = res.data.data.attraction_data;
+            if (page === 1) {
+              this.total = res.data.data.total;
+            }
+            this.loading = false;
           } else {
-            this.$message({
-              type: 'error',
-              message: res.message
-            })
+            this.loading = false;
+            console.log(res.data.message);
           }
         }, err => {
           console.log(err);
+          this.loading = false;
         })
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消删除'
-        });
-      });
-    },
-    onFilterCountryChange(msg) {
-      this.filter.country_id = msg[0];
-      this.filter.city_id = msg[1];
-    },
-    loadScenicList(page) {
-      this.filter.page = page ? page : this.filter.page;
-      this.loading = true;
-      this.$http.get('/attraction/search', {
-        params: this.filter
-      }).then(res => {
-        if (res.data.code === 200) {
-          this.scenicList = res.data.data.attraction_data;
-          if (page === 1) {
-            this.total = res.data.data.total;
+      },
+      loadCountryList() {
+        this.$http.get('/country/all').then(res => {
+          if (res.data.code === 200) {
+            this.countryList = res.data.data;
+          } else {
+            console.log(res.data.message);
           }
-          this.loading = false;
-        } else {
-          this.loading = false;
-          console.log(res.data.message);
-        }
-      }, err => {
-        console.log(err);
-        this.loading = false;
-      })
-    },
-    loadCountryList() {
-      this.$http.get('/country/all').then(res => {
-        if (res.data.code === 200) {
-          this.countryList = res.data.data;
-        } else {
-          console.log(res.data.message);
-        }
-      }, err => {
-        console.log(err);
-      });
-    },
-    handleSizeChange(size) {
-      this.filter.number = size;
-      this.loadScenicList();
-    },
-    handleCurrentChange(page) {
-      this.filter.page = page;
-      this.loadScenicList();
-    },
-    countryFormatter(row, column) {
-      let country = this.countryList.filter(country =>
-        country.id === row.country_id
-      )[0]['name']
-      return country;
-    },
-    cityFormatter(row, column) {
-      let cityList = this.countryList.filter(country =>
-        country.id === row.country_id
-      )[0]['city_data'];
-      let city = cityList.filter(city =>
-        city.id === row.city_id
-      )[0]['name'];
-      return city;
-    }
+        }, err => {
+          console.log(err);
+        });
+      },
+      handleSizeChange(size) {
+        this.filter.number = size;
+        this.loadScenicList();
+      },
+      handleCurrentChange(page) {
+        this.filter.page = page;
+        this.loadScenicList();
+      },
+      countryFormatter(row, column) {
+        let country = this.countryList.filter(country =>
+          country.id === row.country_id
+        )[0]['name']
+        return country;
+      },
+      cityFormatter(row, column) {
+        let cityList = this.countryList.filter(country =>
+          country.id === row.country_id
+        )[0]['city_data'];
+        let city = cityList.filter(city =>
+          city.id === row.city_id
+        )[0]['name'];
+        return city;
+      }
 
-  },
-  components: {
-    ContentTop,
-    CountrySelect
+    },
+    components: {
+      ContentTop,
+      CountrySelect
+    }
   }
-}
 </script>

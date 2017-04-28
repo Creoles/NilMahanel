@@ -119,10 +119,10 @@ export default {
       companyList: [],
       submitting: false,
       typeList: [
-        { id: 1, label: "国际导游" },
-        { id: 2, label: "司机导游" },
-        { id: 3, label: "景点导游" },
-        { id: 4, label: "中国翻译" }
+        {id: 0, label: "国际导游"},
+        {id: 1, label: "司机导游"},
+        {id: 2, label: "景点导游"},
+        {id: 3, label: "中国翻译"}
       ],
       idTypeList: [
         { id: 1, label: "身份证" },
