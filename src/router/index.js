@@ -27,6 +27,8 @@ import EditScenic from "../views/admin/manager/resource/scenic/EditScenic.vue"
 import CiceroneManager from "../views/admin/manager/resource/cicerone/Cicerone.vue"
 import CiceroneList from "../views/admin/manager/resource/cicerone/CiceroneList.vue"
 import EditCicerone from "../views/admin/manager/resource/cicerone/EditCicerone.vue"
+import CiceronePrice from "../views/admin/manager/price/cicerone/EditPrice.vue"
+import CiceroneAccount from "../views/admin/finance/account/CiceroneAccount.vue"
 import ProductManager from "../views/wholesaler/product/product.vue"
 import ProductList from "../views/wholesaler/product/list.vue"
 import EditProduct from "../views/wholesaler/product/edit.vue"
@@ -44,205 +46,213 @@ function generateRoutes() {
 
 }
 export default new VueRoute({
-    mode: "history", //todo
-    routes: [{
-            name: 'sign',
-            path: '/sign',
-            component: Sign
+  mode: "history", //todo
+  routes: [{
+    name: 'sign',
+    path: '/sign',
+    component: Sign
+  },
+    {
+      name: 'home',
+      path: '/admin',
+      component: Home
+    },
+    {
+      name: 'ORDER SYSTEM',
+      path: '/admin/hotel/order',
+      component: HotelOrder
+    },
+    {
+      name: 'CUSTOMER MANAGE',
+      path: '/admin/manager/customer',
+      component: Customer
+    },
+    {
+      name: "ROOM MONITOR",
+      path: '/admin/manager/room-monitor',
+      component: RoomMonitor
+    },
+    {
+      name: "Group Monitor",
+      path: "/admin/manager/group-service-monitoring",
+      component: GroupMonitor
+    },
+    {
+      path: "/admin/manager/hotel",
+      component: HotelManager,
+      children: [{
+        name: "HOTEL LIST",
+        path: "",
+        component: HotelList
+      },
+        {
+          name: "ADD HOTEL",
+          path: "add",
+          component: EditHotel
         },
         {
-            name: 'home',
-            path: '/admin',
-            component: Home
-        },
-        {
-            name: 'ORDER SYSTEM',
-            path: '/admin/hotel/order',
-            component: HotelOrder
-        },
-        {
-            name: 'CUSTOMER MANAGE',
-            path: '/admin/manager/customer',
-            component: Customer
-        },
-        {
-            name: "ROOM MONITOR",
-            path: '/admin/manager/room-monitor',
-            component: RoomMonitor
-        },
-        {
-            name: "Group Monitor",
-            path: "/admin/manager/group-service-monitoring",
-            component: GroupMonitor
-        },
-        {
-            path: "/admin/manager/hotel",
-            component: HotelManager,
-            children: [{
-                    name: "HOTEL LIST",
-                    path: "",
-                    component: HotelList
-                },
-                {
-                    name: "ADD HOTEL",
-                    path: "add",
-                    component: EditHotel
-                },
-                {
-                    name: "EDIT HOTEL",
-                    path: "edit/:id",
-                    component: EditHotel
-                }
-            ]
-        },
-        {
-            path: "/admin/manager/vehicle",
-            component: VehicleManager,
-            children: [{
-                    name: "VEHICLE LIST",
-                    path: "",
-                    component: VehicleList
-                },
-                {
-                    name: "ADD VEHICLE",
-                    path: "add",
-                    component: EditVehicle
-                },
-                {
-                    name: "EDIT VEHICLE",
-                    path: "edit/:id",
-                    component: EditVehicle
-                }
-            ]
-        },
-        {
-            path: "/admin/manager/restaurant",
-            component: RestaurantManager,
-            children: [{
-                    name: "RESTAURANT LIST",
-                    path: "",
-                    component: RestaurantList
-                },
-                {
-                    name: "ADD RESTAURANT",
-                    path: "add",
-                    component: EditRestaurant
-                },
-                {
-                    name: "EDIT RESTAURANT",
-                    path: "edit/:id",
-                    component: EditRestaurant
-                }
-            ]
-        },
-        {
-            path: "/admin/manager/shop",
-            component: ShopManager,
-            children: [{
-                    name: "SHOP LIST",
-                    path: "",
-                    component: ShopList
-                },
-                {
-                    name: "ADD SHOP",
-                    path: "add",
-                    component: EditShop
-                },
-                {
-                    name: "EDIT SHOP",
-                    path: "edit/:id",
-                    component: EditShop
-                }
-            ]
-        },
-        {
-            path: "/admin/manager/scenic",
-            component: ScenicManager,
-            children: [{
-                    name: "SCENIC LIST",
-                    path: "",
-                    component: ScenicList
-                },
-                {
-                    name: "ADD SCENIC",
-                    path: "add",
-                    component: EditScenic
-                },
-                {
-                    name: "EDIT SCENIC",
-                    path: "edit/:id",
-                    component: EditScenic
-                }
-            ]
-        },
-        {
-            path: "/admin/manager/cicerone",
-            component: CiceroneManager,
-            children: [{
-                name: "CICERONE LIST",
-                path: "",
-                component: CiceroneList
-            }, {
-                name: "ADD CICERONE",
-                path: "add",
-                component: EditCicerone
-            }, {
-                name: "EDIT CICERONE",
-                path: "edit/:id",
-                component: EditCicerone
-            }]
-        },
-        {
-            path: "/wholesaler/product",
-            component: ProductManager,
-            children: [{
-                    name: "PRODUCT LIST",
-                    path: "",
-                    component: ProductList
-                },
-                {
-                    name: "ADD PRODUCT",
-                    path: "add",
-                    component: EditProduct
-                },
-                {
-                    name: "EDIT PRODUCT",
-                    path: "edit/:id",
-                    component: EditProduct
-                },
-                {
-                    name: "PRODUCT DETAIL",
-                    path: "detail",
-                    component: ProductDetail
-                }
-            ]
-        },
-        {
-            name: "ACCOUNT MANAGE",
-            path: "/admin/manager/account",
-            component: Account
-        },
-        {
-            name: "COUNTRY MANAGE",
-            path: "/admin/manager/country",
-            component: Country
-        },
-        {
-            name: "SHOP COMPANY",
-            path: "/admin/manager/shop-company",
-            component: ShopCompany
-        },
-        {
-            name: "VEHICLE COMPANY",
-            path: "/admin/manager/vehicle-company",
-            component: VehicleCompany
-        },
-        {
-            name: "RESTAURANT COMPANY",
-            path: "/admin/manager/restaurant-company",
-            component: RestaurantCompany
+          name: "EDIT HOTEL",
+          path: "edit/:id",
+          component: EditHotel
         }
+      ]
+    },
+    {
+      path: "/admin/manager/vehicle",
+      component: VehicleManager,
+      children: [{
+        name: "VEHICLE LIST",
+        path: "",
+        component: VehicleList
+      },
+        {
+          name: "ADD VEHICLE",
+          path: "add",
+          component: EditVehicle
+        },
+        {
+          name: "EDIT VEHICLE",
+          path: "edit/:id",
+          component: EditVehicle
+        }
+      ]
+    },
+    {
+      path: "/admin/manager/restaurant",
+      component: RestaurantManager,
+      children: [{
+        name: "RESTAURANT LIST",
+        path: "",
+        component: RestaurantList
+      },
+        {
+          name: "ADD RESTAURANT",
+          path: "add",
+          component: EditRestaurant
+        },
+        {
+          name: "EDIT RESTAURANT",
+          path: "edit/:id",
+          component: EditRestaurant
+        }
+      ]
+    },
+    {
+      path: "/admin/manager/shop",
+      component: ShopManager,
+      children: [{
+        name: "SHOP LIST",
+        path: "",
+        component: ShopList
+      },
+        {
+          name: "ADD SHOP",
+          path: "add",
+          component: EditShop
+        },
+        {
+          name: "EDIT SHOP",
+          path: "edit/:id",
+          component: EditShop
+        }
+      ]
+    },
+    {
+      path: "/admin/manager/scenic",
+      component: ScenicManager,
+      children: [{
+        name: "SCENIC LIST",
+        path: "",
+        component: ScenicList
+      },
+        {
+          name: "ADD SCENIC",
+          path: "add",
+          component: EditScenic
+        },
+        {
+          name: "EDIT SCENIC",
+          path: "edit/:id",
+          component: EditScenic
+        }
+      ]
+    },
+    {
+      path: "/admin/manager/cicerone",
+      component: CiceroneManager,
+      children: [{
+        name: "CICERONE LIST",
+        path: "",
+        component: CiceroneList
+      }, {
+        name: "ADD CICERONE",
+        path: "add",
+        component: EditCicerone
+      }, {
+        name: "EDIT CICERONE",
+        path: "edit/:id",
+        component: EditCicerone
+      }, {
+        name: "CICERONE COST",
+        path: "price",
+        component: CiceronePrice
+      }, {
+        name: "CICERONE ACCOUNT",
+        path: "account",
+        component: CiceroneAccount
+      }]
+    },
+    {
+      path: "/wholesaler/product",
+      component: ProductManager,
+      children: [{
+        name: "PRODUCT LIST",
+        path: "",
+        component: ProductList
+      },
+        {
+          name: "ADD PRODUCT",
+          path: "add",
+          component: EditProduct
+        },
+        {
+          name: "EDIT PRODUCT",
+          path: "edit/:id",
+          component: EditProduct
+        },
+        {
+          name: "PRODUCT DETAIL",
+          path: "detail",
+          component: ProductDetail
+        }
+      ]
+    },
+    {
+      name: "ACCOUNT MANAGE",
+      path: "/admin/manager/account",
+      component: Account
+    },
+    {
+      name: "COUNTRY MANAGE",
+      path: "/admin/manager/country",
+      component: Country
+    },
+    {
+      name: "SHOP COMPANY",
+      path: "/admin/manager/shop-company",
+      component: ShopCompany
+    },
+    {
+      name: "VEHICLE COMPANY",
+      path: "/admin/manager/vehicle-company",
+      component: VehicleCompany
+    },
+    {
+      name: "RESTAURANT COMPANY",
+      path: "/admin/manager/restaurant-company",
+      component: RestaurantCompany
+    }
 
-        // ...generateRoutes(),
-    ]
+    // ...generateRoutes(),
+  ]
 });
