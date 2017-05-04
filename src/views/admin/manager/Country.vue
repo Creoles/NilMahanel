@@ -3,15 +3,17 @@
     <content-top>
       <el-button class="addCountry"
                  @click="dialogCountry = true"
-                 type="primary">添加国家</el-button>
+                 type="primary">添加国家
+      </el-button>
     </content-top>
     <el-collapse accordion>
       <el-collapse-item v-for="item in countryList"
                         :key="item.id">
         <template slot="title">
-          {{item.name}}/{{item.name_en}}
+          {{item.name}}/{{item.name_en}}/{{item.nationality}}/{{item.language}}/{{item.area_code}}/{{item.country_code}}
           <el-button type="text"
-                     @click="openCityModel(item)">添加城市</el-button>
+                     @click="openCityModel(item)">添加城市
+          </el-button>
         </template>
         <el-table :data="item.city_data"
                   max-height="250">
@@ -21,12 +23,17 @@
                            prop="name"></el-table-column>
           <el-table-column label="城市英文名称"
                            prop="name_en"></el-table-column>
+          <el-table-column label="缩写"
+                           prop="abbreviation"></el-table-column>
+          <el-table-column label="备注"
+                           prop="note"></el-table-column>
           <el-table-column label="操作">
             <template scope="scope">
               <el-button type="text"
                          size="small"
                          @click="removeCity(scope.
-                    $index,scope)">删除</el-button>
+                    $index,scope)">删除
+              </el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -44,12 +51,33 @@
           <el-input v-model="countryModel.name_en"
                     auto-complete="off"></el-input>
         </el-form-item>
+        <el-form-item label="国籍">
+          <el-input v-model="countryModel.nationality"
+                    auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="语言">
+          <el-input v-model="countryModel.language"
+                    auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="国际区号">
+          <el-input v-model="countryModel.area_code"
+                    auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="国家代码">
+          <el-input v-model="countryModel.country_code"
+                    auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="备注">
+          <el-input v-model="countryModel.note"
+                    auto-complete="off"></el-input>
+        </el-form-item>
       </el-form>
       <div slot="footer"
            class="dialog-footer">
         <el-button @click="dialogCountry = false">取 消</el-button>
         <el-button type="primary"
-                   @click="addCountry">确 定</el-button>
+                   @click="addCountry">确 定
+        </el-button>
       </div>
     </el-dialog>
     <el-dialog title="添加城市"
@@ -64,115 +92,120 @@
           <el-input v-model="cityModel.name_en"
                     auto-complete="off"></el-input>
         </el-form-item>
+        <el-form-item label="缩写">
+          <el-input v-model="cityModel.abbreviation"
+                    auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="备注">
+          <el-input v-model="cityModel.note"
+                    auto-complete="off"></el-input>
+        </el-form-item>
       </el-form>
       <div slot="footer"
            class="dialog-footer">
         <el-button @click="dialogCity = false">取 消</el-button>
         <el-button type="primary"
-                   @click="addCity">确 定</el-button>
+                   @click="addCity">确 定
+        </el-button>
       </div>
     </el-dialog>
   </div>
 </template>
 <style lang="scss">
-.addCountry {
-  float: right;
-}
+  .addCountry {
+    float: right;
+  }
 </style>
 <script>
-import ContentTop from "src/views/components/ContentTop.vue"
-export default {
-  data() {
-    return {
-      countryList: [{
-        id: 1, name: '斯里兰卡', name_en: 'Srilanka', city_data: [
-          { name: '科伦坡', name_en: 'colloo' }
-        ]
-      }],
-      dialogCountry: false,
-      dialogCity: false,
-      countryModel: {
-        name: '',
-        name_en: ''
+  import ContentTop from "src/views/components/ContentTop.vue"
+  export default {
+    data() {
+      return {
+        countryList: [],
+        dialogCountry: false,
+        dialogCity: false,
+        countryModel: {
+          name: '',
+          name_en: ''
+        },
+        cityModel: {
+          country_id: null,
+          name: '',
+          name_en: ''
+        },
+        currentCountry: ''
+      }
+    },
+    created(){
+      this.loadList();
+    },
+    methods: {
+      loadList() {
+        this.$http.get('/country/all').then(res => {
+          if (res.data.code === 200) {
+            this.countryList = res.data.data;
+          }
+        }, err => {
+          console.log(new Error(err))
+        })
       },
-      cityModel: {
-        country_id: null,
-        name: '',
-        name_en: ''
-      },
-      currentCountry: ''
-    }
-  },
-  created(){
-    this.loadList();
-  },
-  methods: {
-    loadList() {
-      this.$http.get('/country/all').then(res => {
-        if (res.data.code === 200) {
-          this.countryList = res.data.data;
-        }
-      }, err => {
-        console.log(new Error(err))
-      })
-    },
-    addCountry() {
-      this.$http.post('/country/create', this.countryModel).then(res => {
-        if (res.data.code === 200) {
-          this.dialogCountry = false;
-          this.countryModel = {};
-          this.loadList();
-        }
-      })
-
-    },
-    addCity() {
-      this.cityModel['country_id'] = this.currentCountry;
-      this.$http.post('/city/create', this.cityModel).then(res => {
-        if (res.data.code === 200) {
-          this.dialogCity = false;
-          this.countryModel = {};
-          this.loadList();
-        }
-      })
-
-    },
-    openCityModel(item) {
-      event.stopPropagation();
-      this.currentCountry = item.id;
-      this.dialogCity = true;
-    },
-    removeCity(index, scope) {
-      this.$confirm('此操作将删除该地区, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        this.$http.delete('/city/'+scope.row.id).then(res=>{
-          if(res.data.code === 200){
-            this.$message({
-              type: 'success',
-              message: '删除成功!'
-            });
+      addCountry() {
+        this.$http.post('/country/create', this.countryModel).then(res => {
+          if (res.data.code === 200) {
+            this.dialogCountry = false;
+            this.countryModel = {};
             this.loadList();
-          }else {
-            this.$message({
-              type: 'error',
-              message: '删除失败!'
-            });
           }
         })
 
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消删除'
+      },
+      addCity() {
+        this.cityModel['country_id'] = this.currentCountry;
+        this.$http.post('/city/create', this.cityModel).then(res => {
+          if (res.data.code === 200) {
+            this.dialogCity = false;
+            this.countryModel = {};
+            this.loadList();
+          }
+        })
+
+      },
+      openCityModel(item) {
+        event.stopPropagation();
+        this.currentCountry = item.id;
+        this.dialogCity = true;
+      },
+      removeCity(index, scope) {
+        this.$confirm('此操作将删除该地区, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$http.delete('/city/' + scope.row.id).then(res => {
+            if (res.data.code === 200) {
+              this.$message({
+                type: 'success',
+                message: '删除成功!'
+              });
+              this.loadList();
+            } else {
+              this.$message({
+                type: 'error',
+                message: '删除失败!'
+              });
+            }
+          })
+
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });
         });
-      });
+      }
+    },
+    components: {
+      ContentTop
     }
-  },
-  components: {
-    ContentTop
   }
-}
 </script>
