@@ -268,7 +268,7 @@
             this.submitting = false;
           })
         } else {
-          this.$http.post('/tour_guide/create_tour_guide',
+          this.$http.post('/tour_guide/create',
             _.omitBy(this.params, function (item) {
               return item === null || item === ''
             })).then(res => {

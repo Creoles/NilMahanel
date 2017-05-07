@@ -11,28 +11,15 @@
                         :country="countryArr">
         </country-select>
       </el-form-item>
-      <el-form-item label="所属集团">
-        <el-select clearable
-                   v-model="params.company_id">
-          <el-option v-for="item in companyList"
-                     :key="item.id"
-                     :value="item.id"
-                     :label="item.name">
-          </el-option>
-        </el-select>
-      </el-form-item>
       <el-form-item label="酒店名称">
         <el-input v-model="params.name"></el-input>
       </el-form-item>
       <el-form-item label="英文名称">
         <el-input v-model="params.name_en"></el-input>
       </el-form-item>
-      <br>
-      <el-form-item label="地址"
-                    style="width:500px;">
-        <el-input v-model="params.address"></el-input>
+      <el-form-item label="英文简称">
+        <el-input v-model="params.nickname_en"></el-input>
       </el-form-item>
-      <br>
       <el-form-item label="类型"
                     class="inline select">
         <el-select v-model="params.restaurant_type"
@@ -40,48 +27,120 @@
                    placeholder="select">
           <el-option label="中餐"
                      :value="1"></el-option>
-          <el-option label="西餐"
-                     :value="2"></el-option>
           <el-option label="特色"
+                     :value="2"></el-option>
+          <el-option label="西餐"
                      :value="3"></el-option>
           <el-option label="综合"
                      :value="4"></el-option>
+          <el-option label="其他"
+                     :value="5"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="联系人员"
-                    class="inline contact">
-        <el-input v-model="params.contact"></el-input>
-      </el-form-item>
-      <el-form-item label="联系电话"
-                    class="inline contact">
-        <el-input v-model="params.telephone"></el-input>
-      </el-form-item>
-      <br>
-      <el-form-item label="币种">
-        <el-select v-model="params.currency">
-          <el-option label="美元"
-                     :value="1"></el-option>
-          <el-option label="人民币"
-                     :value="2"></el-option>
-          <el-option label="斯里兰卡卢比"
-                     :value="3"></el-option>
+      <el-form-item label="环境水平">
+        <el-select v-model="params.environ_level">
+          <el-option label="卓越" :value="1"></el-option>
+          <el-option label="非常好" :value="2"></el-option>
+          <el-option label="好" :value="3"></el-option>
+          <el-option label="一般" :value="4"></el-option>
+          <el-option label="差" :value="5"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="银行名称">
-        <el-input v-model="params.bank_name"></el-input>
+      <el-form-item label="口味水平">
+        <el-select v-model="params.taste_level">
+          <el-option label="卓越" :value="1"></el-option>
+          <el-option label="非常好" :value="2"></el-option>
+          <el-option label="好" :value="3"></el-option>
+          <el-option label="一般" :value="4"></el-option>
+          <el-option label="差" :value="5"></el-option>
+        </el-select>
       </el-form-item>
-      <el-form-item label="开户支行">
-        <el-input v-model="params.deposit_bank"></el-input>
+      <el-form-item label="服务水平">
+        <el-select v-model="params.service_level">
+          <el-option label="卓越" :value="1"></el-option>
+          <el-option label="非常好" :value="2"></el-option>
+          <el-option label="好" :value="3"></el-option>
+          <el-option label="一般" :value="4"></el-option>
+          <el-option label="差" :value="5"></el-option>
+        </el-select>
       </el-form-item>
-      <el-form-item label="收款人名称">
-        <el-input v-model="params.payee"></el-input>
+      <el-form-item label="消费水平">
+        <el-select v-model="params.cost_level">
+          <el-option label="昂贵" :value="1"></el-option>
+          <el-option label="一般" :value="2"></el-option>
+          <el-option label="便宜" :value="3"></el-option>
+        </el-select>
       </el-form-item>
-      <el-form-item label="收款人账号">
-        <el-input v-model="params.account"></el-input>
+      <el-form-item label="合作程度">
+        <el-select v-model="params.cooperation_level">
+          <el-option label="核心" :value="1"></el-option>
+          <el-option label="一般" :value="2"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="推荐程度">
+        <el-select v-model="params.recommend_level">
+          <el-option label="5星" :value="1"></el-option>
+          <el-option label="4星" :value="2"></el-option>
+          <el-option label="3星" :value="3"></el-option>
+          <el-option label="2星" :value="4"></el-option>
+          <el-option label="1星" :value="5"></el-option>
+        </el-select>
       </el-form-item>
       <br>
-      <el-form-item label="备注">
-        <el-input v-model="params.note"></el-input>
+      <el-form-item label="地址"
+                    style="width:500px;">
+        <el-input v-model="params.address"></el-input>
+      </el-form-item>
+      <br>
+      <el-form-item label="联系人员1"
+                    class="inline contact">
+        <el-input v-model="params.contact_one"></el-input>
+      </el-form-item>
+      <el-form-item label="联系人员1职位"
+                    class="inline contact">
+        <el-input v-model="params.position_one"></el-input>
+      </el-form-item>
+      <el-form-item label="联系人员1手机"
+                    class="inline contact">
+        <el-input v-model="params.telephone_one"></el-input>
+      </el-form-item>
+      <el-form-item label="联系人员1邮箱"
+                    class="inline contact">
+        <el-input v-model="params.email_one"></el-input>
+      </el-form-item>
+      <br>
+      <el-form-item label="联系人员2"
+                    class="inline contact">
+        <el-input v-model="params.contact_two"></el-input>
+      </el-form-item>
+      <el-form-item label="联系人员2职位"
+                    class="inline contact">
+        <el-input v-model="params.position_two"></el-input>
+      </el-form-item>
+      <el-form-item label="联系人员2手机"
+                    class="inline contact">
+        <el-input v-model="params.telephone_two"></el-input>
+      </el-form-item>
+      <el-form-item label="联系人员2邮箱"
+                    class="inline contact">
+        <el-input v-model="params.email_two"></el-input>
+      </el-form-item>
+      <br>
+      <el-form-item label="联系人员3"
+                    class="inline contact">
+        <el-input v-model="params.contact_three"></el-input>
+      </el-form-item>
+      <el-form-item label="联系人员3职位"
+                    class="inline contact">
+        <el-input v-model="params.position_three"></el-input>
+      </el-form-item>
+      <el-form-item label="联系人员3手机"
+                    class="inline contact">
+        <el-input v-model="params.telephone_three"></el-input>
+      </el-form-item>
+      <el-form-item label="联系人员3邮箱"
+                    class="inline contact">
+        <el-input v-model="params.email_three"></el-input>
       </el-form-item>
       <br>
       <el-form-item label="中文介绍"
@@ -94,6 +153,45 @@
                     style="width:300px">
         <el-input type="textarea"
                   v-model="params.intro_en">
+        </el-input>
+      </el-form-item>
+      <br>
+      <el-form-item label="标准餐介绍"
+                    style="width:300px">
+        <el-input type="textarea"
+                  v-model="params.standard_meal_intro_cn">
+        </el-input>
+      </el-form-item>
+      <el-form-item label="标准餐英文介绍"
+                    style="width:300px">
+        <el-input type="textarea"
+                  v-model="params.standard_meal_intro_en">
+        </el-input>
+      </el-form-item>
+      <br>
+      <el-form-item label="升级餐介绍"
+                    style="width:300px">
+        <el-input type="textarea"
+                  v-model="params.upgrade_meal_intro_cn">
+        </el-input>
+      </el-form-item>
+      <el-form-item label="升级餐英文介绍"
+                    style="width:300px">
+        <el-input type="textarea"
+                  v-model="params.upgrade_meal_intro_en">
+        </el-input>
+      </el-form-item>
+      <br>
+      <el-form-item label="豪华餐介绍"
+                    style="width:300px">
+        <el-input type="textarea"
+                  v-model="params.luxury_meal_intro_cn">
+        </el-input>
+      </el-form-item>
+      <el-form-item label="豪华餐英文介绍"
+                    style="width:300px">
+        <el-input type="textarea"
+                  v-model="params.luxury_meal_intro_en">
         </el-input>
       </el-form-item>
       <br>
@@ -121,21 +219,37 @@ export default {
       params: {
         name: null,
         name_en: null,
+        nickname_en: null,
         country_id: null,
         city_id: null,
-        company_id: null,
         restaurant_type: null,
+        environ_level: null,
+        taste_level: null,
+        service_level: null,
+        cost_level: null,
+        cooperation_level: null,
+        recommend_level: null,
+        contact_one: null,
+        position_one: null,
+        telephone_one: null,
+        email_one: null,
+        contact_two: null,
+        position_two: null,
+        telephone_two: null,
+        email_two: null,
+        contact_three: null,
+        position_three: null,
+        telephone_three: null,
+        email_three: null,
+        standard_meal_intro_cn: null,
+        standard_meal_intro_en: null,
+        upgrade_meal_intro_cn: null,
+        upgrade_meal_intro_en: null,
+        luxury_meal_intro_cn: null,
+        luxury_meal_intro_en: null,
         address: null,
-        telephone: null,
         intro_cn: null,
         intro_en: null,
-        contact: null,
-        currency: null,
-        bank_name: null,
-        deposit_bank: null,
-        payee: null,
-        account: null,
-        note: null
       },
       countryArr: [],
       submitting: false,
@@ -145,7 +259,6 @@ export default {
     }
   },
   created() {
-    this.loadCompanyList();
     if (this.$route.params.id) {
       let id = this.$route.params.id;
       this.loadRestaurantById(id).then(res => {
@@ -164,17 +277,6 @@ export default {
     onCountryChange(msg) {
       this.params.country_id = msg[0];
       this.params.city_id = msg[1];
-    },
-    loadCompanyList() {
-      this.$http.get('/restaurant_company/search', {params: {is_all: true}}).then(res => {
-        if (res.data.code === 200) {
-          this.companyList = res.data.data;
-        } else {
-          console.log(res.data.message);
-        }
-      }).catch(err => {
-        console.log(err);
-      })
     },
     loadRestaurantById(id) {
       return this.$http.get('/restaurant/' + id);
@@ -202,7 +304,7 @@ export default {
           this.submitting = false;
         })
       } else {
-        this.$http.post('/restaurant/create_restaurant', this.params).then(res => {
+        this.$http.post('/restaurant/create', this.params).then(res => {
           if (res.data.code === 200) {
             this.$message({
               type: 'success',

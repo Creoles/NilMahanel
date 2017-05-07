@@ -18,6 +18,8 @@ import EditVehicle from "../views/admin/manager/resource/vehicle/EditVehicle.vue
 import RestaurantManager from "../views/admin/manager/resource/restaurant/Restaurant.vue"
 import RestaurantList from "../views/admin/manager/resource/restaurant/RestaurantList.vue"
 import EditRestaurant from "../views/admin/manager/resource/restaurant/EditRestaurant.vue"
+import RestaurantAccount from "../views/admin/finance/account/RestaurantAccount.vue"
+import RestaurantPrice from "../views/admin/manager/price/restaurant/EditPrice.vue"
 import ShopManager from "../views/admin/manager/resource/shop/Shop.vue"
 import ShopList from "../views/admin/manager/resource/shop/ShopList.vue"
 import EditShop from "../views/admin/manager/resource/shop/EditShop.vue"
@@ -37,7 +39,6 @@ import Account from "../views/admin/manager/Account.vue"
 import Country from "../views/admin/manager/Country.vue"
 import ShopCompany from "../views/admin/manager/resource/shop/ShopCompany.vue"
 import VehicleCompany from "../views/admin/manager/resource/vehicle/VehicleCompany.vue"
-import RestaurantCompany from "../views/admin/manager/resource/restaurant/RestCompany.vue"
 
 
 Vue.use(VueRoute);
@@ -134,6 +135,16 @@ export default new VueRoute({
           name: "EDIT RESTAURANT",
           path: "edit/:id",
           component: EditRestaurant
+        },
+        {
+          name: "RESTAURANT ACCOUNT",
+          path: "account",
+          component: RestaurantAccount,
+        },
+        {
+          name: "RESTAURANT PRICE",
+          path: "price",
+          component: RestaurantPrice
         }
       ]
     },
@@ -247,11 +258,6 @@ export default new VueRoute({
       path: "/admin/manager/vehicle-company",
       component: VehicleCompany
     },
-    {
-      name: "RESTAURANT COMPANY",
-      path: "/admin/manager/restaurant-company",
-      component: RestaurantCompany
-    }
 
     // ...generateRoutes(),
   ]

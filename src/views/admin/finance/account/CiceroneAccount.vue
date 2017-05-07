@@ -50,7 +50,7 @@
                    layout="total,sizes, prev, pager, next"
                    :total="total">
     </el-pagination>
-    <el-dialog id="cicerone-account"
+    <el-dialog id="account"
                title="收款账号"
                v-model="dialogAccount"
                size="large">
@@ -230,7 +230,7 @@
               message: '修改成功!'
             });
             this.dialogAccount = false;
-            this.loadRestList();
+            this.loadCiceroneList();
           } else {
             this.$message({
               type: 'error',
@@ -280,7 +280,7 @@
   }
 </script>
 <style lang="scss">
-  #cicerone-account {
+  #account {
     .el-dialog--large {
       width: 82%;
       left: 58%;

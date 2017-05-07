@@ -200,13 +200,16 @@
           })
         } else {
           this.priceModel.tour_guide_id = this.currentPriceName.tour_guide_id;
-          this.$http.post('/tour_guide/fee/create_tour_guide_fee', this.priceModel).then(res => {
+          this.$http.post('/tour_guide/fee/create', this.priceModel).then(res => {
             if (res.data.code === 200) {
               this.$message({
                 type: 'success',
                 message: '创建成功!'
               });
+              this.submitting = false;
+              this.dialogPrice = false;
             } else {
+              this.submitting = false;
               this.$message({
                 type: 'error',
                 message: res.data.message
