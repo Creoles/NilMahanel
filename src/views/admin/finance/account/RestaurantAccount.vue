@@ -1,12 +1,6 @@
 <template>
   <div>
-    <content-top>
-      <el-button class="add-btn el-icon-plus"
-                 type="primary"
-                 @click="addRestaurant">
-        添加餐厅
-      </el-button>
-    </content-top>
+    <content-top></content-top>
     <div>
       <el-form :inline="true"
                label-position="left"
@@ -53,22 +47,10 @@
                        label="类型"
                        :formatter="restTypeFormatter">
       </el-table-column>
-      <el-table-column prop="contact_one"
-                       label="联系人">
-      </el-table-column>
-      <el-table-column prop="telephone_one"
-                       label="联系电话">
-      </el-table-column>
       <el-table-column label="操作">
         <template scope="scope">
           <el-button type="text"
-                     @click="editRestaurant(scope.row.id)">编辑信息
-          </el-button>
-          <el-button type="text"
-                     @click="editMeal(scope)">价格
-          </el-button>
-          <el-button type="text"
-                     @click="deleteRestaurant(scope)">删除
+                     @click="editAccount(scope)">编辑账户
           </el-button>
         </template>
       </el-table-column>
@@ -83,7 +65,81 @@
                    layout="total,sizes, prev, pager, next"
                    :total="total">
     </el-pagination>
-
+    <el-dialog id="account"
+               title="收款账号"
+               v-model="dialogAccount"
+               size="large">
+      <div>
+        <el-button type="primary"
+                   style="margin-bottom:10px;"
+                   @click="addOneAccount">添加一条
+        </el-button>
+      </div>
+      <el-form :inline="true"
+               label-position="top"
+               v-loading.body="accountLoading">
+        <div v-for="(account,index) in accountList"
+             class="account-box">
+          <el-form>
+            <el-form-item label="币种">
+              <el-select v-model="account.currency"
+                         class="account-width">
+                <el-option label="美元"
+                           :value="1"></el-option>
+                <el-option label="人民币"
+                           :value="2"></el-option>
+                <el-option label="斯里兰卡卢比"
+                           :value="3"></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="银行名称">
+              <el-input v-model="account.bank_name"
+                        class="account-width"></el-input>
+            </el-form-item>
+            <el-form-item label="开户支行">
+              <el-input v-model="account.deposit_bank"
+                        class="account-width"></el-input>
+            </el-form-item>
+            <el-form-item label="收款人名称">
+              <el-input v-model="account.payee"
+                        class="account-width"></el-input>
+            </el-form-item>
+            <el-form-item label="收款人账号">
+              <el-input v-model="account.account"
+                        class="account-width"></el-input>
+            </el-form-item>
+            <el-form-item label="swift" class="swift">
+              <el-input v-model="account.swift_code"
+                        class="account-width"></el-input>
+            </el-form-item>
+            <el-form-item label="备注">
+              <el-input v-model="account.note"
+                        class="account-width"></el-input>
+            </el-form-item>
+            <el-form-item scope="scope"
+                          label="删除">
+              <i class="el-icon-circle-cross"
+                 style="cursor:pointer"
+                 @click="deleteOneAccount(account.id,index)"></i>
+            </el-form-item>
+          </el-form>
+        </div>
+      </el-form>
+      <div slot="footer"
+           class="dialog-footer">
+        <el-button @click="dialogAccount = false"
+                   v-if="!submitting">取 消
+        </el-button>
+        <el-button type="primary"
+                   v-if="!submitting"
+                   @click="submitAccount">确 定
+        </el-button>
+        <el-button type="primary"
+                   v-if="submitting"
+                   :loading="submitting">正在提交...
+        </el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 <style lang="scss">
@@ -113,14 +169,20 @@
           number: 20,
           page: 1
         },
-        currentRestId: null,
         total: null,
-        companyList: [],
         countryArr: [],
         loading: false,
         deleteList: [],
         submitting: false,
         countryList: [],
+        currentRestId: null,
+        currentPriceName: {
+          name: null,
+          name_en: null,
+        },
+        dialogAccount: false,
+        accountLoading: false,
+        accountList: [],
         restType: [
           {value: 1, label: '中餐'},
           {value: 2, label: '特色'},
@@ -135,38 +197,13 @@
       ]).then(axios.spread((res1, res2) => {
         console.log("done");
       }));
+      // this.loadCompanyList();
+      // this.loadCountryList();
 
     },
     methods: {
       addRestaurant() {
         this.$router.push({name: "ADD RESTAURANT"})
-      },
-      editRestaurant(id) {
-        this.$router.push({name: "EDIT RESTAURANT", params: {id: id}});
-      },
-      deleteRestaurant(scope) {
-        this.$confirm('此操作将永久删除该餐厅, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.$http.delete('/restaurant/' + scope.row.id).then(res => {
-            if (res.data.code === 200) {
-              this.restaurantList.splice(scope.$index, 1);
-              this.$message({
-                type: 'success',
-                message: '删除成功'
-              })
-            } else {
-              this.$message({
-                type: 'error',
-                message: res.data.message
-              })
-            }
-          }, err => {
-            console.log(err);
-          })
-        })
       },
       loadCountryList() {
         this.$http.get('/country/all').then(res => {
@@ -177,6 +214,78 @@
           }
         }, err => {
           console.log(err);
+        });
+      },
+      editAccount(scope) {
+        this.dialogAccount = true;
+        this.currentRestId = scope.row.id;
+        this.$http('/restaurant/account/' + scope.row.id).then(res => {
+          this.accountLoading = true;
+          if (res.data.code === 200) {
+            this.accountList = res.data.data;
+            this.accountLoading = false;
+          } else {
+            console.log(res.message);
+            this.accountLoading = false;
+          }
+        }).catch(err => {
+          this.accountLoading = false;
+          console.log(err);
+        })
+      },
+      submitAccount(){
+        this.submitting = true;
+        let updateList = [];
+        let createList = [];
+        let paramsList = {};
+        _.forIn(this.accountList, item => {
+          if (item.id) {
+            updateList.push(item);
+          } else {
+            createList.push(item);
+          }
+        });
+        paramsList['create_account_list'] = createList;
+        paramsList['update_account_list'] = updateList;
+        paramsList['delete_id_list'] = this.deleteList;
+        this.$http.post('/restaurant/account/edit', paramsList).then(res => {
+          if (res.data.code === 200) {
+            this.submitting = false;
+            this.$message({
+              type: 'success',
+              message: '修改成功!'
+            });
+            this.dialogAccount = false;
+            this.loadRestList();
+          } else {
+            this.$message({
+              type: 'error',
+              message: res.data.message
+            });
+            this.submitting = false;
+          }
+        }, err => {
+          this.submitting = false;
+          console.log(err);
+        })
+      },
+      deleteOneAccount(id, index) {
+        if (id) {
+          this.deleteList.push(id);
+        }
+        this.accountList.splice(index, 1);
+      },
+      addOneAccount() {
+        this.accountList.push({
+          id: null,
+          account: null,
+          bank_name: null,
+          currency: null,
+          deposit_bank: null,
+          note: null,
+          payee: null,
+          swift_code: '',
+          restaurant_id: this.currentRestId
         });
       },
       loadRestList(page) {
