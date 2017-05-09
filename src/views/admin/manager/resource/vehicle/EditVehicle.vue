@@ -26,48 +26,63 @@
       <el-form-item label="车辆型号"
                     prop="vehicle_type"
                     class="width-class">
-        <el-input v-model="params.vehicle_type"></el-input>
+        <el-select v-model="params.vehicle_type">
+          <el-option v-for="item in typeList" :key="item.id" :value="item.id" :label="item.name"></el-option>
+        </el-select>
+      </el-form-item>
+      <div style="display: inline-block">
+        <el-form-item label="车辆品牌">
+          <span>{{currentType.brand}}</span>
+        </el-form-item>
+        <el-form-item label="理论座位数">
+          <span>{{currentType.seat}}</span>
+        </el-form-item>
+        <el-form-item label="实际可用座位数">
+          <span>{{currentType.available_seat}}</span>
+        </el-form-item>
+        <el-form-item label="建议乘客人数">
+          <span>{{currentType.passenger_count}}</span>
+        </el-form-item>
+        <el-form-item label="车型备注">
+          <span>{{currentType.note}}</span>
+        </el-form-item>
+      </div>
+      <br>
+      <el-form-item label="年限"
+                    prop="start_use"
+                    class="width-class">
+        <el-input v-model="params.start_use"></el-input>
       </el-form-item>
       <el-form-item label="车牌号"
                     prop="license"
                     class="width-class">
         <el-input v-model="params.license"></el-input>
       </el-form-item>
-      <el-form-item label="座位数"
-                    prop="seat"
+      <el-form-item label="旅游局登记号"
+                    prop="register_number"
                     class="width-class">
-        <el-input v-model.number="params.seat"></el-input>
-      </el-form-item>
-      <el-form-item label="年限"
-                    prop="start_use"
-                    class="width-class">
-        <el-input v-model="params.start_use"></el-input>
+        <el-input v-model="params.register_number"></el-input>
       </el-form-item>
       <el-form-item label="保险号"
                     prop="insurance_number"
                     class="width-class">
         <el-input v-model="params.insurance_number"></el-input>
       </el-form-item>
-      <el-form-item label="旅游局登记号"
-                    prop="register_number"
-                    class="width-class">
-        <el-input v-model="params.register_number"></el-input>
-      </el-form-item>
-      <el-form-item label="联系人"
-                    prop="contact"
-                    class="width-class">
-        <el-input v-model="params.contact"></el-input>
-      </el-form-item>
-      <el-form-item label="预定电话"
-                    prop="telephone"
-                    class="width-class">
-        <el-input v-model="params.telephone"></el-input>
-      </el-form-item>
-      <el-form-item label="价格/每公里(USD)"
-                    class="width-class"
-                    prop="unit_price">
-        <el-input v-model.number="params.unit_price"></el-input>
-      </el-form-item>
+      <br>
+      <div style="display: inline-block">
+        <el-form-item label="联系人名称">
+          <span>{{currentType.brand}}</span>
+        </el-form-item>
+        <el-form-item label="联系人职位">
+          <span>{{currentType.seat}}</span>
+        </el-form-item>
+        <el-form-item label="个人手机">
+          <span>{{currentType.available_seat}}</span>
+        </el-form-item>
+        <el-form-item label="个人邮件">
+          <span>{{currentType.passenger_count}}</span>
+        </el-form-item>
+      </div>
     </el-form>
     <el-button type="primary"
                v-if="!submitting"
@@ -81,7 +96,6 @@
 </template>
 <style lang="scss">
   .vehicle-form {
-    width: 725px;
     .width-class {
       width: 192px;
     }
@@ -91,37 +105,62 @@
   import ContentTop from "src/views/components/ContentTop.vue"
   import editRule from "src/assets/valid/editVehicle.json"
   import CountrySelect from "src/views/components/CountrySelect.vue"
-  //验证价格信息
-  import priceValid from 'src/util/priceValid.js'
   export default {
     data() {
       return {
         params: {
-          account_id: null,
+          id: null,
           country_id: null,
           city_id: null,
           company_id: null,
-          name: null,
-          name_en: null,
           vehicle_type: null,
-          seat: null,
           license: null,//车牌号
           register_number: null,//登记号,
-          contact: null,
-          telephone: null,
           unit_price: null,
           insurance_number: null
         },
+        currentCompanyInfo: {},
+        currentType: [{
+          type: 'CAR',
+          value: 1,
+          children: []
+        }, {
+          type: 'VAN',
+          value: 2,
+          children: []
+        }, {
+          type: 'BIG_VAN',
+          value: 3,
+          children: []
+        }, {
+          type: 'MINI_COACH',
+          value: 4,
+          children: []
+        }, {
+          type: 'COACH',
+          value: 5,
+          children: []
+        }, {
+          type: 'LONG_COACH',
+          value: 6,
+          children: []
+        }, {
+          type: 'other',
+          value: 7,
+          children: []
+        }],
+        props: {
+          label: 'type',
+          children: 'children',
+          value: 'value'
+        },
         countryArr: [],
         companyList: [],
-        rule: editRule,
         submitting: false
 
       }
     },
     created() {
-      //验证价格信息
-      this.rule.unit_price.push({validator: priceValid, trigger: 'blur'});
       this.loadVehicleCompanyList();
       if (this.$route.params.id) {
         let id = this.$route.params.id;
