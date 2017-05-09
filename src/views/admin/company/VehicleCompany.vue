@@ -9,9 +9,25 @@
     </content-top>
     <el-table :data="vehicleCompanyList"
               style="width: 100%">
-
-      <el-table-column>
-
+      <el-table-column prop="country_id"
+                       label="国家"
+                       :formatter="countryFormatter">
+      </el-table-column>
+      <el-table-column prop="city_id"
+                       label="城市"
+                       :formatter="cityFormatter">
+      </el-table-column>
+      <el-table-column prop="type"
+                       label="类型">
+      </el-table-column>
+      <el-table-column prop="name"
+                       label="供应商全称">
+      </el-table-column>
+      <el-table-column prop="nickname"
+                       label="供应商简称">
+      </el-table-column>
+      <el-table-column prop="register_num"
+                       label="公司注册编号">
       </el-table-column>
       <el-table-column label="操作">
         <template scope="scope">
@@ -19,27 +35,45 @@
                      @click="editVehicleCompany(scope.row)">编辑
           </el-button>
           <el-button type="text"
-                     @click="openOneCompAccount(scope.row.id)">添加收款账号
-          </el-button>
-          <el-button type="text"
                      @click="deleteVehicleCompany(scope)">删除
           </el-button>
         </template>
       </el-table-column>
     </el-table>
+
     <el-dialog :title="vehicleCompanyModel.id?'编辑集团':'添加集团'"
                v-model="dialogVehicleCompany"
                size="tiny"
                v-on:close="onDialogClose">
       <el-form :model="vehicleCompanyModel">
-        <el-form-item label="中文名称">
-          <el-input v-model="vehicleCompanyModel.name"
-                    auto-complete="off"></el-input>
+        <el-form-item label="城市及国家">
+          <country-select :country="countryArr"
+                          v-on:country-change="onFilterCountryChange($event)"></country-select>
         </el-form-item>
-        <el-form-item label="英文名称">
-          <el-input v-model="vehicleCompanyModel.name_en"
-                    auto-complete="off"></el-input>
+        <el-form-item label="类型">
+          <el-select v-model="vehicleCompanyModel.type"></el-select>
         </el-form-item>
+        <el-form-item label="供应商全称">
+          <el-select v-model="vehicleCompanyModel.name"></el-select>
+        </el-form-item>
+        <el-form-item label="供应商简称">
+          <el-select v-model="vehicleCompanyModel.nickname"></el-select>
+        </el-form-item>
+        <el-form-item label="车辆数量">
+          <el-select v-model="vehicleCompanyModel.vehicle_total"></el-select>
+        </el-form-item>
+        <el-form-item label="车辆数量">
+          <el-select v-model="vehicleCompanyModel.vehicle_total"></el-select>
+        </el-form-item>
+        <el-form-item label="公司注册编码">
+          <el-select v-model="vehicleCompanyModel.register_num"></el-select>
+        </el-form-item>
+        <div v-for="contact in vehicleCompanyModel.contact">
+          <el-form-item label="联系人姓名" v-model="contact.name"></el-form-item>
+          <el-form-item label="联系人职位" v-model="contact.position"></el-form-item>
+          <el-form-item label="电话" v-model="contact.telephone"></el-form-item>
+          <el-form-item label="邮箱" v-model="contact.email"></el-form-item>
+        </div>
       </el-form>
       <div slot="footer"
            class="dialog-footer">
@@ -49,6 +83,8 @@
         </el-button>
       </div>
     </el-dialog>
+
+
     <el-dialog :title="vehicleAccountModel.owner_id||vehicleAccountModel.owner_id?'添加账号':'编辑账号'"
                v-model="dialogVehicleAccount"
                size="tiny"
