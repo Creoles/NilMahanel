@@ -13,28 +13,9 @@
                label-position="left"
                :model="filter"
                class="vehicle-filter">
-        <el-form-item label="城市及国家">
+        <el-form-item label="国家及城市">
           <country-select :country="countryArr"
                           v-on:country-change="onFilterCountryChange($event)"></country-select>
-        </el-form-item>
-        <el-form-item label="座位数">
-          <div style="width:200px">
-            <el-input v-model.number="filter.seat">
-              <el-select v-model="filter.operation"
-                         slot="prepend"
-                         placeholder="select"
-                         style="width:86px;"
-                         clearable
-                         @change="operationChange($event)">
-                <el-option label="小于"
-                           :value="3"></el-option>
-                <el-option label="等于"
-                           :value="2"></el-option>
-                <el-option label="大于"
-                           :value="1"></el-option>
-              </el-select>
-            </el-input>
-          </div>
         </el-form-item>
         <el-form-item label="所属公司">
           <el-select v-model="filter.company_id"
@@ -124,12 +105,10 @@
         filter: {
           country_id: null,
           city_id: null,
-          seat: null,
           company_id: null,
+          vehicle_type_id: null,
           number: 20,
           page: 1,
-          //1:小于 2 等于 3 大于
-          operation: null
         },
         countryArr: [],
         countryList: [],
@@ -150,12 +129,6 @@
       onFilterCountryChange(msg) {
         this.filter.country_id = msg[0];
         this.filter.city_id = msg[1];
-      },
-      operationChange(){
-//        if (!this.filter.operation){
-//          this.filter.operation = null;
-//          this.filter.seat = null;
-//        }
       },
       editVehicle(id) {
         this.$router.push({name: "EDIT VEHICLE", params: {id: id}})
@@ -232,11 +205,11 @@
         });
       },
       loadCompanyList() {
-        this.$http.get('/vehicle_company/search', {params: {is_all: true}}).then(res => {
+        this.$http.get('/vehicle/company/search', {params: {page: 1, number: 10000}}).then(res => {
           if (res.data.code === 200) {
-            this.companyList = res.data.data;
+            this.companyList = res.data.data.vehicle_company_list;
           } else {
-            console.log(res.data.message);
+            console.log(res.data.data.message);
           }
         }, err => {
           console.log(err);

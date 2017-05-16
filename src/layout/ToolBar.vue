@@ -16,7 +16,7 @@
     top: 67px;
     background-color: #33425B;
     overflow-y: scroll;
-    z-index: 9999;
+  z-index: 9;
     ul {
         font-size: 0.8rem;
         margin-right: 0;
