@@ -197,8 +197,6 @@
       ]).then(axios.spread((res1, res2) => {
         console.log("done");
       }));
-      // this.loadCompanyList();
-      // this.loadCountryList();
 
     },
     methods: {
