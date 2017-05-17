@@ -41,7 +41,8 @@ import ShopCompany from "../views/admin/manager/resource/shop/ShopCompany.vue"
 import VehicleCompany from "../views/admin/company/VehicleCompany.vue"
 import VehicleType from "../views/admin/manager/resource/vehicle/VehicleType.vue"
 import EditVehicleCompany from "../views/admin/company/EditVehicleCompany.vue"
-
+import VehicleAccount from "../views/admin/finance/account/VehicleAccount.vue"
+import VehiclePrice from "../views/admin/manager/price/vehicle/EditPrice.vue"
 Vue.use(VueRoute);
 
 function generateRoutes() {
@@ -131,6 +132,16 @@ export default new VueRoute({
           name: "EDIT VEHICLE COMPANY",
           path: "company/edit/:id",
           component: EditVehicleCompany
+        },
+        {
+          name: "VEHICLE ACCOUNT",
+          path: "account",
+          component: VehicleAccount
+        },
+        {
+          name: "VEHICLE PRICE",
+          path: "price",
+          component: VehiclePrice
         },
         {
           name: "VEHICLE COMPANY",

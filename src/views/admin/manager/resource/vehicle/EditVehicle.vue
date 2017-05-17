@@ -3,7 +3,6 @@
     <content-top></content-top>
     <el-form :model="params"
              :inline="true"
-             :rules="rule"
              label-position="top"
              class="vehicle-form"
              ref="vehicleForm">
@@ -14,7 +13,7 @@
       </el-form-item>
       <el-form-item label="所属车辆公司">
         <el-select clearable
-                   v-model="params.company_id" @change="loadAccount($event,params.company_id)">
+                   v-model="params.company_id">
           <el-option v-for="item in companyList"
                      :key="item.id"
                      :value="item.id"
@@ -26,27 +25,30 @@
       <el-form-item label="车辆型号"
                     prop="vehicle_type"
                     class="width-class">
-        <el-select v-model="params.vehicle_type">
-          <el-option v-for="item in typeList" :key="item.id" :value="item.id" :label="item.name"></el-option>
-        </el-select>
+        <el-cascader
+          :options="typeList"
+          v-model="typeArr"
+          @active-item-change="handleItemChange"
+          :props="props"
+        ></el-cascader>
       </el-form-item>
-      <div style="display: inline-block">
-        <el-form-item label="车辆品牌">
-          <span>{{currentType.brand}}</span>
-        </el-form-item>
-        <el-form-item label="理论座位数">
-          <span>{{currentType.seat}}</span>
-        </el-form-item>
-        <el-form-item label="实际可用座位数">
-          <span>{{currentType.available_seat}}</span>
-        </el-form-item>
-        <el-form-item label="建议乘客人数">
-          <span>{{currentType.passenger_count}}</span>
-        </el-form-item>
-        <el-form-item label="车型备注">
-          <span>{{currentType.note}}</span>
-        </el-form-item>
-      </div>
+      <!--<div style="display: inline-block">-->
+      <!--<el-form-item label="车辆品牌">-->
+      <!--<span>{{item.brand}}</span>-->
+      <!--</el-form-item>-->
+      <!--<el-form-item label="理论座位数">-->
+      <!--<span>{{item.seat}}</span>-->
+      <!--</el-form-item>-->
+      <!--<el-form-item label="实际可用座位数">-->
+      <!--<span>{{item.available_seat}}</span>-->
+      <!--</el-form-item>-->
+      <!--<el-form-item label="建议乘客人数">-->
+      <!--<span>{{item.passenger_count}}</span>-->
+      <!--</el-form-item>-->
+      <!--<el-form-item label="车型备注">-->
+      <!--<span>{{item.note}}</span>-->
+      <!--</el-form-item>-->
+      <!--</div>-->
       <br>
       <el-form-item label="年限"
                     prop="start_use"
@@ -69,20 +71,20 @@
         <el-input v-model="params.insurance_number"></el-input>
       </el-form-item>
       <br>
-      <div style="display: inline-block">
-        <el-form-item label="联系人名称">
-          <span>{{currentType.brand}}</span>
-        </el-form-item>
-        <el-form-item label="联系人职位">
-          <span>{{currentType.seat}}</span>
-        </el-form-item>
-        <el-form-item label="个人手机">
-          <span>{{currentType.available_seat}}</span>
-        </el-form-item>
-        <el-form-item label="个人邮件">
-          <span>{{currentType.passenger_count}}</span>
-        </el-form-item>
-      </div>
+      <!--<div style="display: inline-block">-->
+      <!--<el-form-item label="联系人名称">-->
+      <!--<span>{{currentCompanyInfo.brand}}</span>-->
+      <!--</el-form-item>-->
+      <!--<el-form-item label="联系人职位">-->
+      <!--<span>{{currentCompanyInfo.seat}}</span>-->
+      <!--</el-form-item>-->
+      <!--<el-form-item label="个人手机">-->
+      <!--<span>{{currentCompanyInfo.available_seat}}</span>-->
+      <!--</el-form-item>-->
+      <!--<el-form-item label="个人邮件">-->
+      <!--<span>{{currentCompanyInfo.passenger_count}}</span>-->
+      <!--</el-form-item>-->
+      <!--</div>-->
     </el-form>
     <el-button type="primary"
                v-if="!submitting"
@@ -103,7 +105,6 @@
 </style>
 <script>
   import ContentTop from "src/views/components/ContentTop.vue"
-  import editRule from "src/assets/valid/editVehicle.json"
   import CountrySelect from "src/views/components/CountrySelect.vue"
   export default {
     data() {
@@ -113,46 +114,47 @@
           country_id: null,
           city_id: null,
           company_id: null,
-          vehicle_type: null,
+          vehicle_type_id: null,
+          start_use: null,
           license: null,//车牌号
           register_number: null,//登记号,
-          unit_price: null,
           insurance_number: null
         },
+        typeArr: [],
         currentCompanyInfo: {},
-        currentType: [{
-          type: 'CAR',
-          value: 1,
+        typeList: [{
+          brand: 'CAR',
+          id: 1,
           children: []
         }, {
-          type: 'VAN',
-          value: 2,
+          brand: 'VAN',
+          id: 2,
           children: []
         }, {
-          type: 'BIG_VAN',
-          value: 3,
+          brand: 'BIG_VAN',
+          id: 3,
           children: []
         }, {
-          type: 'MINI_COACH',
-          value: 4,
+          brand: 'MINI_COACH',
+          id: 4,
           children: []
         }, {
-          type: 'COACH',
-          value: 5,
+          brand: 'COACH',
+          id: 5,
           children: []
         }, {
-          type: 'LONG_COACH',
-          value: 6,
+          brand: 'LONG_COACH',
+          id: 6,
           children: []
         }, {
-          type: 'other',
-          value: 7,
+          brand: 'other',
+          id: 7,
           children: []
         }],
         props: {
-          label: 'type',
+          label: 'brand',
           children: 'children',
-          value: 'value'
+          value: 'id'
         },
         countryArr: [],
         companyList: [],
@@ -173,6 +175,8 @@
           }
         }, err => {
           console.log(err);
+        }).then(() => {
+          this.formatType(this.params.vehicle_type_id);
         })
       }
       this.countryArr.push(this.params.country_id, this.params.city_id);
@@ -185,29 +189,12 @@
       loadVehicleById(id) {
         return this.$http.get('/vehicle/' + id);
       },
-      loadAccount($event, company_id){
-        this.$http.get('/vehicle_account/' + company_id + "?account_type=1").then(res => {
-          if (res.data.code === 200) {
-            if (res.data.data.length === 0) {
-              this.$message({
-                type: 'error',
-                message: '当前公司没有收款账号，请先添加!'
-              });
-            }
-            this.params.account_id = res.data.data[0].id;
-          } else {
-            console.log(res.data.message);
-          }
-        }, err => {
-          console.log(err);
-        })
-      },
       loadVehicleCompanyList() {
-        this.$http.get('/vehicle_company/search', {params: {is_all: true}}).then(res => {
+        this.$http.get('/vehicle/company/search', {params: {page: 1, number: 10000}}).then(res => {
           if (res.data.code === 200) {
-            this.companyList = res.data.data;
+            this.companyList = res.data.data.vehicle_company_list;
           } else {
-            console.log(res.data.message);
+            console.log(res.data.data.message);
           }
         }, err => {
           console.log(err);
@@ -216,6 +203,7 @@
       submit(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
+            this.params.vehicle_type_id = this.typeArr[1];
             this.submitting = true;
             //判断是新建 还是 编辑
             if (this.params.id) {
@@ -238,7 +226,7 @@
                 this.submitting = false;
               })
             } else {
-              this.$http.post('/vehicle/create_vehicle', this.params).then(res => {
+              this.$http.post('/vehicle/create', this.params).then(res => {
                 if (res.data.code === 200) {
                   this.$message({
                     type: 'success',
@@ -246,7 +234,10 @@
                   });
                   this.$router.push({name: "VEHICLE LIST"})
                 } else {
-                  console.log(res.message);
+                  this.$message({
+                    type: 'error',
+                    message: res.data.message
+                  });
                 }
                 this.submitting = false;
               }, err => {
@@ -260,6 +251,20 @@
           }
         });
 
+      },
+      handleItemChange(val){
+        this.$http.get('/vehicle/type/search', {params: {vehicle_type: val[0], page: 1, number: 10000}}).then(res => {
+          if (res.data.code === 200) {
+            this.typeList[val[0] - 1].children = res.data.data.vehicle_type_list;
+          }
+        })
+      },
+      formatType(vehicle_type_id){
+        this.$http.get('/vehicle/type/' + vehicle_type_id).then(res => {
+          let data = res.data.data;
+          this.typeArr = [data.vehicle_type, data.id];
+          this.handleItemChange([data.vehicle_type]);
+        })
       }
 
     },
