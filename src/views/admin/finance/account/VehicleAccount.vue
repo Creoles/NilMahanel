@@ -182,23 +182,51 @@
       openAccount(id){
         this.dialogAccount = true;
         this.currentCompanyId = id;
-        this.$http.get('/vehicle/account/' + id).then(res => {
+        this.$http.get('/vehicle/company/' + id).then(res => {
           if (res.data.code === 200) {
-            debugger;
-            this.accountList = res.data.data;
+            this.accountList = res.data.data.account_list;
+          } else {
+            console.log(res.data.message)
           }
         })
       },
       submitAccount(scope){
         if (scope.row.id) {
-
+          this.$http.put('/vehicle/account/' + scope.row.id, _.omitBy(scope.row, function (item) {
+            return item === '' || item === null;
+          })).then(res => {
+            if (res.data.code === 200) {
+              this.$message({
+                type: 'success',
+                message: '修改成功'
+              })
+            } else {
+              this.$message({
+                type: 'error',
+                message: res.data.message
+              })
+            }
+          }).catch(err => {
+            console.error(err);
+          })
         } else {
           this.$http.post('/vehicle/account/create', _.omitBy(scope.row, function (item) {
             return item === '' || item === null;
           })).then(res => {
             if (res.data.code === 200) {
-
+              scope.row.id = res.data.data.account_id;
+              this.$message({
+                type: 'success',
+                message: '保存成功'
+              })
+            } else {
+              this.$message({
+                type: 'error',
+                message: res.data.message
+              })
             }
+          }).catch(err => {
+            console.error(err);
           })
         }
       },

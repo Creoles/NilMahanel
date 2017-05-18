@@ -58,7 +58,7 @@
                      @click="editVehicleCompany(scope.row.id)">编辑
           </el-button>
           <el-button type="text"
-                     @click="openContact(scope.row.id)">账号
+                     @click="openContact(scope.row.id)">联系人
           </el-button>
           <el-button type="text"
                      @click="deleteVehicleCompany(scope)">删除
@@ -76,7 +76,7 @@
                    layout="total,sizes, prev, pager, next"
                    :total="total">
     </el-pagination>
-    <el-dialog title="收款账号"
+    <el-dialog title="联系人"
                v-model="dialogContact"
                size="large" v-on:close="closeDialog">
       <div>
@@ -178,12 +178,88 @@
       openContact(id){
         this.dialogContact = true;
         this.currentCompanyId = id;
-        this.$http.get('/vehicle/contact/' + id).then(res => {
+        this.$http.get('/vehicle/company/' + id).then(res => {
           if (res.data.code === 200) {
-            debugger;
-            this.accountList = res.data.data;
+            this.accountList = res.data.data.contact_list;
+          } else {
+            console.log(res.data.message)
           }
+        }).catch(err => {
+          console.error(err);
         })
+      },
+      submitContact(scope){
+        if (scope.row.id) {
+          this.$http.put('/vehicle/contact/' + scope.row.id, _.omitBy(scope.row, function (item) {
+            return item === '' || item === null;
+          })).then(res => {
+            if (res.data.code === 200) {
+              this.$message({
+                type: 'success',
+                message: '修改成功'
+              })
+            } else {
+              this.$message({
+                type: 'error',
+                message: res.data.message
+              })
+            }
+          }).catch(err => {
+            console.error(err);
+          })
+        } else {
+          this.$http.post('/vehicle/contact/create', _.omitBy(scope.row, function (item) {
+            return item === '' || item === null;
+          })).then(res => {
+            if (res.data.code === 200) {
+              scope.row.id = res.data.data.contact_id;
+              this.$message({
+                type: 'success',
+                message: '保存成功'
+              })
+            } else {
+              this.$message({
+                type: 'error',
+                message: res.data.message
+              })
+            }
+          }).catch(err => {
+            console.error(err);
+          })
+        }
+      },
+      deleteContact(scope){
+        if (scope.row.id) {
+          this.$confirm('此操作将永久删除该联系人, 是否继续?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            this.$http.delete('/vehicle/contact/' + scope.row.id).then(res => {
+              if (res.data.code === 200) {
+                this.contactList.splice(scope.$index, 1);
+                this.$message({
+                  type: 'success',
+                  message: '删除成功'
+                })
+              } else {
+                this.$message({
+                  type: 'error',
+                  message: res.data.message
+                })
+              }
+            }, err => {
+              console.log(err);
+            })
+          }).catch(() => {
+            this.$message({
+              type: 'info',
+              message: '已取消删除'
+            });
+          });
+        } else {
+          this.contactList.splice(scope.$index, 1);
+        }
       },
       closeDialog(){
         this.contactList = [];
