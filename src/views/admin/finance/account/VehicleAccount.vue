@@ -1,11 +1,6 @@
 <template>
   <div>
     <content-top>
-      <el-button class="add-btn el-icon-plus"
-                 type="primary"
-                 @click="addVehicleCompany">
-        添加车辆公司
-      </el-button>
     </content-top>
     <div>
       <el-form :inline="true"
@@ -27,6 +22,7 @@
           </el-button>
         </el-form-item>
       </el-form>
+
     </div>
     <el-table :data="vehicleCompanyList"
               style="width: 100%"
@@ -46,22 +42,10 @@
       <el-table-column prop="name"
                        label="供应商全称">
       </el-table-column>
-      <el-table-column prop="nickname_en"
-                       label="供应商简称">
-      </el-table-column>
-      <el-table-column prop="register_number"
-                       label="公司注册编号">
-      </el-table-column>
       <el-table-column label="操作">
         <template scope="scope">
           <el-button type="text"
-                     @click="editVehicleCompany(scope.row.id)">编辑
-          </el-button>
-          <el-button type="text"
-                     @click="openContact(scope.row.id)">联系人
-          </el-button>
-          <el-button type="text"
-                     @click="deleteVehicleCompany(scope)">删除
+                     @click="openAccount(scope.row.id)">账号
           </el-button>
         </template>
       </el-table-column>
@@ -76,42 +60,62 @@
                    layout="total,sizes, prev, pager, next"
                    :total="total">
     </el-pagination>
-    <el-dialog title="联系人"
-               v-model="dialogContact"
+    <el-dialog title="收款账号"
+               v-model="dialogAccount"
                size="large" v-on:close="closeDialog">
       <div>
-        <el-table :data="contactList" v-on:header-click="addLine">
+        <el-table :data="accountList" v-on:header-click="addLine">
           <el-table-column label="+" width="20">
           </el-table-column>
-          <el-table-column label="联系人名称">
+          <el-table-column label="货币类型">
             <template scope="scope">
-              <el-input v-model="scope.row.contact"></el-input>
+              <el-select v-model="scope.row.currency" size="small">
+                <el-option :value="1" label="美元"></el-option>
+                <el-option :value="2" label="人民币"></el-option>
+                <el-option :value="3" label="斯里兰卡卢布"></el-option>
+              </el-select>
             </template>
           </el-table-column>
-          <el-table-column label="联系人职位">
+          <el-table-column label="银行名称">
             <template scope="scope">
-              <el-input v-model="scope.row.position" size="small"></el-input>
+              <el-input v-model="scope.row.bank_name" size="small"></el-input>
             </template>
           </el-table-column>
-          <el-table-column label="电话">
+          <el-table-column label="开户支行">
             <template scope="scope">
-              <el-input v-model="scope.row.telephone" size="small"></el-input>
+              <el-input v-model="scope.row.deposit_bank" size="small"></el-input>
             </template>
           </el-table-column>
-          <el-table-column label="email">
+          <el-table-column label="收款人名称">
             <template scope="scope">
-              <el-input v-model="scope.row.email" size="small"></el-input>
+              <el-input v-model="scope.row.payee" size="small"></el-input>
+            </template>
+          </el-table-column>
+          <el-table-column label="收款人账号">
+            <template scope="scope">
+              <el-input v-model="scope.row.account" size="small"></el-input>
+            </template>
+          </el-table-column>
+          <el-table-column label="SWIFT CODE">
+            <template scope="scope">
+              <el-input v-model="scope.row.swift_code" size="small"></el-input>
+            </template>
+          </el-table-column>
+          <el-table-column label="备注">
+            <template scope="scope">
+              <el-input v-model="scope.row.note" size="small"></el-input>
             </template>
           </el-table-column>
           <el-table-column label="操作">
             <template scope="scope">
-              <el-button size="small" @click="submitContact(scope)">保存</el-button>
-              <el-button size="small" @click="deleteContact(scope)">删除</el-button>
+              <el-button size="small" @click="submitAccount(scope)">保存</el-button>
+              <el-button size="small" @click="deleteAccount(scope)">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
       </div>
     </el-dialog>
+
   </div>
 </template>
 <style lang="scss">
@@ -133,15 +137,15 @@
         },
         total: null,
         countryArr: [],
-        contactList: [],
-        dialogContact: false,
+        loading: false,
+        accountList: [],
         currentCompanyId: null,
-        loading: false
+        dialogAccount: false
       }
     },
     created() {
       axios.all([this.loadCountryList(), this.loadVehicleCompanyList(1)
-      ]);
+      ])
     },
     methods: {
       loadVehicleCompanyList(page) {
@@ -175,22 +179,20 @@
           console.log(err);
         });
       },
-      openContact(id){
-        this.dialogContact = true;
+      openAccount(id){
+        this.dialogAccount = true;
         this.currentCompanyId = id;
         this.$http.get('/vehicle/company/' + id).then(res => {
           if (res.data.code === 200) {
-            this.accountList = res.data.data.contact_list;
+            this.accountList = res.data.data.account_list;
           } else {
             console.log(res.data.message)
           }
-        }).catch(err => {
-          console.error(err);
         })
       },
-      submitContact(scope){
+      submitAccount(scope){
         if (scope.row.id) {
-          this.$http.put('/vehicle/contact/' + scope.row.id, _.omitBy(scope.row, function (item) {
+          this.$http.put('/vehicle/account/' + scope.row.id, _.omitBy(scope.row, function (item) {
             return item === '' || item === null;
           })).then(res => {
             if (res.data.code === 200) {
@@ -208,11 +210,11 @@
             console.error(err);
           })
         } else {
-          this.$http.post('/vehicle/contact/create', _.omitBy(scope.row, function (item) {
+          this.$http.post('/vehicle/account/create', _.omitBy(scope.row, function (item) {
             return item === '' || item === null;
           })).then(res => {
             if (res.data.code === 200) {
-              scope.row.id = res.data.data.contact_id;
+              scope.row.id = res.data.data.account_id;
               this.$message({
                 type: 'success',
                 message: '保存成功'
@@ -228,16 +230,16 @@
           })
         }
       },
-      deleteContact(scope){
+      deleteAccount(scope){
         if (scope.row.id) {
-          this.$confirm('此操作将永久删除该联系人, 是否继续?', '提示', {
+          this.$confirm('此操作将永久删除该收款账号, 是否继续?', '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
             type: 'warning'
           }).then(() => {
-            this.$http.delete('/vehicle/contact/' + scope.row.id).then(res => {
+            this.$http.delete('/vehicle/account/' + scope.row.id).then(res => {
               if (res.data.code === 200) {
-                this.contactList.splice(scope.$index, 1);
+                this.accountList.splice(scope.$index, 1);
                 this.$message({
                   type: 'success',
                   message: '删除成功'
@@ -258,55 +260,23 @@
             });
           });
         } else {
-          this.contactList.splice(scope.$index, 1);
+          this.accountList.splice(scope.$index, 1);
         }
       },
       closeDialog(){
-        this.contactList = [];
+        this.accountList = [];
       },
       addLine(column, event){
-        this.contactList.push({
+        this.accountList.push({
           id: null,
           company_id: this.currentCompanyId,
-          contact: null,
-          position: null,
-          telephone: null,
-          email: null
-        });
-      },
-      editVehicleCompany(id){
-        this.$router.push({name: 'EDIT VEHICLE COMPANY', params: {id: id}})
-      },
-      addVehicleCompany(){
-        this.$router.push({name: 'ADD VEHICLE COMPANY'});
-      },
-      deleteVehicleCompany(scope) {
-        this.$confirm('此操作将永久删除该车辆公司, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.$http.delete('/vehicle/company/' + scope.row.id).then(res => {
-            if (res.data.code === 200) {
-              this.vehicleCompanyList.splice(scope.$index, 1);
-              this.$message({
-                type: 'success',
-                message: '删除成功'
-              })
-            } else {
-              this.$message({
-                type: 'error',
-                message: res.data.message
-              })
-            }
-          }, err => {
-            console.log(err);
-          })
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消删除'
-          });
+          currency: null,
+          bank_name: null,
+          deposit_bank: null,
+          payee: null,
+          account: null,
+          swift_code: null,
+          note: null
         });
       },
       onFilterCountryChange(msg){

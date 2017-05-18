@@ -3,14 +3,14 @@
     <content-top>
       <el-button class="add-btn"
                  type="primary"
-                 icon="el-icon-plus"
+                 icon="add-btn el-icon-plus"
                  @click="addVehicle">
         添加车辆
       </el-button>
     </content-top>
     <div>
       <el-form :inline="true"
-               label-position="left"
+               label-position="top"
                :model="filter"
                class="vehicle-filter">
         <el-form-item label="国家及城市">
@@ -27,7 +27,18 @@
                        v-for="item in companyList"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item>
+        <el-form-item label="型号">
+          <el-cascader
+            :options="typeList"
+            v-model="typeArr"
+            @active-item-change="handleItemChange"
+            :props="props"
+          ></el-cascader>
+        </el-form-item>
+        <el-form-item label="车牌号">
+          <el-input v-model="filter.license"></el-input>
+        </el-form-item>
+        <el-form-item style="vertical-align: bottom;">
           <el-button type="primary"
                      @click="loadVehicleList(1)">查询
           </el-button>
@@ -45,13 +56,6 @@
                        label="城市"
                        :formatter="cityFormatter">
       </el-table-column>
-      <el-table-column prop="vehicle_type"
-                       label="型号"
-                       width="100">
-      </el-table-column>
-      <el-table-column prop="seat"
-                       label="座位数">
-      </el-table-column>
       <el-table-column prop="license"
                        label="车牌号">
       </el-table-column>
@@ -63,9 +67,6 @@
       </el-table-column>
       <el-table-column prop="insurance_number"
                        label="保险号">
-      </el-table-column>
-      <el-table-column prop="telephone"
-                       label="联系电话">
       </el-table-column>
       <el-table-column label="操作">
         <template scope="scope">
@@ -107,20 +108,60 @@
           city_id: null,
           company_id: null,
           vehicle_type_id: null,
+          license: null,
           number: 20,
           page: 1,
         },
+        typeArr: [],
         countryArr: [],
         countryList: [],
         companyList: [],
         loading: false,
         total: 100,
+        typeList: [{
+          brand: 'CAR',
+          id: 1,
+          children: []
+        }, {
+          brand: 'VAN',
+          id: 2,
+          children: []
+        }, {
+          brand: 'BIG_VAN',
+          id: 3,
+          children: []
+        }, {
+          brand: 'MINI_COACH',
+          id: 4,
+          children: []
+        }, {
+          brand: 'COACH',
+          id: 5,
+          children: []
+        }, {
+          brand: 'LONG_COACH',
+          id: 6,
+          children: []
+        }, {
+          brand: 'other',
+          id: 7,
+          children: []
+        }],
+        props: {
+          label: 'brand',
+          children: 'children',
+          value: 'id'
+        }
+      }
+    },
+    watch: {
+      "typeArr": function (val) {
+        this.filter.vehicle_type_id = val[1];
       }
     },
     created() {
-      this.loadCountryList();
-      this.loadCompanyList();
-      this.loadVehicleList(1);
+      axios.all([this.loadCountryList(), this.loadCompanyList(), this.loadVehicleList(1)
+      ]);
     },
     methods: {
       addVehicle() {
@@ -167,12 +208,12 @@
         this.loading = true;
         this.$http.get('/vehicle/search', {
           params: _.omitBy(this.filter, function (item) {
-            return item === ''
+            return item === '' || item === null
           })
         }).then(res => {
           if (res.data.code === 200) {
             this.vehicleList = res.data.data.vehicle_data;
-            if (page === 1) {
+            if (res.data.data.total) {
               this.total = res.data.data.total;
             }
             this.loading = false;
@@ -180,9 +221,8 @@
             this.loading = false;
             console.log(res.data.message);
           }
-        }, err => {
-          console.log(err);
-          this.loading = false;
+        }).catch(err => {
+          console.error(err);
         })
       },
       handleSizeChange(size) {
@@ -213,6 +253,13 @@
           }
         }, err => {
           console.log(err);
+        })
+      },
+      handleItemChange(val){
+        this.$http.get('/vehicle/type/search', {params: {vehicle_type: val[0], page: 1, number: 10000}}).then(res => {
+          if (res.data.code === 200) {
+            this.typeList[val[0] - 1].children = res.data.data.vehicle_type_list;
+          }
         })
       },
       countryFormatter(row, column) {
