@@ -43,6 +43,7 @@ import VehicleType from "../views/admin/manager/resource/vehicle/VehicleType.vue
 import EditVehicleCompany from "../views/admin/company/EditVehicleCompany.vue"
 import VehicleAccount from "../views/admin/finance/account/VehicleAccount.vue"
 import VehiclePrice from "../views/admin/manager/price/vehicle/EditPrice.vue"
+import ScenicPrice from "../views/admin/manager/price/scenic/EditPrice.vue"
 Vue.use(VueRoute);
 
 function generateRoutes() {
@@ -217,6 +218,11 @@ export default new VueRoute({
           name: "EDIT SCENIC",
           path: "edit/:id",
           component: EditScenic
+        },
+        {
+          name: "SCENIC PRICE",
+          path: "price",
+          component: ScenicPrice
         }
       ]
     },
