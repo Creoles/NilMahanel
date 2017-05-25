@@ -1,11 +1,6 @@
 <template>
   <div>
     <content-top>
-      <el-button class="add-btn el-icon-plus"
-                 type="primary"
-                 @click="addScenic">
-        添加景点
-      </el-button>
     </content-top>
     <div>
       <el-form :inline="true"
@@ -46,10 +41,7 @@
       <el-table-column label="操作">
         <template scope="scope">
           <el-button type="text"
-                     @click="editScenic(scope.row.id)">编辑
-          </el-button>
-          <el-button type="text"
-                     @click="deleteScenic(scope)">删除
+                     @click="openPrice(scope.row.id)">编辑
           </el-button>
         </template>
       </el-table-column>
@@ -64,6 +56,38 @@
                    layout="total,sizes, prev, pager, next"
                    :total="total">
     </el-pagination>
+    <el-dialog title="编辑价格"
+               v-model="dialogPrice"
+               size="large" v-on:close="closeDialog">
+      <div>
+        <el-form :model="priceModel" label-position="top" :inline="true">
+          <el-form-item label="公开价格">
+            <el-input v-model="priceModel.public_price"></el-input>
+          </el-form-item>
+          <el-form-item label="公司价格">
+            <el-input v-model.number="priceModel.company_price"></el-input>
+          </el-form-item>
+          <el-form-item label="导游价格">
+            <el-input v-model.number="priceModel.tour_guide_price"></el-input>
+          </el-form-item>
+          <el-form-item label="翻译价格">
+            <el-input v-model.number="priceModel.translator_price"></el-input>
+          </el-form-item>
+          <el-form-item label="多少免一">
+            <el-input v-model.number="priceModel.free_policy"></el-input>
+          </el-form-item>
+          <el-form-item label="儿童折扣(%)">
+            <el-input v-model="priceModel.child_discount"></el-input>
+          </el-form-item>
+          <el-form-item label="备注">
+            <el-input v-model="priceModel.note"></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-button @click="submitPrice">提交</el-button>
+          </el-form-item>
+        </el-form>
+      </div>
+    </el-dialog>
   </div>
 </template>
 <style>
@@ -85,7 +109,18 @@
         loading: false,
         total: 10,
         countryArr: [],
-        countryList: []
+        countryList: [],
+        priceModel: {
+          attraction_id: null,
+          public_price: null,
+          company_price: null,
+          tour_guide_price: null,
+          translator_price: null,
+          free_policy: null,
+          child_discount: null,
+          note: null
+        },
+        dialogPrice: false
       }
     },
     created() {
@@ -93,40 +128,74 @@
       this.loadCountryList();
     },
     methods: {
-      addScenic() {
-        this.$router.push({name: "ADD SCENIC"})
+      openPrice(id){
+        this.dialogPrice = true;
+        this.priceModel.attraction_id = id;
+        this.$http.get('/attraction/fee/attraction/' + id).then(res => {
+          if (res.data.code === 200) {
+            if (res.data.data.id) {
+              this.priceModel = res.data.data;
+            }
+          } else {
+            console.log(res.data.message);
+          }
+        }).catch(err => {
+          console.log(err);
+        })
       },
-      editScenic(id) {
-        this.$router.push({name: "EDIT SCENIC", params: {id: id}});
+      closeDialog(){
+        this.priceModel = {
+          attraction_id: null,
+          public_price: null,
+          company_price: null,
+          tour_guide_price: null,
+          translator_price: null,
+          free_policy: null,
+          child_discount: null,
+          note: null
+        };
       },
-      deleteScenic(scope) {
-        this.$confirm('此操作将永久删除该景点, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.$http.delete('/attraction/' + scope.row.id).then(res => {
+      submitPrice(){
+        if (this.priceModel.id) {
+          this.$http.put('/attraction/fee/' + this.priceModel.id, _.omitBy(this.priceModel, function (item) {
+            return item === '' || item === null
+          })).then(res => {
             if (res.data.code === 200) {
-              this.scenicList.splice(scope.$index, 1);
               this.$message({
                 type: 'success',
-                message: '删除成功'
-              })
+                message: '保存成功'
+              });
+              this.dialogPrice = false;
             } else {
               this.$message({
-                type: 'error',
-                message: res.message
-              })
+                type: 'success',
+                message: res.data.message
+              });
             }
-          }, err => {
+          }).catch(err => {
             console.log(err);
           })
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消删除'
-          });
-        });
+        } else {
+          this.$http.post('/attraction/fee/create', _.omitBy(this.priceModel, function (item) {
+            return item === '' || item === null
+          })).then(res => {
+            if (res.data.code === 200) {
+              this.$message({
+                type: 'success',
+                message: '保存成功'
+              });
+              this.dialogPrice = false;
+            } else {
+              this.$message({
+                type: 'success',
+                message: res.data.message
+              });
+            }
+          }).catch(err => {
+            console.log(err);
+          })
+        }
+
       },
       onFilterCountryChange(msg) {
         this.filter.country_id = msg[0];

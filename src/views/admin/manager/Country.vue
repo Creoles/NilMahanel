@@ -126,12 +126,21 @@
         dialogCity: false,
         countryModel: {
           name: '',
-          name_en: ''
+          name_en: '',
+          nationality: '',
+          language: '',
+          area_code: '',
+          country_code: '',
+          note: ''
+
         },
         cityModel: {
           country_id: null,
           name: '',
-          name_en: ''
+          name_en: '',
+          abbreviation: '',
+          note: ''
+
         },
         currentCountry: ''
       }

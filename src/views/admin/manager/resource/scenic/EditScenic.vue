@@ -19,6 +19,10 @@
                     style="width:235px;">
         <el-input v-model="params.name_en"></el-input>
       </el-form-item>
+      <el-form-item label="英文简称"
+                    style="width:235px;">
+        <el-input v-model="params.nickname_en"></el-input>
+      </el-form-item>
       <el-form-item label="地址"
                     style="width:490px;">
         <el-input v-model="params.address"></el-input>
@@ -37,12 +41,6 @@
                   :rows="4"
                   v-model="params.intro_en">
         </el-input>
-      </el-form-item>
-      <el-form-item label="成人票价">
-        <el-input v-model="params.adult_fee"></el-input>
-      </el-form-item>
-      <el-form-item label="儿童票价">
-        <el-input v-model="params.child_fee"></el-input>
       </el-form-item>
       <br>
       <el-form-item>
@@ -78,11 +76,10 @@
           city_id: null,
           name: null,
           name_en: null,
+          nickname_en: null,
           address: null,
           intro_cn: null,
           intro_en: null,
-          adult_fee: null,
-          child_fee: null
         },
         countryArr: [],
         submitting: false
@@ -132,7 +129,7 @@
               });
               this.submitting = false;
             } else {
-              this.$http.post('/attraction/create_attraction', this.params).then(res => {
+              this.$http.post('attraction/create', this.params).then(res => {
                 if (res.data.code === 200) {
                   this.$message({
                     type: 'success',
