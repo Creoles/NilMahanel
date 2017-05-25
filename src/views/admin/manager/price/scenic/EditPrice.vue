@@ -76,14 +76,14 @@
           <el-form-item label="多少免一">
             <el-input v-model.number="priceModel.free_policy"></el-input>
           </el-form-item>
-          <el-form-item label="儿童折扣(%)">
+          <el-form-item label="儿童折扣(0-1)">
             <el-input v-model="priceModel.child_discount"></el-input>
           </el-form-item>
           <el-form-item label="备注">
             <el-input v-model="priceModel.note"></el-input>
           </el-form-item>
-          <el-form-item>
-            <el-button @click="submitPrice">提交</el-button>
+          <el-form-item style="vertical-align: bottom">
+            <el-button type="primary" @click="submitPrice">提交</el-button>
           </el-form-item>
         </el-form>
       </div>

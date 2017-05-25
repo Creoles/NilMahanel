@@ -3,8 +3,8 @@
     <content-top>
       <el-button class="add-btn el-icon-plus"
                  type="primary"
-                 @click="addVehicleCompany">
-        添加车辆公司
+                 @click="addShopCompany">
+        添加购物公司
       </el-button>
     </content-top>
     <div>
@@ -15,20 +15,14 @@
           <country-select :country="countryArr"
                           v-on:country-change="onFilterCountryChange($event)"></country-select>
         </el-form-item>
-        <el-form-item label="类型">
-          <el-select v-model="filter.company_type" clearable>
-            <el-option :value="1" label="公司"></el-option>
-            <el-option :value="2" label="个人"></el-option>
-          </el-select>
-        </el-form-item>
         <el-form-item>
           <el-button type="primary"
-                     @click="loadVehicleCompanyList(1)">查询
+                     @click="loadShopCompanyList(1)">查询
           </el-button>
         </el-form-item>
       </el-form>
     </div>
-    <el-table :data="vehicleCompanyList"
+    <el-table :data="shopCompanyList"
               style="width: 100%"
               v-loading.body="loading">
       <el-table-column prop="country_id"
@@ -39,15 +33,12 @@
                        label="城市"
                        :formatter="cityFormatter">
       </el-table-column>
-      <el-table-column prop="company_type"
-                       label="类型"
-                       :formatter="typeFormatter">
-      </el-table-column>
       <el-table-column prop="name"
-                       label="供应商全称">
+                       label="名称">
       </el-table-column>
+      <el-table-column prop="name_en" label="英文名称"></el-table-column>
       <el-table-column prop="nickname_en"
-                       label="供应商简称">
+                       label="简称">
       </el-table-column>
       <el-table-column prop="register_number"
                        label="公司注册编号">
@@ -55,19 +46,19 @@
       <el-table-column label="操作">
         <template scope="scope">
           <el-button type="text"
-                     @click="editVehicleCompany(scope.row.id)">编辑
+                     @click="editShopCompany(scope.row.id)">编辑
           </el-button>
           <el-button type="text"
                      @click="openContact(scope.row.id)">联系人
           </el-button>
           <el-button type="text"
-                     @click="deleteVehicleCompany(scope)">删除
+                     @click="deleteShopCompany(scope)">删除
           </el-button>
         </template>
       </el-table-column>
     </el-table>
     <el-pagination style="text-align:right;margin-top:30px;"
-                   v-if="vehicleCompanyList.length !== 0"
+                   v-if="shopCompanyList.length !== 0"
                    @size-change="handleSizeChange"
                    @current-change="handleCurrentChange"
                    :current-page="filter.page"
@@ -123,11 +114,10 @@
   export default {
     data() {
       return {
-        vehicleCompanyList: [],
+        shopCompanyList: [],
         filter: {
           country_id: null,
           city_id: null,
-          company_type: null,
           number: 20,
           page: 1
         },
@@ -140,20 +130,20 @@
       }
     },
     created() {
-      axios.all([this.loadCountryList(), this.loadVehicleCompanyList(1)
+      axios.all([this.loadCountryList(), this.loadShopCompanyList(1)
       ]);
     },
     methods: {
-      loadVehicleCompanyList(page) {
+      loadShopCompanyList(page) {
         this.loading = true;
         this.filter.page = page ? page : this.filter.page;
-        this.$http.get('/vehicle/company/search', {
+        this.$http.get('/shop/company/search', {
           params: _.omitBy(this.filter, function (item) {
             return item === '' || item === null
           })
         }).then(res => {
           if (res.data.code === 200) {
-            this.vehicleCompanyList = res.data.data.vehicle_company_list;
+            this.shopCompanyList = res.data.data.shop_company_list;
             this.total = res.data.data.total;
             this.loading = false;
           } else {
@@ -169,7 +159,7 @@
           if (res.data.code === 200) {
             this.countryList = res.data.data;
           } else {
-            console.log(res.data.message);
+            console.log(res.message);
           }
         }, err => {
           console.log(err);
@@ -178,9 +168,9 @@
       openContact(id){
         this.dialogContact = true;
         this.currentCompanyId = id;
-        this.$http.get('/vehicle/company/' + id).then(res => {
+        this.$http.get('/shop/company/contact/company/' + id).then(res => {
           if (res.data.code === 200) {
-            this.contactList = res.data.data.contact_list;
+            this.contactList = _.assign(this.contactList, tres.data.data.contact_list);
           } else {
             console.log(res.data.message)
           }
@@ -190,7 +180,7 @@
       },
       submitContact(scope){
         if (scope.row.id) {
-          this.$http.put('/vehicle/contact/' + scope.row.id, _.omitBy(scope.row, function (item) {
+          this.$http.put('/shop/company/contact/' + scope.row.id, _.omitBy(scope.row, function (item) {
             return item === '' || item === null;
           })).then(res => {
             if (res.data.code === 200) {
@@ -208,7 +198,7 @@
             console.error(err);
           })
         } else {
-          this.$http.post('/vehicle/contact/create', _.omitBy(scope.row, function (item) {
+          this.$http.post('/shop/company/contact/create', _.omitBy(scope.row, function (item) {
             return item === '' || item === null;
           })).then(res => {
             if (res.data.code === 200) {
@@ -235,7 +225,7 @@
             cancelButtonText: '取消',
             type: 'warning'
           }).then(() => {
-            this.$http.delete('/vehicle/contact/' + scope.row.id).then(res => {
+            this.$http.delete('/shop/company/contact/' + scope.row.id).then(res => {
               if (res.data.code === 200) {
                 this.contactList.splice(scope.$index, 1);
                 this.$message({
@@ -274,21 +264,21 @@
           email: null
         });
       },
-      editVehicleCompany(id){
-        this.$router.push({name: 'EDIT VEHICLE COMPANY', params: {id: id}})
+      editShopCompany(id){
+        this.$router.push({name: 'EDIT SHOP COMPANY', params: {id: id}})
       },
-      addVehicleCompany(){
-        this.$router.push({name: 'ADD VEHICLE COMPANY'});
+      addShopCompany(){
+        this.$router.push({name: 'ADD SHOP COMPANY'});
       },
-      deleteVehicleCompany(scope) {
-        this.$confirm('此操作将永久删除该车辆公司, 是否继续?', '提示', {
+      deleteShopCompany(scope) {
+        this.$confirm('此操作将永久删除该购物公司, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.$http.delete('/vehicle/company/' + scope.row.id).then(res => {
+          this.$http.delete('/shop/company/' + scope.row.id).then(res => {
             if (res.data.code === 200) {
-              this.vehicleCompanyList.splice(scope.$index, 1);
+              this.shopCompanyList.splice(scope.$index, 1);
               this.$message({
                 type: 'success',
                 message: '删除成功'
@@ -315,11 +305,11 @@
       },
       handleSizeChange(size) {
         this.filter.number = size;
-        this.loadVehicleCompanyList();
+        this.loadShopCompanyList();
       },
       handleCurrentChange(page) {
         this.filter.page = page;
-        this.loadVehicleCompanyList();
+        this.loadShopCompanyList();
       },
       countryFormatter(row, column) {
         let country = _.find(this.countryList, country => country.id === row.country_id)['name'];
@@ -330,14 +320,6 @@
         let city = _.find(cityList, city => city.id === row.city_id)['name'];
         return city;
       },
-      typeFormatter(row, column){
-        let arr = [
-          {value: 1, label: '公司'},
-          {value: 2, label: '个人'}
-        ];
-        let type = _.find(arr, type => type.value === row.company_type)['label'];
-        return type
-      }
     },
     components: {
       ContentTop,

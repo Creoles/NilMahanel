@@ -65,9 +65,6 @@
                      @click="editRestaurant(scope.row.id)">编辑信息
           </el-button>
           <el-button type="text"
-                     @click="editMeal(scope)">价格
-          </el-button>
-          <el-button type="text"
                      @click="deleteRestaurant(scope)">删除
           </el-button>
         </template>
