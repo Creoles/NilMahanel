@@ -71,7 +71,7 @@
       </el-form-item>
       <br>
       <el-form-item>
-        <el-button type="primary" v-if="!submitting">提 交</el-button>
+        <el-button type="primary" v-if="!submitting" @click="submit">提 交</el-button>
         <el-button type="primary" v-if="submitting" :loading="submitting">正在提交...</el-button>
       </el-form-item>
     </el-form>
@@ -120,6 +120,9 @@
         submitting: false
       }
     },
+    created(){
+      this.loadHotelById()
+    },
     methods: {
       onStarChange(msg){
         debugger;
@@ -131,11 +134,53 @@
       loadCompanyList(){
         this.$http.get('/hotel/company/search', {params: {page: 1, number: 10000}}).then(res => {
           if (res.data.code === 200) {
-
+            this.companyList = res.data.data.hotel_company_list;
           } else {
-
+            console.log(res.data.message);
           }
         })
+      },
+      submit(){
+        this.submitting = true;
+        if (this.$route.params.id) {
+          this.$http.put('/hotel/' + this.$route.params.id, this.params).then(res => {
+            if (res.data.code === 200) {
+              this.$message({
+                type: 'success',
+                message: '修改成功'
+              })
+              this.submitting = false;
+            } else {
+              this.$message({
+                type: 'error',
+                message: res.data.message
+              })
+              this.submitting = false;
+            }
+          }).catch(err => {
+            console.log(err);
+            this.submitting = false;
+          })
+        } else {
+          this.$http.post('/hotel/create', this.params).then(res => {
+            if (res.data.code === 200) {
+              this.$message({
+                type: 'success',
+                message: '添加成功'
+              });
+              this.submitting = false;
+            } else {
+              this.$message({
+                type: 'error',
+                message: res.data.message
+              });
+              this.submitting = false;
+            }
+          }).catch(err => {
+            console.log(err);
+            this.submitting = false;
+          })
+        }
       },
       loadCountryList() {
         this.$http.get('/country/all').then(res => {
@@ -147,7 +192,17 @@
         });
       },
       loadHotelById(){
-
+        if (this.$route.params.id) {
+          this.$http.get('/hotel/' + this.$route.params.id).then(res => {
+            if (res.data.code === 200) {
+              this.params = _.assign(this.params, res.data.data)
+            } else {
+              console.log(res.data.message)
+            }
+          }).catch(err => {
+            console.log(err)
+          })
+        }
       },
       onFilterCountryChange(msg){
         this.params.country_id = msg[0];
