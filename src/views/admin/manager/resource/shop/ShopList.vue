@@ -64,12 +64,6 @@
                        label="类型"
                        :formatter="typeFormatter">
       </el-table-column>
-      <el-table-column prop="fee_person"
-                       label="人头费(USD)">
-      </el-table-column>
-      <el-table-column prop="commission_ratio"
-                       label="返佣比例(%)">
-      </el-table-column>
       <el-table-column prop="contact"
                        label="联系人">
       </el-table-column>
@@ -81,6 +75,10 @@
           <el-button type="text"
                      @click="editShop(scope.row.id)">编辑
           </el-button>
+          <el-button type="text"
+                     @click="openContact(scope.row.id)">联系人
+          </el-button>
+          <el-button type="text" @click="openPriceDialog(scope)">编辑费率</el-button>
           <el-button type="text"
                      @click="deleteShop(scope)">删除
           </el-button>
@@ -97,6 +95,97 @@
                    layout="total,sizes, prev, pager, next"
                    :total="shopTotalNum">
     </el-pagination>
+    <el-dialog title="联系人"
+               v-model="dialogContact"
+               size="large" v-on:close="closeDialog">
+      <div>
+        <el-table :data="contactList" v-on:header-click="addLine">
+          <el-table-column label="+" width="20">
+          </el-table-column>
+          <el-table-column label="联系人名称">
+            <template scope="scope">
+              <el-input v-model="scope.row.contact"></el-input>
+            </template>
+          </el-table-column>
+          <el-table-column label="联系人职位">
+            <template scope="scope">
+              <el-input v-model="scope.row.position" size="small"></el-input>
+            </template>
+          </el-table-column>
+          <el-table-column label="电话">
+            <template scope="scope">
+              <el-input v-model="scope.row.telephone" size="small"></el-input>
+            </template>
+          </el-table-column>
+          <el-table-column label="email">
+            <template scope="scope">
+              <el-input v-model="scope.row.email" size="small"></el-input>
+            </template>
+          </el-table-column>
+          <el-table-column label="操作">
+            <template scope="scope">
+              <el-button size="small" @click="submitContact(scope)">保存</el-button>
+              <el-button size="small" @click="deleteContact(scope)">删除</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
+    </el-dialog>
+    <el-dialog title="编辑费率"
+               v-model="dialogPrice"
+               size="small"
+               v-on:close="onDialogClose">
+      <el-form :inline="true"
+               label-position="top"
+               v-loading.body="priceLoading">
+        <el-form-item label="结算方式">
+          <el-select v-model="priceModel.account_way">
+            <el-option label="现金"
+                       :value="1"></el-option>
+            <el-option label="支票"
+                       :value="2"></el-option>
+            <el-option label="银行转账"
+                       :value="3"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="结算周期">
+          <el-select v-model="priceModel.account_period">
+            <el-option label="现结"
+                       :value="1"></el-option>
+            <el-option label="月结"
+                       :value="2"></el-option>
+          </el-select>
+        </el-form-item>
+        <br>
+        <el-form-item label="公司反佣比例(%)">
+          <el-input v-model="priceModel.company_ratio"></el-input>
+        </el-form-item>
+        <el-form-item label="导游反佣比例(%)">
+          <el-input v-model="priceModel.tour_guide_ratio"></el-input>
+        </el-form-item>
+        <el-form-item label="人头费">
+          <el-input v-model="priceModel.fee_person"></el-input>
+        </el-form-item>
+        <br>
+        <el-form-item label="备注">
+          <el-input v-model="priceModel.note"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer"
+           class="dialog-footer">
+        <el-button @click="dialogPrice = false"
+                   v-if="!submitting">取 消
+        </el-button>
+        <el-button type="primary"
+                   v-if="!submitting"
+                   @click="submitPrice">确 定
+        </el-button>
+        <el-button type="primary"
+                   v-if="submitting"
+                   :loading="submitting">正在提交...
+        </el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 <style>
@@ -122,7 +211,23 @@
         countryList: [],
         companyList: [],
         loading: false,
-        shopList: []
+        shopList: [],
+        dialogContact: false,
+        currentShopId: null,
+        contactList: [],
+        dialogPrice: false,
+        priceModel: {
+          id: null,
+          shop_id: null,
+          fee_person: null,
+          tour_guide_ratio: null,
+          company_ratio: null,
+          account_period: null,
+          account_way: null,
+          note: null
+        },
+        priceLoading: false,
+        submitting: false
       }
     },
     created() {
@@ -160,6 +265,77 @@
       }
     },
     methods: {
+      onDialogClose(){
+        _.forIn(this.priceModel, (value, key) => {
+          this.priceModel[key] = null;
+        });
+      },
+      openPriceDialog(scope){
+        this.priceLoading = true;
+        this.dialogPrice = true;
+        this.currentShopId = scope.row.id;
+        this.$http.get('/shop/fee/shop/' + scope.row.id).then(res => {
+          if (res.data.code === 200) {
+            if (res.data.data.length) {
+              this.priceModel = _.assign(this.priceModel, res.data.data[0]);
+            }
+            this.priceLoading = false;
+          } else {
+            this.$message({
+              type: "error",
+              message: res.data.message
+            });
+            this.priceLoading = false;
+          }
+
+        }).catch(err => {
+          this.priceLoading = false;
+          console.log(err);
+        })
+      },
+      submitPrice() {
+        this.submitting = true;
+        if (this.priceModel.id) {
+          this.$http.put('/shop/fee/' + this.priceModel.id, this.priceModel).then(res => {
+            this.submitting = false;
+            if (res.data.code === 200) {
+              this.$message({
+                type: 'success',
+                message: '修改成功!'
+              });
+              this.dialogPrice = false;
+            } else {
+              this.submitting = false;
+              this.$message({
+                type: 'error',
+                message: res.data.message
+              });
+            }
+          }, err => {
+            console.log(err);
+          })
+        } else {
+          this.priceModel.shop_id = this.currentShopId;
+          this.$http.post('/shop/fee/create', this.priceModel).then(res => {
+            if (res.data.code === 200) {
+              this.$message({
+                type: 'success',
+                message: '创建成功!'
+              });
+              this.submitting = false;
+              this.dialogPrice = false;
+            } else {
+              this.submitting = false;
+              this.$message({
+                type: 'error',
+                message: res.data.message
+              });
+            }
+          }, err => {
+            console.log(err)
+          })
+        }
+      },
       addShop() {
         this.$router.push({name: "ADD SHOP"})
       },
@@ -204,6 +380,110 @@
           });
         });
       },
+      openContact(id){
+        this.dialogContact = true;
+        this.currentShopId = id;
+        this.$http.get('/shop/contact/shop/' + id).then(res => {
+          if (res.data.code === 200) {
+            if (res.data.data.length) {
+              this.contactList = res.data.data;
+            } else {
+              this.contactList = [];
+            }
+
+          } else {
+            console.log(res.data.message)
+          }
+        }).catch(err => {
+          console.error(err);
+        })
+      },
+      submitContact(scope){
+        if (scope.row.id) {
+          this.$http.put('/shop/contact/' + scope.row.id, _.omitBy(scope.row, function (item) {
+            return item === '' || item === null;
+          })).then(res => {
+            if (res.data.code === 200) {
+              this.$message({
+                type: 'success',
+                message: '修改成功'
+              })
+            } else {
+              this.$message({
+                type: 'error',
+                message: res.data.message
+              })
+            }
+          }).catch(err => {
+            console.error(err);
+          })
+        } else {
+          this.$http.post('/shop/contact/create', _.omitBy(scope.row, function (item) {
+            return item === '' || item === null;
+          })).then(res => {
+            if (res.data.code === 200) {
+              scope.row.id = res.data.data.contact_id;
+              this.$message({
+                type: 'success',
+                message: '保存成功'
+              })
+            } else {
+              this.$message({
+                type: 'error',
+                message: res.data.message
+              })
+            }
+          }).catch(err => {
+            console.error(err);
+          })
+        }
+      },
+      deleteContact(scope){
+        if (scope.row.id) {
+          this.$confirm('此操作将永久删除该联系人, 是否继续?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            this.$http.delete('/shop/contact/' + scope.row.id).then(res => {
+              if (res.data.code === 200) {
+                this.contactList.splice(scope.$index, 1);
+                this.$message({
+                  type: 'success',
+                  message: '删除成功'
+                })
+              } else {
+                this.$message({
+                  type: 'error',
+                  message: res.data.message
+                })
+              }
+            }, err => {
+              console.log(err);
+            })
+          }).catch(() => {
+            this.$message({
+              type: 'info',
+              message: '已取消删除'
+            });
+          });
+        } else {
+          this.contactList.splice(scope.$index, 1);
+        }
+      },
+      closeDialog(){
+        this.contactList = [];
+      },
+      addLine(column, event){
+        this.contactList.push({
+          id: null,
+          shop_id: this.currentShopId,
+          contact: null,
+          position: null,
+          telephone: null,
+          email: null
+        });
+      },
       //只有第一页有total
       loadShopList(page) {
         this.shopFilter.page = page ? page : this.shopFilter.page;
@@ -245,11 +525,13 @@
       },
       //获得公司列表
       loadCompanyList() {
-        this.$http.get('/shop_company/search', {params: {is_all: true}}).then(res => {
+        this.$http.get('/shop/company/search', {params: {page: 1, number: 10000}}).then(res => {
+          
           if (res.data.code === 200) {
-            this.companyList = res.data.data;
+
+            this.companyList = res.data.data.shop_company_list;
           } else {
-            console.log(res.msg);
+            console.log(res.data.message);
           }
         }, err => {
           console.log(err);

@@ -1,5 +1,5 @@
 <template>
-    <el-select class="hotel-star" v-model="hotelStar" placeholder="select" @change="starChange">
+    <el-select class="hotel-star" v-model="modelStar" placeholder="select" @change="starChange">
         <el-option value="1" label="1 star">
             <template solt="label">
                 <el-rate
@@ -70,12 +70,13 @@
                     value4:4,
                     value5:5
                 },
-                hotelStar:''
+              modelStar: this.hotelStar
             }
         },
+      props: ['hotelStar'],
         methods:{
             starChange(){
-                this.$emit('star-change',this.hotelStar);
+              this.$emit('star-change', this.modelStar);
             }
         }
     }
