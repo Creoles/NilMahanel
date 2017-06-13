@@ -1,6 +1,6 @@
 <template>
     <el-select class="hotel-star" v-model="modelStar" placeholder="select" @change="starChange">
-        <el-option value="1" label="1 star">
+      <el-option :value="1" label="1 star">
             <template solt="label">
                 <el-rate
                     v-model="star.value1"
@@ -10,7 +10,7 @@
                 </el-rate>
             </template>
         </el-option>
-        <el-option value="2" label="2 star">
+      <el-option :value="2" label="2 star">
             <template solt="label">
                 <el-rate
                     v-model="star.value2"
@@ -20,7 +20,7 @@
                 </el-rate>
             </template>
         </el-option>
-        <el-option label="3 star" value="3">
+      <el-option label="3 star" :value="3">
             <template solt="label">
                 <el-rate
                     v-model="star.value3"
@@ -30,7 +30,7 @@
                 </el-rate>
             </template>
         </el-option>
-        <el-option label="4 star" value="4">
+      <el-option label="4 star" :value="4">
             <template solt="label">
                 <el-rate
                     v-model="star.value4"
@@ -40,7 +40,7 @@
                 </el-rate>
             </template>
         </el-option>
-        <el-option label="5 star" value="5">
+      <el-option label="5 star" :value="5">
             <template solt="label">
                 <el-rate
                     v-model="star.value5"
@@ -70,10 +70,16 @@
                     value4:4,
                     value5:5
                 },
-              modelStar: this.hotelStar
+              modelStar: null
+
             }
         },
       props: ['hotelStar'],
+      watch: {
+        'hotelStar': function (val) {
+          this.modelStar = val;
+        }
+      },
         methods:{
             starChange(){
               this.$emit('star-change', this.modelStar);

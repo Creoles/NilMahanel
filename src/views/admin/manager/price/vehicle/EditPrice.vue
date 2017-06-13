@@ -215,8 +215,8 @@
       },
       submitPrice(scope){
         let params = _.cloneDeep(scope.row);
-        params.start_time = Date.parse(params.start_time) / 1000;
-        params.end_time = Date.parse(params.end_time) / 1000;
+        params.start_time = Date.parse(new Date(params.start_time)) / 1000;
+        params.end_time = Date.parse(new Date(params.end_time)) / 1000;
         if (scope.row.id) {
           this.$http.put('/vehicle/fee/' + scope.row.id, _.omitBy(params, function (item) {
             return item === '' || item === null;

@@ -4,7 +4,7 @@
             <el-button class="add-btn el-icon-plus"
                        type="primary"
                        @click="addHotel">
-                添加餐厅
+              添加酒店
             </el-button>
         </content-top>
         <div>
@@ -28,14 +28,14 @@
                 </el-form-item>
                 <el-form-item>
                     <el-button type="primary"
-                               @click="loadRestList(1)">查询
+                               @click="loadHotelList(1)">查询
                     </el-button>
                 </el-form-item>
             </el-form>
         </div>
-        <el-table :data="restaurantList"
-                  v-loading.body="loading"
-                  style="width: 100%">
+      <el-table :data="hotelList"
+                v-loading.body="loading"
+                style="width: 100%">
             <el-table-column prop="country_id"
                              label="国家"
                              :formatter="countryFormatter">
@@ -50,29 +50,19 @@
             <el-table-column prop="name_en"
                              label="英文名称">
             </el-table-column>
-            <el-table-column prop="restaurant_type"
-                             label="类型"
-                             :formatter="restTypeFormatter">
-            </el-table-column>
-            <el-table-column prop="contact_one"
-                             label="联系人">
-            </el-table-column>
-            <el-table-column prop="telephone_one"
-                             label="联系电话">
-            </el-table-column>
             <el-table-column label="操作">
                 <template scope="scope">
                     <el-button type="text"
-                               @click="editRestaurant(scope.row.id)">编辑信息
+                               @click="editHotel(scope.row.id)">编辑信息
                     </el-button>
                     <el-button type="text"
-                               @click="deleteRestaurant(scope)">删除
+                               @click="deleteHotel(scope)">删除
                     </el-button>
                 </template>
             </el-table-column>
         </el-table>
         <el-pagination style="text-align:right;margin-top:30px;"
-                       v-if="restaurantList.length !== 0"
+                       v-if="hotelList.length !== 0"
                        @size-change="handleSizeChange"
                        @current-change="handleCurrentChange"
                        :current-page="filter.page"
@@ -103,23 +93,21 @@
   export default {
     data() {
       return {
-        restaurantList: [],
+        hotelList: [],
         filter: {
           country_id: null,
           city_id: null,
-          restaurant_type: null,
           number: 20,
           page: 1
         },
-        currentRestId: null,
+        currentHotelId: null,
         total: null,
         companyList: [],
         countryArr: [],
         loading: false,
-        deleteList: [],
         submitting: false,
         countryList: [],
-        restType: [
+        star: [
           {value: 1, label: '中餐'},
           {value: 2, label: '特色'},
           {value: 3, label: '西餐'},
@@ -129,7 +117,7 @@
       }
     },
     created() {
-      axios.all([this.loadCountryList(), this.loadRestList(1)
+      axios.all([this.loadCountryList(), this.loadHotelList(1)
       ]).then(axios.spread((res1, res2) => {
         console.log("done");
       }));
@@ -139,18 +127,18 @@
       addHotel() {
         this.$router.push({name: "ADD HOTEL"})
       },
-      editRestaurant(id) {
-        this.$router.push({name: "EDIT RESTAURANT", params: {id: id}});
+      editHotel(id) {
+        this.$router.push({name: "EDIT HOTEL", params: {id: id}});
       },
-      deleteRestaurant(scope) {
-        this.$confirm('此操作将永久删除该餐厅, 是否继续?', '提示', {
+      deleteHotel(scope) {
+        this.$confirm('此操作将永久删除该酒店, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.$http.delete('/restaurant/' + scope.row.id).then(res => {
+          this.$http.delete('/hotel/' + scope.row.id).then(res => {
             if (res.data.code === 200) {
-              this.restaurantList.splice(scope.$index, 1);
+              this.hotelList.splice(scope.$index, 1);
               this.$message({
                 type: 'success',
                 message: '删除成功'
@@ -177,16 +165,16 @@
           console.log(err);
         });
       },
-      loadRestList(page) {
+      loadHotelList(page) {
         this.filter.page = page ? page : this.filter.page;
         this.loading = true;
-        this.$http.get('/restaurant/search', {
+        this.$http.get('/hotel/search', {
           params: _.omitBy(this.filter, function (item) {
             return item === ''
           })
         }).then(res => {
           if (res.data.code === 200) {
-            this.restaurantList = res.data.data.restaurant_data;
+            this.hotelList = res.data.data.hotel_data;
             if (page === 1) {
               this.total = res.data.data.total;
             }
@@ -206,11 +194,11 @@
       },
       handleSizeChange(size) {
         this.filter.number = size;
-        this.loadRestList();
+        this.loadHotelList();
       },
       handleCurrentChange(page) {
         this.filter.page = page;
-        this.loadRestList();
+        this.loadHotelList();
       },
       countryFormatter(row, column) {
         let country = this.countryList.filter(country =>
@@ -226,12 +214,6 @@
           city.id === row.city_id
         )[0]['name'];
         return city;
-      },
-      restTypeFormatter(row, column) {
-        let type = this.restType.filter(type =>
-          type.value === row.restaurant_type
-        )[0]['label'];
-        return type;
       }
     },
     components: {

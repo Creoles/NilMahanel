@@ -14,6 +14,7 @@ import EditHotel from "../views/admin/manager/resource/hotel/EditHotel.vue"
 import HotelList from "../views/admin/manager/resource/hotel/HotelList.vue"
 import HotelCompany from "../views/admin/company/HotelCompany.vue"
 import EditHotelCompany from "../views/admin/company/EditHotelCompany.vue"
+import EditHotelPrice from "../views/admin/manager/price/hotel/HotelPrice.vue"
 import VehicleManager from "../views/admin/manager/resource/vehicle/Vehicle.vue"
 import VehicleList from "../views/admin/manager/resource/vehicle/VehicleList.vue"
 import EditVehicle from "../views/admin/manager/resource/vehicle/EditVehicle.vue"
@@ -116,6 +117,11 @@ export default new VueRoute({
           name: "EDIT HOTEL COMPANY",
           path: "company/edit/:id",
           component: EditHotelCompany
+        },
+        {
+          name: "EDIT HOTEL PRICE",
+          path: "price/:id",
+          component: EditHotelPrice
         }
       ]
     },
