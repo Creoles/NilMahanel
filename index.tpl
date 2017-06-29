@@ -13,9 +13,11 @@
     
     <div id="app"></div>
     <!-- built files will be auto injected -->
+    <script src="https://cdn.bootcss.com/moment.js/2.18.1/moment.min.js"></script>
     <script src="//cdn.bootcss.com/axios/0.15.3/axios.min.js"></script>
     <script src="http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js"></script>
     <script src="https://cdn.bootcss.com/lodash.js/4.17.4/lodash.min.js"></script>
     <script src="http://cdn.ronghub.com/RongIMLib-2.2.5.min.js"></script>
+
   </body>
 </html>

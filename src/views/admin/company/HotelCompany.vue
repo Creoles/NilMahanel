@@ -43,7 +43,7 @@
       <el-table-column prop="register_number"
                        label="公司注册编号">
       </el-table-column>
-      <el-table-column label="操作">
+      <el-table-column label="操作" width="200">
         <template scope="scope">
           <el-button type="text"
                      @click="editHotelCompany(scope.row.id)">编辑
@@ -72,7 +72,7 @@
                size="large" v-on:close="closeDialog">
       <div>
         <el-table :data="contactList" v-on:header-click="addLine">
-          <el-table-column label="+" width="20">
+          <el-table-column label="+" width="30">
           </el-table-column>
           <el-table-column label="联系人名称">
             <template scope="scope">
@@ -143,7 +143,7 @@
           })
         }).then(res => {
           if (res.data.code === 200) {
-            this.hotelCompanyList = res.data.data.hotel_company_list;
+            this.hotelCompanyList = res.data.data.company_data;
             this.total = res.data.data.total;
             this.loading = false;
           } else {
@@ -192,9 +192,9 @@
       openContact(id){
         this.dialogContact = true;
         this.currentCompanyId = id;
-        this.$http.get('/shop/company/contact/company/' + id).then(res => {
+        this.$http.get('/hotel/company/contact/company/' + id).then(res => {
           if (res.data.code === 200) {
-            this.contactList = _.assign(this.contactList, res.data.data.contact_list);
+            this.contactList =  res.data.data
           } else {
             console.log(res.data.message)
           }
@@ -268,7 +268,7 @@
             console.error(err);
           })
         } else {
-          this.$http.post('/shop/company/contact/create', _.omitBy(scope.row, function (item) {
+          this.$http.post('/hotel/company/contact/create', _.omitBy(scope.row, function (item) {
             return item === '' || item === null;
           })).then(res => {
             if (res.data.code === 200) {
@@ -305,6 +305,10 @@
       },
       handleSizeChange(size) {
         this.filter.number = size;
+        this.loadHotelCompanyList();
+      },
+      handleCurrentChange(current){
+        this.filter.page = current;
         this.loadHotelCompanyList();
       },
       countryFormatter(row, column) {

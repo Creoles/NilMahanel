@@ -26,6 +26,9 @@
                                    v-for="item in companyList"></el-option>
                     </el-select>
                 </el-form-item>
+                <el-form-item label="英文简称">
+                  <el-input v-model="filter.nickname_en"></el-input>
+                </el-form-item>
                 <el-form-item>
                     <el-button type="primary"
                                @click="loadHotelList(1)">查询
@@ -55,6 +58,12 @@
                     <el-button type="text"
                                @click="editHotel(scope.row.id)">编辑信息
                     </el-button>
+                  <el-button type="text"
+                             @click="openContact(scope.row.id)">联系人
+                  </el-button>
+                    <el-button type="text"
+                               @click="openAccount(scope.row.id)">收款账号
+                    </el-button>
                     <el-button type="text"
                                @click="deleteHotel(scope)">删除
                     </el-button>
@@ -71,7 +80,97 @@
                        layout="total,sizes, prev, pager, next"
                        :total="total">
         </el-pagination>
-
+      <el-dialog title="收款账号"
+                 v-model="dialogAccount"
+                 size="large" v-on:close="closeDialog">
+        <div>
+          <el-table :data="accountList" v-on:header-click="addAccountLine">
+            <el-table-column label="+" width="20">
+            </el-table-column>
+            <el-table-column label="货币类型">
+              <template scope="scope">
+                <el-select v-model="scope.row.currency" size="small">
+                  <el-option :value="1" label="美元"></el-option>
+                  <el-option :value="2" label="人民币"></el-option>
+                  <el-option :value="3" label="斯里兰卡卢布"></el-option>
+                </el-select>
+              </template>
+            </el-table-column>
+            <el-table-column label="银行名称">
+              <template scope="scope">
+                <el-input v-model="scope.row.bank_name" size="small"></el-input>
+              </template>
+            </el-table-column>
+            <el-table-column label="开户支行">
+              <template scope="scope">
+                <el-input v-model="scope.row.deposit_bank" size="small"></el-input>
+              </template>
+            </el-table-column>
+            <el-table-column label="收款人名称">
+              <template scope="scope">
+                <el-input v-model="scope.row.payee" size="small"></el-input>
+              </template>
+            </el-table-column>
+            <el-table-column label="收款人账号">
+              <template scope="scope">
+                <el-input v-model="scope.row.account" size="small"></el-input>
+              </template>
+            </el-table-column>
+            <el-table-column label="SWIFT CODE">
+              <template scope="scope">
+                <el-input v-model="scope.row.swift_code" size="small"></el-input>
+              </template>
+            </el-table-column>
+            <el-table-column label="备注">
+              <template scope="scope">
+                <el-input v-model="scope.row.note" size="small"></el-input>
+              </template>
+            </el-table-column>
+            <el-table-column label="操作">
+              <template scope="scope">
+                <el-button size="small" @click="submitAccount(scope)">保存</el-button>
+                <el-button size="small" @click="deleteAccount(scope)">删除</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
+      </el-dialog>
+      <el-dialog title="联系人"
+                 v-model="dialogContact"
+                 size="large" v-on:close="closeContactDialog">
+        <div>
+          <el-table :data="contactList" v-on:header-click="addContactLine">
+            <el-table-column label="+" width="20">
+            </el-table-column>
+            <el-table-column label="联系人名称">
+              <template scope="scope">
+                <el-input v-model="scope.row.contact"></el-input>
+              </template>
+            </el-table-column>
+            <el-table-column label="联系人职位">
+              <template scope="scope">
+                <el-input v-model="scope.row.position" size="small"></el-input>
+              </template>
+            </el-table-column>
+            <el-table-column label="电话">
+              <template scope="scope">
+                <el-input v-model="scope.row.telephone" size="small"></el-input>
+              </template>
+            </el-table-column>
+            <el-table-column label="email">
+              <template scope="scope">
+                <el-input v-model="scope.row.email" size="small"></el-input>
+              </template>
+            </el-table-column>
+            <el-table-column label="操作">
+              <template scope="scope">
+                <el-button size="small" @click="submitContact(scope)">保存</el-button>
+                <el-button size="small" @click="deleteContact(scope)">删除</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
+      </el-dialog>
     </div>
 </template>
 <style lang="scss">
@@ -97,6 +196,8 @@
         filter: {
           country_id: null,
           city_id: null,
+          company_id:null,
+          nickname_en:null,
           number: 20,
           page: 1
         },
@@ -107,6 +208,10 @@
         loading: false,
         submitting: false,
         countryList: [],
+        dialogAccount:false,
+        dialogContact:false,
+        contactList:[],
+        accountList:[],
         star: [
           {value: 1, label: '中餐'},
           {value: 2, label: '特色'},
@@ -117,13 +222,217 @@
       }
     },
     created() {
-      axios.all([this.loadCountryList(), this.loadHotelList(1)
-      ]).then(axios.spread((res1, res2) => {
+      axios.all([this.loadCountryList(), this.loadHotelList(1),this.loadCompanyList()
+      ]).then(axios.spread((res1, res2,res3) => {
         console.log("done");
       }));
 
     },
     methods: {
+      openContact(id){
+        this.dialogContact = true;
+        this.currentHotelId = id;
+        this.$http.get('/hotel/contact/hotel/' + id).then(res => {
+          if (res.data.code === 200) {
+            if (res.data.data.length) {
+              this.contactList = res.data.data;
+            } else {
+              this.contactList = [];
+            }
+
+          } else {
+            console.log(res.data.message)
+          }
+        }).catch(err => {
+          console.error(err);
+        })
+      },
+      addContactLine(column, event){
+        this.contactList.push({
+          id: null,
+          hotel_id: this.currentHotelId,
+          contact: null,
+          position: null,
+          telephone: null,
+          email: null
+        });
+      },
+      closeContactDialog(){
+        this.contactList=[]
+      },
+      submitContact(scope){
+        if (scope.row.id) {
+          this.$http.put('/hotel/contact/' + scope.row.id, _.omitBy(scope.row, function (item) {
+            return item === '' || item === null;
+          })).then(res => {
+            if (res.data.code === 200) {
+              this.$message({
+                type: 'success',
+                message: '修改成功'
+              })
+            } else {
+              this.$message({
+                type: 'error',
+                message: res.data.message
+              })
+            }
+          }).catch(err => {
+            console.error(err);
+          })
+        } else {
+          this.$http.post('/hotel/contact/create', _.omitBy(scope.row, function (item) {
+            return item === '' || item === null;
+          })).then(res => {
+            if (res.data.code === 200) {
+              scope.row.id = res.data.data.contact_id;
+              this.$message({
+                type: 'success',
+                message: '保存成功'
+              })
+            } else {
+              this.$message({
+                type: 'error',
+                message: res.data.message
+              })
+            }
+          }).catch(err => {
+            console.error(err);
+          })
+        }
+      },
+      deleteContact(scope){
+        if (scope.row.id) {
+          this.$confirm('此操作将永久删除该联系人, 是否继续?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            this.$http.delete('/hotel/contact/' + scope.row.id).then(res => {
+              if (res.data.code === 200) {
+                this.contactList.splice(scope.$index, 1);
+                this.$message({
+                  type: 'success',
+                  message: '删除成功'
+                })
+              } else {
+                this.$message({
+                  type: 'error',
+                  message: res.data.message
+                })
+              }
+            }, err => {
+              console.log(err);
+            })
+          }).catch(() => {
+            this.$message({
+              type: 'info',
+              message: '已取消删除'
+            });
+          });
+        } else {
+          this.contactList.splice(scope.$index, 1);
+        }
+      },
+      openAccount(id){
+        this.dialogAccount = true;
+        this.currentHotelId = id;
+        this.$http.get('/hotel/account/hotel/' + id).then(res => {
+          if (res.data.code === 200) {
+            this.accountList = res.data.data;
+          } else {
+            console.log(res.data.message)
+          }
+        })
+      },
+      closeDialog(){
+        this.accountList = [];
+      },
+      deleteAccount(scope){
+        if (scope.row.id) {
+          this.$confirm('此操作将永久删除该收款账号, 是否继续?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            this.$http.delete('/hotel/account/' + scope.row.id).then(res => {
+              if (res.data.code === 200) {
+                this.accountList.splice(scope.$index, 1);
+                this.$message({
+                  type: 'success',
+                  message: '删除成功'
+                })
+              } else {
+                this.$message({
+                  type: 'error',
+                  message: res.data.message
+                })
+              }
+            }, err => {
+              console.log(err);
+            })
+          }).catch(() => {
+            this.$message({
+              type: 'info',
+              message: '已取消删除'
+            });
+          });
+        } else {
+          this.accountList.splice(scope.$index, 1);
+        }
+      },
+      addAccountLine(column, event){
+        this.accountList.push({
+          id: null,
+          hotel_id:this.currentHotelId,
+          currency: null,
+          bank_name: null,
+          deposit_bank: null,
+          payee: null,
+          account: null,
+          swift_code: null,
+          note: null
+        });
+      },
+      submitAccount(scope){
+        if (scope.row.id) {
+          this.$http.put('/hotel/account/' + scope.row.id, _.omitBy(scope.row, function (item) {
+            return item === '' || item === null;
+          })).then(res => {
+            if (res.data.code === 200) {
+              this.$message({
+                type: 'success',
+                message: '修改成功'
+              })
+            } else {
+              this.$message({
+                type: 'error',
+                message: res.data.message
+              })
+            }
+          }).catch(err => {
+            console.error(err);
+          })
+        } else {
+          this.$http.post('/hotel/account/create', _.omitBy(scope.row, function (item) {
+            return item === '' || item === null;
+          })).then(res => {
+            if (res.data.code === 200) {
+              scope.row.id = res.data.data.account_id;
+              this.$message({
+                type: 'success',
+                message: '保存成功'
+              })
+            } else {
+              this.$message({
+                type: 'error',
+                message: res.data.message
+              })
+            }
+          }).catch(err => {
+            console.error(err);
+          })
+        }
+      },
       addHotel() {
         this.$router.push({name: "ADD HOTEL"})
       },
@@ -152,6 +461,17 @@
           }, err => {
             console.log(err);
           })
+        })
+      },
+      loadCompanyList() {
+        this.$http.get('/hotel/company/search', {params: {page: 1, number: 10000}}).then(res => {
+          if (res.data.code === 200) {
+            this.companyList = res.data.data.company_data;
+          } else {
+            console.log(res.data.data.message);
+          }
+        }, err => {
+          console.log(err);
         })
       },
       loadCountryList() {

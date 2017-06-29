@@ -170,7 +170,7 @@
         this.currentCompanyId = id;
         this.$http.get('/shop/company/contact/company/' + id).then(res => {
           if (res.data.code === 200) {
-            this.contactList = _.assign(this.contactList, tres.data.data.contact_list);
+            this.contactList = _.assign(this.contactList, res.data.data.contact_list);
           } else {
             console.log(res.data.message)
           }
