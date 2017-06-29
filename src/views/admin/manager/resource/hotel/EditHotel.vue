@@ -27,47 +27,52 @@
       </el-form-item>
       <br>
       <el-form-item label="开业时间">
-        <el-date-picker
-          v-model="params.start_year"
-          align="right"
-          type="year"
-          placeholder="year">
-        </el-date-picker>
+        <el-input v-model.number="params.start_year"></el-input>
       </el-form-item>
       <el-form-item label="星级">
-        <hotel-star :hotel-star="params.stars" v-on:star-change="onStarChange($event)"></hotel-star>
+        <hotel-star :hotel-star="params.star_level" v-on:star-change="onStarChange($event)"></hotel-star>
       </el-form-item>
       <el-form-item label="网上星级">
-        <hotel-star :hotel-star="params.online_stars" v-on:star-change="onOnlineStarChange($event)"></hotel-star>
+        <hotel-star :hotel-star="params.comment_level" v-on:star-change="onOnlineStarChange($event)"></hotel-star>
       </el-form-item>
       <el-form-item label="具体地址" style="width: 65%">
         <el-input v-model="params.address"></el-input>
       </el-form-item>
       <br>
-      <el-form-item label="导游房数量">
-        <el-input v-model="params.tour_guide_num"></el-input>
-      </el-form-item>
       <el-form-item label="大床房数量">
-        <el-input v-model="params.single_num"></el-input>
+        <el-input v-model.number="params.standard_room_number"></el-input>
       </el-form-item>
       <el-form-item label="双人间数量">
-        <el-input v-model="params.double_num"></el-input>
+        <el-input v-model.number="params.standard_double_room_number"></el-input>
       </el-form-item>
       <el-form-item label="三人间数量">
-        <el-input v-model="params.triple_num"></el-input>
+        <el-input v-model.number="params.triple_room_number"></el-input>
       </el-form-item>
       <el-form-item label="套房数量">
-        <el-input v-model="params.taofang"></el-input>
+        <el-input v-model.number="params.suite_room_number"></el-input>
+      </el-form-item>
+      <el-form-item label="导游房数量">
+        <el-input v-model.number="params.tour_guide_room_number"></el-input>
       </el-form-item>
       <br>
-      <el-form-item label="酒店网址">
-        <el-input v-model="params.costPerson"></el-input>
-      </el-form-item>
       <el-form-item label="预定邮箱">
-        <el-input v-model="params.costPerson"></el-input>
+        <el-input v-model="params.email"></el-input>
       </el-form-item>
       <el-form-item label="预定电话">
-        <el-input v-model="params.costPerson"></el-input>
+        <el-input v-model="params.telephone"></el-input>
+      </el-form-item>
+      <br>
+      <el-form-item label="中文介绍" style="width: 20%">
+        <el-input type="textarea"
+                  :rows="4"
+                  v-model="params.intro_cn">
+        </el-input>
+      </el-form-item>
+      <el-form-item label="英文介绍" style="width: 20%">
+        <el-input type="textarea"
+                  :rows="4"
+                  v-model="params.intro_en">
+        </el-input>
       </el-form-item>
       <br>
       <el-form-item>
@@ -99,18 +104,18 @@
         params: {
           country_id: null,
           city_id: null,
-          stars: null,
-          company_id: null,
+          star_level: null,
+          company_id: 1,
           name: null,
           name_en: null,
           nickname_en: null,
           address: null,
-          online_stars: null,
-          tour_guide_num: null,
-          single_num: null,
-          double_num: null,
-          triple_num: null,
-          taofang_num: null,
+          comment_level: null,
+          tour_guide_room_number: null,
+          standard_room_number: null,
+          standard_double_room_number: null,
+          triple_room_number: null,
+          suite_room_number: null,
           start_year: null,
           telephone: null,
           email: null,
@@ -125,11 +130,10 @@
     },
     methods: {
       onStarChange(msg){
-        debugger;
-        this.params.stars = msg;
+        this.params.star_level = msg;
       },
       onOnlineStarChange(msg){
-        this.params.online_stars = msg;
+        this.params.comment_level = msg;
       },
       loadCompanyList(){
         this.$http.get('/hotel/company/search', {params: {page: 1, number: 10000}}).then(res => {
@@ -143,25 +147,28 @@
       submit(){
         this.submitting = true;
         if (this.$route.params.id) {
-          this.$http.put('/hotel/' + this.$route.params.id, this.params).then(res => {
+          this.$http.put('/hotel/' + this.$route.params.id,
+            _.omit(this.params, ['created_at', 'updated_at'])
+          ).then(res => {
             if (res.data.code === 200) {
               this.$message({
                 type: 'success',
                 message: '修改成功'
-              })
+              });
               this.submitting = false;
             } else {
               this.$message({
                 type: 'error',
                 message: res.data.message
-              })
+              });
               this.submitting = false;
             }
           }).catch(err => {
             console.log(err);
             this.submitting = false;
           })
-        } else {
+        }
+        else {
           this.$http.post('/hotel/create', this.params).then(res => {
             if (res.data.code === 200) {
               this.$message({
@@ -182,7 +189,8 @@
           })
         }
       },
-      loadCountryList() {
+      loadCountryList()
+      {
         this.$http.get('/country/all').then(res => {
           if (res.data.code === 200) {
             this.countryList = res.data.data;
@@ -190,12 +198,15 @@
         }, err => {
           console.log(new Error(err))
         });
-      },
-      loadHotelById(){
+      }
+      ,
+      loadHotelById()
+      {
         if (this.$route.params.id) {
           this.$http.get('/hotel/' + this.$route.params.id).then(res => {
             if (res.data.code === 200) {
               this.params = _.assign(this.params, res.data.data)
+              this.countryArr.push(this.params.country_id, this.params.city_id);
             } else {
               console.log(res.data.message)
             }
@@ -203,8 +214,10 @@
             console.log(err)
           })
         }
-      },
-      onFilterCountryChange(msg){
+      }
+      ,
+      onFilterCountryChange(msg)
+      {
         this.params.country_id = msg[0];
         this.params.city_id = msg[0];
       }

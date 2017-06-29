@@ -3,8 +3,8 @@
     <content-top>
       <el-button class="add-btn el-icon-plus"
                  type="primary"
-                 @click="addShopCompany">
-        添加购物公司
+                 @click="addHotelCompany">
+        添加酒店公司
       </el-button>
     </content-top>
     <div>
@@ -17,12 +17,12 @@
         </el-form-item>
         <el-form-item>
           <el-button type="primary"
-                     @click="loadShopCompanyList(1)">查询
+                     @click="loadHotelCompanyList(1)">查询
           </el-button>
         </el-form-item>
       </el-form>
     </div>
-    <el-table :data="shopCompanyList"
+    <el-table :data="hotelCompanyList"
               style="width: 100%"
               v-loading.body="loading">
       <el-table-column prop="country_id"
@@ -43,22 +43,22 @@
       <el-table-column prop="register_number"
                        label="公司注册编号">
       </el-table-column>
-      <el-table-column label="操作">
+      <el-table-column label="操作" width="200">
         <template scope="scope">
           <el-button type="text"
-                     @click="editShopCompany(scope.row.id)">编辑
+                     @click="editHotelCompany(scope.row.id)">编辑
           </el-button>
           <el-button type="text"
-                     @click="openContact(scope.row.id)">联系人
+                     @click="openContact(scope.row.id)">公司联系人
           </el-button>
           <el-button type="text"
-                     @click="deleteShopCompany(scope)">删除
+                     @click="deleteHotelCompany(scope)">删除
           </el-button>
         </template>
       </el-table-column>
     </el-table>
     <el-pagination style="text-align:right;margin-top:30px;"
-                   v-if="shopCompanyList.length !== 0"
+                   v-if="hotelCompanyList.length !== 0"
                    @size-change="handleSizeChange"
                    @current-change="handleCurrentChange"
                    :current-page="filter.page"
@@ -72,7 +72,7 @@
                size="large" v-on:close="closeDialog">
       <div>
         <el-table :data="contactList" v-on:header-click="addLine">
-          <el-table-column label="+" width="20">
+          <el-table-column label="+" width="30">
           </el-table-column>
           <el-table-column label="联系人名称">
             <template scope="scope">
@@ -105,16 +105,17 @@
     </el-dialog>
   </div>
 </template>
-<style lang="scss">
 
-</style>
 <script>
   import ContentTop from 'src/views/components/ContentTop.vue'
-  import CountrySelect from 'src/views/components/CountrySelect.vue'
+  import CountrySelect from "src/views/components/CountrySelect.vue"
   export default {
-    data() {
+    data(){
       return {
-        shopCompanyList: [],
+        hotelCompanyList: [],
+        dialogContact: false,
+        countryList: [],
+        currentCompanyId: null,
         filter: {
           country_id: null,
           city_id: null,
@@ -124,26 +125,25 @@
         total: null,
         countryArr: [],
         contactList: [],
-        dialogContact: false,
-        currentCompanyId: null,
         loading: false
+
       }
     },
-    created() {
-      axios.all([this.loadCountryList(), this.loadShopCompanyList(1)
-      ]);
+    created(){
+      this.loadCountryList();
+      this.loadHotelCompanyList();
     },
     methods: {
-      loadShopCompanyList(page) {
+      loadHotelCompanyList(page) {
         this.loading = true;
         this.filter.page = page ? page : this.filter.page;
-        this.$http.get('/shop/company/search', {
+        this.$http.get('/hotel/company/search', {
           params: _.omitBy(this.filter, function (item) {
             return item === '' || item === null
           })
         }).then(res => {
           if (res.data.code === 200) {
-            this.shopCompanyList = res.data.data.shop_company_list;
+            this.hotelCompanyList = res.data.data.company_data;
             this.total = res.data.data.total;
             this.loading = false;
           } else {
@@ -154,23 +154,47 @@
           console.log(err);
         })
       },
-      loadCountryList() {
-        this.$http.get('/country/all').then(res => {
-          if (res.data.code === 200) {
-            this.countryList = res.data.data;
-          } else {
-            console.log(res.message);
-          }
-        }, err => {
-          console.log(err);
+      addHotelCompany(){
+        this.$router.push({name: 'ADD HOTEL COMPANY'});
+      },
+      editHotelCompany(id){
+        this.$router.push({name: 'EDIT HOTEL COMPANY', params: {id: id}})
+      },
+      deleteHotelCompany(scope){
+        this.$confirm('此操作将永久删除该酒店公司, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$http.delete('/hotel/company/' + scope.row.id).then(res => {
+            if (res.data.code === 200) {
+              this.hotelCompanyList.splice(scope.$index, 1);
+              this.$message({
+                type: 'success',
+                message: '删除成功'
+              })
+            } else {
+              this.$message({
+                type: 'error',
+                message: res.data.message
+              })
+            }
+          }, err => {
+            console.log(err);
+          })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });
         });
       },
       openContact(id){
         this.dialogContact = true;
         this.currentCompanyId = id;
-        this.$http.get('/shop/company/contact/company/' + id).then(res => {
+        this.$http.get('/hotel/company/contact/company/' + id).then(res => {
           if (res.data.code === 200) {
-            this.contactList = _.assign(this.contactList, res.data.data.contact_list);
+            this.contactList =  res.data.data
           } else {
             console.log(res.data.message)
           }
@@ -178,45 +202,18 @@
           console.error(err);
         })
       },
-      submitContact(scope){
-        if (scope.row.id) {
-          this.$http.put('/shop/company/contact/' + scope.row.id, _.omitBy(scope.row, function (item) {
-            return item === '' || item === null;
-          })).then(res => {
-            if (res.data.code === 200) {
-              this.$message({
-                type: 'success',
-                message: '修改成功'
-              })
-            } else {
-              this.$message({
-                type: 'error',
-                message: res.data.message
-              })
-            }
-          }).catch(err => {
-            console.error(err);
-          })
-        } else {
-          this.$http.post('/shop/company/contact/create', _.omitBy(scope.row, function (item) {
-            return item === '' || item === null;
-          })).then(res => {
-            if (res.data.code === 200) {
-              scope.row.id = res.data.data.contact_id;
-              this.$message({
-                type: 'success',
-                message: '保存成功'
-              })
-            } else {
-              this.$message({
-                type: 'error',
-                message: res.data.message
-              })
-            }
-          }).catch(err => {
-            console.error(err);
-          })
-        }
+      closeDialog(){
+        this.contactList = [];
+      },
+      addLine(column, event){
+        this.contactList.push({
+          id: null,
+          company_id: this.currentCompanyId,
+          contact: null,
+          position: null,
+          telephone: null,
+          email: null
+        });
       },
       deleteContact(scope){
         if (scope.row.id) {
@@ -225,7 +222,7 @@
             cancelButtonText: '取消',
             type: 'warning'
           }).then(() => {
-            this.$http.delete('/shop/company/contact/' + scope.row.id).then(res => {
+            this.$http.delete('/hotel/company/contact/' + scope.row.id).then(res => {
               if (res.data.code === 200) {
                 this.contactList.splice(scope.$index, 1);
                 this.$message({
@@ -251,37 +248,15 @@
           this.contactList.splice(scope.$index, 1);
         }
       },
-      closeDialog(){
-        this.contactList = [];
-      },
-      addLine(column, event){
-        this.contactList.push({
-          id: null,
-          company_id: this.currentCompanyId,
-          contact: null,
-          position: null,
-          telephone: null,
-          email: null
-        });
-      },
-      editShopCompany(id){
-        this.$router.push({name: 'EDIT SHOP COMPANY', params: {id: id}})
-      },
-      addShopCompany(){
-        this.$router.push({name: 'ADD SHOP COMPANY'});
-      },
-      deleteShopCompany(scope) {
-        this.$confirm('此操作将永久删除该购物公司, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.$http.delete('/shop/company/' + scope.row.id).then(res => {
+      submitContact(scope){
+        if (scope.row.id) {
+          this.$http.put('/hotel/company/contact/' + scope.row.id, _.omitBy(scope.row, function (item) {
+            return item === '' || item === null;
+          })).then(res => {
             if (res.data.code === 200) {
-              this.shopCompanyList.splice(scope.$index, 1);
               this.$message({
                 type: 'success',
-                message: '删除成功'
+                message: '修改成功'
               })
             } else {
               this.$message({
@@ -289,14 +264,39 @@
                 message: res.data.message
               })
             }
-          }, err => {
-            console.log(err);
+          }).catch(err => {
+            console.error(err);
           })
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消删除'
-          });
+        } else {
+          this.$http.post('/hotel/company/contact/create', _.omitBy(scope.row, function (item) {
+            return item === '' || item === null;
+          })).then(res => {
+            if (res.data.code === 200) {
+              scope.row.id = res.data.data.contact_id;
+              this.$message({
+                type: 'success',
+                message: '保存成功'
+              })
+            } else {
+              this.$message({
+                type: 'error',
+                message: res.data.message
+              })
+            }
+          }).catch(err => {
+            console.error(err);
+          })
+        }
+      },
+      loadCountryList() {
+        this.$http.get('/country/all').then(res => {
+          if (res.data.code === 200) {
+            this.countryList = res.data.data;
+          } else {
+            console.log(res.message);
+          }
+        }, err => {
+          console.log(err);
         });
       },
       onFilterCountryChange(msg){
@@ -305,11 +305,11 @@
       },
       handleSizeChange(size) {
         this.filter.number = size;
-        this.loadShopCompanyList();
+        this.loadHotelCompanyList();
       },
-      handleCurrentChange(page) {
-        this.filter.page = page;
-        this.loadShopCompanyList();
+      handleCurrentChange(current){
+        this.filter.page = current;
+        this.loadHotelCompanyList();
       },
       countryFormatter(row, column) {
         let country = _.find(this.countryList, country => country.id === row.country_id)['name'];
@@ -322,8 +322,8 @@
       },
     },
     components: {
-      ContentTop,
-      CountrySelect
+      CountrySelect,
+      ContentTop
     }
   }
 </script>
