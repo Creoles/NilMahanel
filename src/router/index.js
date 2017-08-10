@@ -48,6 +48,7 @@ import VehicleAccount from "../views/admin/finance/account/VehicleAccount.vue"
 import VehiclePrice from "../views/admin/manager/price/vehicle/EditPrice.vue"
 import ScenicPrice from "../views/admin/manager/price/scenic/EditPrice.vue"
 import EditShopCompany from "../views/admin/company/EditShopCompany.vue"
+import Schedule from "../views/wholesaler/order/schedule.vue"
 Vue.use(VueRoute);
 
 function generateRoutes() {
@@ -294,6 +295,11 @@ export default new VueRoute({
         path: "account",
         component: CiceroneAccount
       }]
+    },
+    {
+      name:'ORDER PART-1',
+      path:'/order/part-1',
+      component:Schedule
     },
     {
       path: "/wholesaler/product",
