@@ -26,7 +26,7 @@
       <br>
       <el-form-item label="选择出游日期">
         <el-date-picker
-          v-model="value1"
+          v-model="scheduleForm.departDate"
           type="date"
           placeholder="选择日期"
           :picker-options="pickerOptions0">
